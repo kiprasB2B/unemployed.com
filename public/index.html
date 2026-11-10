@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>unemployed – balti marškinėliai su savo šriftų deriniu</title>
 <meta name="description" content="Balti marškinėliai su užrašu „unemployed“ per krūtinę. Kiekvieną raidę renkiesi pats iš 8 šriftų.">
-<meta name="theme-color" content="#0B0B0C">
+<meta name="theme-color" content="#0E0B0C">
 <script>
   /* Tema nustatoma prieš piešimą, kad nemirgėtų */
   try { var t = JSON.parse(localStorage.getItem('unemployed.theme')); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}
@@ -13,98 +13,131 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<!-- Puslapio šriftai (Unbounded, Manrope, Poppins 700) + 8 produkto šriftai. Keičiant CONFIG.product.fonts, atnaujink ir šią nuorodą. -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Bungee&family=Lobster&family=Manrope:wght@400;500;700;800&family=Pacifico&family=Permanent+Marker&family=Poppins:wght@700&family=Press+Start+2P&family=Rubik+Mono+One&family=Special+Elite&family=Unbounded:wght@500;700;900&display=swap">
+<!-- Puslapio šriftai (Archivo, Instrument Serif – abu su latin-ext, t. y. lietuviškomis raidėmis) + 8 produkto šriftai. Keičiant CONFIG.product.fonts, atnaujink ir šią nuorodą. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Archivo:wght@400;500;600;700;800;900&family=Bungee&family=Instrument+Serif:ital@0;1&family=Lobster&family=Pacifico&family=Permanent+Marker&family=Press+Start+2P&family=Rubik+Mono+One&family=Special+Elite&display=swap">
 <style>
-/* ============ 1. TAPATYBĖ: 3 spalvos, viskas per kintamuosius ============ */
+/* ============ PALETĖ: 3 spalvos, 60 / 30 / 10 ============ */
 :root{
-  --black:#0B0B0C; --white:#FFFFFF; --pink:#FF2BA6;
-  --font-head:'Unbounded', system-ui, sans-serif;
-  --font-body:'Manrope', system-ui, sans-serif;
-  --font-cap:'Poppins', system-ui, sans-serif;
-  --radius:16px;
-  --wrap:1200px;
-  --gutter:clamp(16px, 4vw, 40px);
+  --black:#0E0B0C;   /* Raven Black – 60 % */
+  --blue:#BDE0F5;    /* Powder Blue – 30 % */
+  --red:#E3121B;     /* Poppy Red – 10 %: juosta, skyrių skaičiai, serifo akcentai, mygtukai, varnelės, progresas */
+  --font-head:'Archivo', system-ui, sans-serif;
+  --font-serif:'Instrument Serif', Georgia, serif;
+  --font-body:'Archivo', system-ui, sans-serif;
+  --wrap:1280px;
+  --gutter:clamp(16px, 4vw, 48px);
+  --header-h:68px;
+  --rib-w:clamp(46px, 6.4vw, 86px);
+  --ease:cubic-bezier(.2,.8,.2,1);
   --ease-pop:cubic-bezier(.34,1.56,.64,1);
 }
-[data-theme="dark"]{
-  --bg:var(--black); --fg:var(--white);
-  --muted:rgba(255,255,255,.7); --line:rgba(255,255,255,.16);
-  --surface:rgba(255,255,255,.05); --surface-2:rgba(255,255,255,.1);
-  --cap-bg:var(--white); --cap-fg:var(--pink); --cap-edge:transparent;
-  --cap-shadow:6px 6px 0 rgba(255,255,255,.2);
-  --shirt:var(--white); --shirt-line:rgba(11,11,12,.14);
-  --on-accent:var(--black);
-  color-scheme:dark;
+[data-theme="dark"]{ --base-bg:var(--black); --base-fg:var(--blue); color-scheme:dark }
+[data-theme="light"]{ --base-bg:var(--blue); --base-fg:var(--black); color-scheme:light }
+/* Kiekviena „sritis“ pati perskaičiuoja išvestines spalvas iš savo --bg / --fg */
+:root, .tone, .alt, .on-red{
+  --muted:color-mix(in srgb, var(--fg) 74%, var(--bg));
+  --line:color-mix(in srgb, var(--fg) 24%, transparent);
+  --surface:color-mix(in srgb, var(--fg) 7%, var(--bg));
+  --surface-2:color-mix(in srgb, var(--fg) 14%, var(--bg));
+  --glass-hi:color-mix(in srgb, var(--blue) 78%, transparent);
+  --glass-lo:color-mix(in srgb, var(--blue) 16%, transparent);
+  --glass-edge:color-mix(in srgb, var(--blue) 70%, transparent);
+  --glass-shadow:rgba(14,11,12,.7);
 }
-[data-theme="light"]{
-  --bg:var(--white); --fg:var(--black);
-  --muted:rgba(11,11,12,.7); --line:rgba(11,11,12,.16);
-  --surface:rgba(11,11,12,.04); --surface-2:rgba(11,11,12,.08);
-  --cap-bg:var(--white); --cap-fg:var(--pink); --cap-edge:var(--black);
-  --cap-shadow:6px 6px 0 var(--black);
-  --shirt:var(--white); --shirt-line:rgba(11,11,12,.35);
-  --on-accent:var(--black);
-  color-scheme:light;
-}
+:root{ --bg:var(--base-bg); --fg:var(--base-fg) }
+.tone{ --bg:var(--base-bg); --fg:var(--base-fg); background:var(--bg); color:var(--fg) }
+.alt{ --bg:var(--base-fg); --fg:var(--base-bg); background:var(--bg); color:var(--fg) }
+.on-red{ --bg:var(--red); --fg:var(--black); background:var(--bg); color:var(--fg) }
+[data-theme="light"] .tone, [data-theme="dark"] .alt{ --glass-edge:color-mix(in srgb, var(--black) 26%, transparent); --glass-shadow:rgba(14,11,12,.35) }
+[data-theme="light"] .tone, [data-theme="dark"] .alt{ --tee-fill:url(#glassFillOnLight) }
+[data-theme="light"]{ --glass-edge:color-mix(in srgb, var(--black) 26%, transparent); --glass-shadow:rgba(14,11,12,.35) }
 
 *,*::before,*::after{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:84px;-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:17px;line-height:1.55;overflow-x:hidden;transition:background-color .3s,color .3s}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--header-h) + 8px);-webkit-text-size-adjust:100%;overflow-x:clip}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:17px;line-height:1.55;overflow-x:clip;transition:background-color .3s,color .3s}
 img,svg{display:block;max-width:100%}
 button,input{font:inherit;color:inherit}
 button{cursor:pointer}
 a{color:inherit}
-h1,h2,h3{font-family:var(--font-head);line-height:1.1;margin:0}
+h1,h2,h3{font-family:var(--font-head);line-height:1;margin:0;font-weight:900;letter-spacing:-.035em}
 p{margin:0}
 .sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
-:focus-visible{outline:3px solid var(--pink);outline-offset:3px;border-radius:6px}
-.skip{position:absolute;left:12px;top:-60px;z-index:100;background:var(--pink);color:var(--on-accent);padding:12px 16px;border-radius:10px;font-weight:800;text-decoration:none}
+:focus-visible{outline:3px solid var(--fg);outline-offset:3px;border-radius:6px}
+.skip{position:absolute;left:12px;top:-60px;z-index:100;background:var(--fg);color:var(--bg);padding:12px 16px;border-radius:10px;font-weight:800;text-decoration:none}
 .skip:focus{top:12px}
 .wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--gutter)}
+.defs{position:absolute;width:0;height:0;overflow:hidden}
 
 /* Placeholder – aiškiai pažymėta neužpildyta reikšmė */
 .ph{display:inline-block;border:2px dashed currentColor;border-radius:8px;padding:0 .4em;font-family:var(--font-body);font-weight:800;font-size:.85em;letter-spacing:.02em;line-height:1.5;opacity:.85;white-space:nowrap}
-.ph-block{display:block;border:2px dashed var(--line);border-radius:var(--radius);padding:18px;color:var(--muted);font-weight:700}
+.ph-block{display:block;border:2px dashed var(--line);border-radius:18px;padding:18px;color:var(--muted);font-weight:700}
 
-/* ============ Titrų stilius ============ */
-.cap{display:inline-block;background:var(--cap-bg);color:var(--cap-fg);font-family:var(--font-cap);font-weight:700;padding:.12em .42em .16em;line-height:1.08;box-shadow:var(--cap-shadow);outline:2px solid var(--cap-edge);transform:rotate(var(--tilt,0deg))}
-.sec-title{font-family:var(--font-cap);font-weight:700;font-size:clamp(1.9rem,4.6vw,3.4rem);line-height:1.32;max-width:16ch;margin:0 0 clamp(28px,4vw,48px);transform:rotate(var(--tilt,0deg));transform-origin:0 50%}
-.sec-title span{background:var(--cap-bg);color:var(--cap-fg);padding:.06em .36em .1em;-webkit-box-decoration-break:clone;box-decoration-break:clone;box-shadow:var(--cap-shadow);outline:2px solid var(--cap-edge)}
-.js .sec-title{opacity:0}
-.sec-title.in{animation:subject .7s var(--ease-pop) both}
-@keyframes subject{
-  0%{opacity:0;transform:scale(.35) rotate(calc(var(--tilt,0deg) * -5))}
-  60%{opacity:1;transform:scale(1.08) rotate(calc(var(--tilt,0deg) * 1.6))}
-  100%{opacity:1;transform:scale(1) rotate(var(--tilt,0deg))}
-}
+/* ============ TIPOGRAFIJA ============ */
+.display{font-family:var(--font-head);font-weight:900;font-size:clamp(2.5rem,6.6vw,6.4rem);line-height:.9;letter-spacing:-.05em}
+.display.xl{font-size:clamp(2.8rem,8.4vw,8.6rem)}
+.display.md{font-size:clamp(2.2rem,5vw,4.6rem)}
+.accent{font-family:var(--font-serif);font-style:italic;font-weight:400;color:var(--red);letter-spacing:-.015em;font-size:1.08em;line-height:.9}
+.on-red .accent{color:var(--black)}
+.label{font-family:var(--font-body);font-weight:700;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;line-height:1.2}
+.muted{color:var(--muted)}
+.halo,.display,.panel h3,.lead,.copy,.offer,.trust,.hint,.label,.back,.combos,summary,.faq h3,.contacts h3,.stat,.story-text .big,.work-head,.calc-note{-webkit-text-stroke:var(--halo,.16em) var(--bg);paint-order:stroke fill}
+.display,.panel h3,.story-text .big,.faq h3,.contacts h3{--halo:.11em}
+.lead,.copy,.offer,.trust,.hint,.label,.back,summary,.stat p,.calc-note{--halo:3px}
+.contacts h3{-webkit-text-stroke:0}
+/* Kortelės – nepermatomos ir pačios savo „fonas“, kad kontūras sutaptų su jų spalva */
+.config,.calc-in,.calc-out,.contacts,.progress-card,.steps li,.tl-btn,.tl-panel,.quote,.seg{--bg:var(--surface);background:var(--bg)}
+.giant-num{font-family:var(--font-head);font-weight:900;color:var(--red);font-size:clamp(150px,24vw,380px);line-height:.78;letter-spacing:-.07em;pointer-events:none;user-select:none}
+.js .reveal{opacity:0;transform:translateY(36px)}
+.js .reveal.in{opacity:1;transform:none;transition:opacity .9s var(--ease),transform .9s var(--ease)}
 
-/* ============ Mygtukai ============ */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;min-height:52px;padding:0 26px;border:0;border-radius:999px;background:var(--pink);color:var(--on-accent);font-family:var(--font-head);font-weight:700;font-size:1rem;text-decoration:none;transition:transform .15s,box-shadow .15s;box-shadow:0 0 0 0 rgba(255,43,166,0)}
-.btn:hover{transform:translateY(-2px);box-shadow:0 10px 26px -8px rgba(255,43,166,.75)}
+/* ============ PARAŠO ELEMENTAS: RAUDONA JUOSTA ============ */
+[data-ribbon]{position:relative;isolation:isolate}
+[data-ribbon] > svg.ribbon{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;overflow:hidden}
+[data-ribbon] > :not(.ribbon):not(.abs){position:relative;z-index:2}
+.abs{position:absolute;z-index:3}
+svg.ribbon use{fill:none;stroke:var(--red);stroke-width:var(--rib-w);stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1000;stroke-dashoffset:var(--rib-off,1000)}
+[data-red] > svg.ribbon use{stroke:var(--black)}
+
+/* Kampinės etiketės */
+.corner{top:22px;display:flex;align-items:center;gap:10px}
+.corner.tl{left:var(--gutter)}
+.corner.tr{right:var(--gutter)}
+.back{display:inline-flex;align-items:center;min-height:44px;font-weight:700;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;color:var(--fg);border-bottom:2px solid transparent}
+.back:hover{border-bottom-color:currentColor}
+.corner.tr .back{margin-top:-12px}
+
+/* ============ MYGTUKAI ============ */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;min-height:56px;padding:0 28px;border:0;border-radius:999px;background:var(--red);color:var(--black);font-family:var(--font-head);font-weight:800;font-size:19px;letter-spacing:-.01em;text-decoration:none;transition:transform .2s var(--ease),box-shadow .2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 14px 30px -14px rgba(227,18,27,.8)}
 .btn:active{transform:translateY(0) scale(.98)}
-.btn:focus-visible{outline:3px solid var(--fg);outline-offset:3px}
-.btn.ghost{background:transparent;color:var(--fg);box-shadow:inset 0 0 0 2px var(--pink)}
-.btn.ghost:hover{box-shadow:inset 0 0 0 2px var(--pink),0 10px 26px -12px rgba(255,43,166,.6)}
-.btn.small{min-height:44px;padding:0 18px;font-size:.88rem}
+.btn.ghost{background:var(--bg);color:var(--fg);box-shadow:inset 0 0 0 2px var(--fg)}
+.btn.ghost:hover{box-shadow:inset 0 0 0 2px var(--fg),0 14px 30px -16px var(--glass-shadow)}
+.btn.small{min-height:48px;padding:0 20px}
 .btn.block{width:100%}
-.icon-btn{position:relative;display:inline-grid;place-items:center;width:44px;height:44px;border-radius:12px;border:2px solid var(--line);background:transparent;color:var(--fg);transition:border-color .2s}
-.icon-btn:hover{border-color:var(--pink)}
+.on-red .btn{background:var(--black);color:var(--blue)}
+.on-red .btn.ghost{background:var(--red);color:var(--black);box-shadow:inset 0 0 0 2px var(--black)}
+.pill{display:inline-flex;align-items:center;gap:16px;min-height:64px;padding:6px 6px 6px 30px;border:0;border-radius:999px;background:var(--fg);color:var(--bg);font-family:var(--font-head);font-weight:800;font-size:20px;letter-spacing:-.01em;transition:transform .25s var(--ease)}
+.pill .ic{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;background:var(--red);color:var(--black);transition:transform .35s var(--ease)}
+.pill .ic svg{width:22px;height:22px}
+.pill:hover{transform:translateY(-2px)}
+.pill:hover .ic{transform:rotate(-45deg)}
+.icon-btn{position:relative;display:inline-grid;place-items:center;width:44px;height:44px;border-radius:50%;border:2px solid var(--line);background:transparent;color:var(--fg);transition:border-color .2s}
+.icon-btn:hover{border-color:var(--fg)}
 .icon-btn svg{width:22px;height:22px}
-.linkish{color:var(--pink);font-weight:700;text-decoration:underline;text-underline-offset:3px;background:none;border:0;padding:0;min-height:44px;display:inline-flex;align-items:center}
+.linkish{color:var(--fg);font-weight:700;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:2px;background:none;border:0;padding:0;min-height:44px;display:inline-flex;align-items:center}
 
-/* ============ Viršutinė juosta ============ */
-.topbar{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-.topbar .wrap{display:flex;align-items:center;gap:16px;min-height:68px}
-.brand{font-family:var(--font-head);font-weight:900;font-size:1.15rem;text-decoration:none;letter-spacing:-.02em;margin-right:auto;min-height:44px;display:flex;align-items:center}
-.nav ol{list-style:none;margin:0;padding:0;display:flex;gap:4px}
-.nav a{display:flex;align-items:center;gap:8px;min-height:44px;padding:0 12px;border-radius:10px;text-decoration:none;font-weight:700;font-size:.92rem;color:var(--muted);transition:color .2s,background .2s}
-.nav a span{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;border:2px solid var(--line);font-family:var(--font-head);font-size:.7rem;color:var(--fg)}
+/* ============ VIRŠUTINĖ JUOSTA ============ */
+.topbar{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex;align-items:center;gap:16px;min-height:var(--header-h)}
+.brand{font-family:var(--font-head);font-weight:900;font-size:1.3rem;letter-spacing:-.05em;text-decoration:none;margin-right:auto;min-height:44px;display:flex;align-items:center}
+.nav ol{list-style:none;margin:0;padding:0;display:flex;gap:2px}
+.nav a{display:flex;align-items:center;gap:8px;min-height:44px;padding:0 12px;border-radius:999px;text-decoration:none;font-weight:600;font-size:.92rem;color:var(--muted);transition:color .2s,background .2s}
+.nav a span{font-size:.7rem;font-weight:800;letter-spacing:.1em;display:inline-grid;place-items:center;min-width:26px;height:26px;border-radius:999px;border:1.5px solid var(--line);color:var(--fg)}
 .nav a:hover,.nav a[aria-current="true"]{color:var(--fg);background:var(--surface)}
-.nav a[aria-current="true"] span{background:var(--pink);border-color:var(--pink);color:var(--on-accent)}
+.nav a[aria-current="true"] span{background:var(--fg);border-color:var(--fg);color:var(--bg)}
 .tools{display:flex;gap:8px}
 .menu-btn{display:none}
-.badge{position:absolute;top:-8px;right:-8px;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:var(--pink);color:var(--on-accent);font:800 .75rem/22px var(--font-body);text-align:center}
+.badge{position:absolute;top:-7px;right:-7px;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:var(--fg);color:var(--bg);font:800 .75rem/22px var(--font-body);text-align:center}
 .badge[data-n="0"]{display:none}
 .badge.bump{animation:bump .5s var(--ease-pop)}
 @keyframes bump{0%{transform:scale(1)}35%{transform:scale(1.6) rotate(-8deg)}100%{transform:scale(1)}}
@@ -112,286 +145,370 @@ p{margin:0}
 [data-theme="light"] .theme-btn .sun{display:none}
 [data-theme="light"] .theme-btn .moon{display:block}
 
-/* ============ Sekcijos ============ */
-section{padding:clamp(64px,9vw,120px) 0;position:relative}
-.back{display:inline-flex;align-items:center;min-height:44px;margin-bottom:12px;color:var(--pink);font-weight:800;text-decoration:none;font-size:.9rem}
-.back:hover{text-decoration:underline}
-.kicker{font-family:var(--font-head);font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
-.muted{color:var(--muted)}
+/* ============ SKYRIAI ============ */
+.sec{padding:clamp(96px,12vw,170px) 0 clamp(72px,9vw,130px)}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:clamp(36px,5vw,64px)}
+.sec-head .display{max-width:11ch}
 
-/* ============ HERO ============ */
-.hero{padding-top:clamp(28px,5vw,64px)}
-.hero .wrap{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(24px,4vw,56px);align-items:center}
-.title-stack{display:flex;flex-direction:column;align-items:flex-start;gap:.28em;font-family:var(--font-cap);font-size:clamp(1.9rem,4vw,3.7rem);margin:8px 0 28px}
-.title-stack .cap{white-space:nowrap}
-.title-stack .cap:nth-child(2){margin-left:.9em}
-.title-stack .cap:nth-child(3){margin-left:1.8em}
-.js .title-stack .cap{animation:capIn .8s var(--ease-pop) both}
-.title-stack .cap:nth-child(2){animation-delay:.12s}
-.title-stack .cap:nth-child(3){animation-delay:.24s}
-@keyframes capIn{from{opacity:0;transform:translateY(24px) scale(.6) rotate(calc(var(--tilt) * -4))}to{opacity:1;transform:rotate(var(--tilt))}}
-.lead{font-size:clamp(1.05rem,1.6vw,1.25rem);max-width:34ch;margin-bottom:18px}
-.offer{font-family:var(--font-head);font-weight:700;font-size:1rem;margin-bottom:22px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}
-.offer .price{font-size:1.5rem}
-.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px}
+/* ============ 1. HERO ============ */
+.hero{padding:clamp(70px,8vw,100px) 0 clamp(56px,7vw,96px);overflow:hidden}
+.hero-visual{position:relative;padding:0 calc(var(--gutter) * .5)}
+.mega{display:block;text-align:center;font-family:var(--font-head);font-weight:900;font-size:17vw;line-height:.82;letter-spacing:-.065em;white-space:nowrap;margin:0;color:var(--fg)}
+.mega span{display:inline-block}
+.hero .stage{width:min(640px,94vw);margin:-8.5vw auto 0;z-index:4}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,5vw,72px);align-items:start;margin-top:clamp(24px,4vw,48px)}
+.hero-copy .display{margin-bottom:24px;font-size:clamp(2.4rem,5vw,4.8rem)}
+.hero-copy .display .accent{display:block}
+.lead{font-size:clamp(1.08rem,1.5vw,1.28rem);max-width:36ch;margin-bottom:18px}
+.offer{font-family:var(--font-head);font-weight:800;font-size:1.05rem;margin-bottom:26px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}
+.offer .price{font-size:1.8rem;letter-spacing:-.03em}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:18px}
 .trust{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:.95rem}
-.trust svg{width:20px;height:20px;color:var(--pink);flex:none}
+.trust svg{width:20px;height:20px;flex:none}
 
-/* ============ 3. KONFIGŪRATORIUS ============ */
-.config{background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:clamp(14px,2vw,22px)}
-.config-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+/* ============ KONFIGŪRATORIUS ============ */
+.config{border:1px solid var(--line);border-radius:28px;padding:clamp(16px,2.4vw,26px);background:var(--surface)}
+.config-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
 .seg{display:inline-flex;padding:4px;border-radius:999px;border:2px solid var(--line);gap:2px}
-.seg button{min-height:44px;min-width:52px;padding:0 14px;border:0;border-radius:999px;background:transparent;font-weight:800;color:var(--muted)}
-.seg button[aria-pressed="true"]{background:var(--pink);color:var(--on-accent)}
-.seg button:focus-visible{outline-color:var(--fg)}
-.stage{position:relative;padding:8% 13% 6%;touch-action:pan-y;user-select:none;-webkit-user-select:none}
-.shirt-wrap{position:relative;width:100%;container-type:inline-size;margin:0 auto}
-.shirt{width:100%;height:auto;filter:drop-shadow(0 18px 30px rgba(0,0,0,.35))}
-.shirt .body{fill:var(--shirt);stroke:var(--shirt-line);stroke-width:2}
-.shirt .seam{fill:none;stroke:var(--shirt-line);stroke-width:2}
-.shirt .fold{fill:none;stroke:rgba(11,11,12,.06);stroke-width:6;stroke-linecap:round}
-.print{position:absolute;left:50%;top:27%;transform:translateX(-50%);display:flex;align-items:baseline;justify-content:center;white-space:nowrap;font-size:7.2cqw;line-height:1}
+.seg button{min-height:48px;min-width:56px;padding:0 16px;border:0;border-radius:999px;background:transparent;font-family:var(--font-head);font-weight:800;font-size:19px;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--red);color:var(--black)}
+.stage{position:relative;padding:7% 12% 9%;touch-action:pan-y;user-select:none;-webkit-user-select:none;perspective:1100px}
+.shirt-wrap{position:relative;width:100%;container-type:inline-size;margin:0 auto;transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transform-style:preserve-3d;transition:transform .5s var(--ease)}
+.shirt{width:100%;height:auto;overflow:visible}
+.shirt .body{fill:var(--tee-fill,url(#glassFill));stroke:var(--glass-edge);stroke-width:2}
+.shirt .seam{fill:none;stroke:color-mix(in srgb,var(--black) 16%,transparent);stroke-width:2}
+.shirt .shine{fill:url(#shineGrad);transform-box:fill-box;animation:shine 7s var(--ease) infinite}
+.shirt .shadow{fill:var(--black);opacity:.45;filter:blur(14px);transform-box:fill-box;transform-origin:center;animation:shadowPulse 5s ease-in-out infinite}
+[data-theme="light"] .shirt .shadow{opacity:.3}
+@keyframes shine{0%,55%{transform:translateX(-160px) skewX(-18deg)}85%,100%{transform:translateX(560px) skewX(-18deg)}}
+@keyframes shadowPulse{0%,100%{transform:scaleX(1);opacity:.45}50%{transform:scaleX(.86);opacity:.3}}
+.print{position:absolute;left:50%;top:27%;transform:translateX(-50%) translateZ(18px);display:flex;align-items:baseline;justify-content:center;white-space:nowrap;font-size:7.2cqw;line-height:1}
 .ltr{font-size:inherit;font-size-adjust:.53;line-height:1.15;border:0;background:transparent;padding:0 .015em;margin:0;cursor:pointer;border-radius:6px;transition:transform .15s;min-width:0}
 .print .ltr:hover{transform:translateY(-4%) scale(1.08)}
-.print .ltr:focus-visible{outline:2px solid var(--pink);outline-offset:1px}
+.print .ltr:focus-visible{outline:2px solid var(--black);outline-offset:1px}
 .ltr.pop{animation:pop .5s var(--ease-pop)}
 @keyframes pop{0%{transform:scale(1)}30%{transform:scale(1.55) rotate(-10deg)}60%{transform:scale(.9) rotate(4deg)}100%{transform:scale(1)}}
-.hint{font-size:.88rem;color:var(--muted);text-align:center;margin:2px 0 12px}
+.hint{font-size:.88rem;color:var(--muted);margin:0 0 12px}
 
 /* Anotacijos */
-.anno-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
-.anno-lines line{stroke:var(--fg);stroke-width:1.5;opacity:.85}
+.anno-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:2}
+.anno-lines line{stroke:var(--fg);stroke-width:1.5}
 .anno-lines circle{fill:var(--fg);stroke:var(--bg);stroke-width:2}
-.anno{position:absolute;z-index:3;border:0;font-size:clamp(.72rem,1.25vw,.9rem);cursor:grab;touch-action:none;white-space:nowrap;min-height:34px;transition:box-shadow .15s}
+.anno{position:absolute;z-index:3;border:0;border-radius:999px;background:var(--fg);color:var(--bg);font-family:var(--font-body);font-weight:800;font-size:clamp(.66rem,1.1vw,.8rem);letter-spacing:.12em;text-transform:uppercase;padding:8px 14px;cursor:grab;touch-action:none;white-space:nowrap;min-height:34px;box-shadow:0 12px 26px -12px var(--glass-shadow);transition:box-shadow .15s}
 .anno::after{content:"";position:absolute;inset:-6px}
-.anno:hover{box-shadow:var(--cap-shadow),0 0 0 3px var(--pink)}
-.anno.dragging{cursor:grabbing;box-shadow:10px 10px 0 rgba(255,43,166,.5);z-index:5}
-.anno:focus-visible{outline:3px solid var(--pink);outline-offset:3px}
+.anno:hover{box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--fg)}
+.anno.dragging{cursor:grabbing;box-shadow:0 22px 40px -14px var(--glass-shadow)}
 
 /* Raidžių juosta */
-.strip{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:6px;margin-bottom:16px}
-.chip{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:64px;min-width:44px;padding:6px 2px;border-radius:12px;border:2px solid var(--line);background:var(--surface);transition:border-color .2s,transform .15s}
-.chip:hover{border-color:var(--pink);transform:translateY(-2px)}
+.strip{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:6px;margin-bottom:18px}
+.chip{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:66px;min-width:44px;padding:6px 2px;border-radius:14px;border:1.5px solid var(--line);background:color-mix(in srgb,var(--blue) 88%,transparent);transition:border-color .2s,transform .15s}
+.chip:hover{border-color:var(--fg);transform:translateY(-2px)}
 .chip .ltr{font-size:1.7rem;pointer-events:none;padding:0;line-height:1.1}
-.chip small{font-size:.56rem;line-height:1.1;color:var(--muted);text-align:center;font-weight:700;max-width:100%;overflow:hidden;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;min-height:2.2em;padding:0 2px}
-.sizes-row{margin-bottom:16px;border-radius:14px;transition:box-shadow .3s}
+.chip small{font-size:.56rem;line-height:1.1;color:var(--black);opacity:.75;text-align:center;font-weight:700;max-width:100%;overflow:hidden;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;min-height:2.2em;padding:0 2px}
+.sizes-row{margin-bottom:18px;border-radius:16px;transition:box-shadow .3s}
 .sizes-row.need{animation:need .9s ease}
-@keyframes need{0%,100%{box-shadow:0 0 0 0 rgba(255,43,166,0)}20%,60%{box-shadow:0 0 0 4px var(--pink)}}
-.row-label{display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:.9rem;margin-bottom:4px}
-.row-label .linkish{font-size:.85rem}
+@keyframes need{0%,100%{box-shadow:0 0 0 0 transparent}20%,60%{box-shadow:0 0 0 4px var(--fg)}}
+.row-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
 .sizes{display:flex;flex-wrap:wrap;gap:8px}
-.size{min-width:52px;min-height:48px;padding:0 12px;border-radius:12px;border:2px solid var(--line);background:transparent;font-family:var(--font-head);font-weight:700;font-size:.9rem;transition:border-color .2s,background .2s}
-.size:hover{border-color:var(--pink)}
-.size[aria-pressed="true"]{background:var(--pink);border-color:var(--pink);color:var(--on-accent)}
-.size:focus-visible{outline-color:var(--fg)}
-.config-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-top:14px;border-top:1px solid var(--line)}
-.config-foot .price{font-family:var(--font-head);font-weight:700;font-size:1.35rem}
+.size{min-width:56px;min-height:48px;padding:0 12px;border-radius:999px;border:2px solid var(--line);background:var(--bg);font-family:var(--font-head);font-weight:800;font-size:19px;transition:border-color .2s,background .2s}
+.size:hover{border-color:var(--fg)}
+.size[aria-pressed="true"]{background:var(--red);border-color:var(--red);color:var(--black)}
+.config-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-top:16px;border-top:1px solid var(--line)}
+.config-foot .price{font-family:var(--font-head);font-weight:900;font-size:1.6rem;letter-spacing:-.03em}
 .config-foot .sel{font-size:.85rem;color:var(--muted)}
 
-/* ============ Judanti juosta ============ */
-.marquee{overflow:hidden;padding:26px 0;border-block:1px solid var(--line)}
-.marquee-track{display:flex;width:max-content;animation:marq 38s linear infinite}
+/* ============ JUDANČIOS JUOSTOS ============ */
+.marquee{overflow:hidden;padding:clamp(18px,3vw,40px) 0}
+.marquee-track{display:flex;width:max-content;animation:marq 40s linear infinite}
 .marquee:hover .marquee-track{animation-play-state:paused}
-.marquee-group{display:flex;align-items:center;gap:28px;padding-right:28px}
-.marquee .cap{font-size:clamp(1.05rem,2vw,1.5rem);white-space:nowrap}
-.marquee .label{font-family:var(--font-head);font-weight:900;font-size:clamp(1rem,1.8vw,1.3rem);white-space:nowrap}
+.marquee-group{display:flex;align-items:center;gap:.35em;padding-right:.35em}
+.marquee.big .marquee-group{font-family:var(--font-head);font-weight:900;font-size:clamp(64px,12vw,190px);line-height:1;letter-spacing:-.05em;white-space:nowrap}
+.outline{color:transparent;-webkit-text-stroke:2px var(--fg)}
+.marquee .x{color:var(--red);font-weight:900}
+.marquee.wear{border-block:1px solid var(--line)}
+.marquee.wear .marquee-group{gap:18px;padding-right:18px}
+.wear-item{font-family:var(--font-head);font-weight:800;font-size:clamp(1.2rem,2.4vw,2rem);letter-spacing:-.03em;white-space:nowrap;border:2px solid var(--fg);border-radius:999px;padding:.25em .8em}
+.wear-label{font-family:var(--font-serif);font-style:italic;font-size:clamp(1.6rem,3.2vw,2.8rem);white-space:nowrap}
 @keyframes marq{to{transform:translateX(-50%)}}
 
-/* ============ 2. KAIP VEIKIA ============ */
-.benefits{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:clamp(48px,6vw,80px)}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px;display:flex;flex-direction:column;gap:10px}
-.card .tag{align-self:flex-start;font-size:.72rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--line);border-radius:999px;padding:4px 10px;color:var(--muted)}
-.card h3{font-size:1.12rem}
-.card p{color:var(--muted);font-size:.95rem}
-.demo{margin-top:auto;min-height:118px;border-radius:12px;background:var(--surface-2);display:grid;place-items:center;padding:12px;text-align:center}
-.demo-letter{font-size:3.6rem;border:0;background:transparent;line-height:1.1;color:var(--fg);min-width:88px;min-height:88px;border-radius:12px}
-.demo-letter + small,.demo small{display:block;font-size:.75rem;color:var(--muted);font-weight:700}
-.demo-word{display:flex;align-items:baseline;font-size:1.55rem;line-height:1.2}
-.demo-word .ltr{cursor:default;padding:0}
-.demo-num{font-family:var(--font-head);font-weight:700;font-size:1.15rem;margin-top:6px}
-.demo .sizes{justify-content:center}
-.demo .size{min-width:44px;min-height:44px;padding:0 8px;font-size:.78rem}
-.days{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;max-width:220px}
-.days i{width:12px;height:12px;border-radius:3px;background:var(--line)}
-.in-view .days i{animation:day 4.5s steps(1) infinite;animation-delay:calc(var(--d) * 120ms)}
-@keyframes day{0%{background:var(--line)}5%,80%{background:var(--pink)}100%{background:var(--line)}}
+/* ============ STIKLINIAI OBJEKTAI ============ */
+.glass{position:relative;border-radius:30px;background:linear-gradient(140deg,var(--glass-hi),var(--glass-lo) 58%,color-mix(in srgb,var(--blue) 42%,transparent));border:1px solid var(--glass-edge);box-shadow:0 46px 80px -34px var(--glass-shadow),inset 0 1px 0 var(--glass-hi),inset 0 -24px 40px -26px rgba(14,11,12,.35);backdrop-filter:blur(10px) saturate(1.15);-webkit-backdrop-filter:blur(10px) saturate(1.15);overflow:hidden}
+.glass::before{content:"";position:absolute;inset:-30%;background:linear-gradient(115deg,transparent 40%,color-mix(in srgb,var(--blue) 80%,transparent) 48%,transparent 57%);animation:sweep 6.5s var(--ease) infinite;pointer-events:none}
+@keyframes sweep{0%,50%{transform:translateX(-60%)}85%,100%{transform:translateX(60%)}}
+.glass-drag{cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.glass-drag.grabbing{cursor:grabbing}
+.float{animation:float 6s ease-in-out infinite}
+.float.d2{animation-delay:-2s}.float.d3{animation-delay:-4s}
+@keyframes float{0%,100%{transform:translateY(0) rotate(var(--rot,0deg))}50%{transform:translateY(-16px) rotate(calc(var(--rot,0deg) * -1))}}
+.tee{width:100%;height:auto;overflow:visible}
+.tee .body{fill:var(--tee-fill,url(#glassFill));stroke:var(--glass-edge);stroke-width:3}
+.tee .shine{fill:url(#shineGrad);transform-box:fill-box;animation:shine 7s var(--ease) infinite}
 
-.order{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:clamp(20px,4vw,48px);align-items:start}
-.order h3{font-size:1.5rem;margin-bottom:6px}
-.steps{list-style:none;margin:20px 0 0;padding:0;display:grid;gap:10px;counter-reset:st}
-.steps li{display:flex;gap:14px;align-items:center;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--surface);transition:border-color .3s,background .3s}
-.steps .num{flex:none;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;border:2px solid var(--line);font-family:var(--font-head);font-weight:700;font-size:.85rem;transition:background .3s,border-color .3s}
-.steps .num svg{width:20px;height:20px;display:none;color:var(--on-accent)}
-.steps li.done{border-color:var(--pink)}
-.steps li.done .num{background:var(--pink);border-color:var(--pink)}
+/* ============ 3. TEIGINYS ============ */
+.statement{padding:clamp(110px,13vw,190px) 0}
+.statement-grid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:clamp(24px,5vw,80px);align-items:center}
+.statement .display .accent{display:inline}
+.statement-obj{width:min(320px,70vw);justify-self:center;--rot:-6deg}
+
+/* ============ 2. KAIP VEIKIA: SUKRAUTOS PANELĖS ============ */
+.sec-intro{padding:clamp(96px,12vw,160px) 0 clamp(40px,5vw,72px)}
+.panel{position:sticky;top:var(--stick-top,var(--header-h));min-height:calc(100vh - var(--header-h));min-height:calc(100svh - var(--header-h));display:flex;align-items:center;padding:clamp(48px,6vw,80px) 0;border-top:1px solid var(--line);box-shadow:0 -30px 60px -40px rgba(14,11,12,.6)}
+.panel > .wrap{width:100%}
+.panel-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,80px);align-items:center}
+.panel h3{font-size:clamp(2.4rem,6vw,5.6rem);line-height:.9;letter-spacing:-.05em;margin:14px 0 18px}
+.panel p.copy{font-size:clamp(1.05rem,1.4vw,1.22rem);max-width:40ch;color:var(--muted)}
+.panel-visual{position:relative;display:grid;place-items:center;min-height:clamp(260px,34vw,460px)}
+.panel-visual .giant-num{position:absolute;right:-2%;top:50%;transform:translateY(-58%);z-index:0}
+.panel-visual > :not(.giant-num){position:relative;z-index:1}
+.glass-tile{width:clamp(180px,22vw,280px);aspect-ratio:1;display:grid;place-items:center;align-content:center;gap:4px;--rot:-5deg}
+.demo-letter{font-size:clamp(5rem,9vw,8rem);border:0;background:transparent;line-height:1.05;color:var(--black);min-width:88px;min-height:88px;border-radius:18px;position:relative;z-index:1}
+.glass-tile small{position:relative;z-index:1;font-size:.72rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--black)}
+.duo{position:relative;width:clamp(240px,30vw,420px);aspect-ratio:1.1}
+.duo .tee-a{position:absolute;left:0;top:8%;width:62%;--rot:-8deg}
+.duo .tee-b{position:absolute;right:0;top:0;width:70%;--rot:6deg}
+.duo .tee-b .demo-word{position:absolute;left:50%;top:30%;transform:translateX(-50%);display:flex;align-items:baseline;font-size:clamp(.9rem,1.5vw,1.3rem);white-space:nowrap}
+.demo-word .ltr{cursor:default;padding:0}
+.combos{margin-top:18px;font-family:var(--font-head);font-weight:900;font-size:clamp(1.6rem,3vw,2.6rem);letter-spacing:-.04em;line-height:1}
+.combos small{display:block;font-family:var(--font-body);font-size:.74rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+.size-tag{width:clamp(170px,19vw,240px);aspect-ratio:.78;border-radius:26px 26px 34px 34px;display:grid;place-items:center;--rot:7deg}
+.size-tag::after{content:"";position:absolute;top:12%;left:50%;width:22px;height:22px;margin-left:-11px;border-radius:50%;background:var(--bg);box-shadow:inset 0 2px 6px rgba(14,11,12,.4)}
+.size-tag b{position:relative;z-index:1;font-family:var(--font-head);font-weight:900;font-size:clamp(3.6rem,7vw,6rem);letter-spacing:-.06em;color:var(--black);margin-top:18%}
+.panel .demo{margin-top:26px}
+.parcel{width:clamp(200px,24vw,300px);aspect-ratio:1.15;border-radius:22px;--rot:-4deg}
+.parcel::after{content:"";position:absolute;left:0;right:0;top:42%;height:16%;background:color-mix(in srgb,var(--black) 22%,transparent)}
+.parcel .seal{position:absolute;z-index:2;right:10%;bottom:10%;width:64px;height:64px;border-radius:50%;background:var(--red);color:var(--black);display:grid;place-items:center;transform:scale(0);transition:transform .5s var(--ease-pop)}
+.parcel .seal svg{width:32px;height:32px}
+.parcel.sealed .seal{transform:scale(1)}
+@media (min-width:901px){.panel.p4 .panel-grid{grid-template-columns:minmax(0,1.7fr) minmax(0,.75fr)}}
+.progress-card .btn{white-space:nowrap;padding:0 18px}
+.order-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:clamp(18px,3vw,36px);margin-top:26px}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.steps li{display:flex;gap:14px;align-items:center;padding:12px 14px;border:1px solid var(--line);border-radius:18px;background:var(--surface);transition:border-color .3s}
+.steps .num{flex:none;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;border:2px solid var(--line);font-family:var(--font-head);font-weight:800;font-size:.9rem;transition:background .3s,border-color .3s}
+.steps .num svg{width:20px;height:20px;display:none;color:var(--black)}
+.steps li.done{border-color:var(--fg)}
+.steps li.done .num{background:var(--red);border-color:var(--red)}
 .steps li.done .num b{display:none}
 .steps li.done .num svg{display:block}
 .steps li.just .num{animation:pop .6s var(--ease-pop)}
-.steps li.done .st-title{text-decoration:line-through;text-decoration-color:var(--pink);text-decoration-thickness:2px}
+.steps li.done .st-title{text-decoration:line-through;text-decoration-thickness:2px}
 .st-title{font-weight:800}
 .steps small{display:block;color:var(--muted);font-size:.85rem}
-.progress-card{position:sticky;top:96px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px}
-.progress{height:14px;border-radius:999px;background:var(--surface-2);overflow:hidden;margin:14px 0 10px}
-.progress .bar{height:100%;width:0;background:var(--pink);border-radius:inherit;transition:width .6s var(--ease-pop)}
-.progress-num{font-family:var(--font-head);font-weight:900;font-size:2.4rem;line-height:1}
+.progress-card{border:1px solid var(--line);border-radius:22px;padding:18px;background:var(--surface)}
+.progress{height:14px;border-radius:999px;background:var(--surface-2);overflow:hidden;margin:12px 0 10px}
+.progress .bar{height:100%;width:0;background:var(--red);border-radius:inherit;transition:width .6s var(--ease-pop)}
+.progress-num{font-family:var(--font-head);font-weight:900;font-size:2.6rem;letter-spacing:-.05em;line-height:1}
 .progress-card p{color:var(--muted);font-size:.92rem;margin-bottom:14px}
+.returns{margin-top:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.days{display:flex;flex-wrap:wrap;gap:4px;max-width:230px}
+.days i{width:12px;height:12px;border-radius:3px;background:var(--line)}
+.in-view .days i{animation:day 4.5s steps(1) infinite;animation-delay:calc(var(--d) * 120ms)}
+@keyframes day{0%{background:var(--line)}5%,80%{background:var(--red)}100%{background:var(--line)}}
+#daysLabel{font-size:.85rem;color:var(--muted);font-weight:700}
 
 /* ============ 3. KAINA ============ */
-.calc{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:clamp(20px,4vw,48px);align-items:stretch}
-.calc-in,.calc-out{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:clamp(18px,3vw,30px)}
-.calc-in h3{font-size:1.4rem;margin-bottom:6px}
-.qty-big{font-family:var(--font-head);font-weight:900;font-size:clamp(3rem,8vw,5.5rem);line-height:1;margin:18px 0 6px}
-.qty-big small{font-size:.3em;font-weight:700;color:var(--muted);margin-left:.3em}
-.range{width:100%;height:44px;accent-color:var(--pink);cursor:pointer;margin:8px 0}
+.calc{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:clamp(20px,4vw,56px);align-items:stretch}
+.calc-in,.calc-out{border:1px solid var(--line);border-radius:28px;padding:clamp(20px,3vw,34px);background:var(--surface)}
+.calc-in h3{font-size:clamp(1.6rem,2.6vw,2.2rem);margin-bottom:8px}
+.qty-big{font-family:var(--font-head);font-weight:900;font-size:clamp(4rem,11vw,8rem);line-height:.85;letter-spacing:-.07em;margin:22px 0 8px}
+.qty-big small{font-family:var(--font-serif);font-style:italic;font-weight:400;font-size:.32em;letter-spacing:0;color:var(--muted);margin-left:.2em}
+.range{-webkit-appearance:none;appearance:none;width:100%;height:44px;background:transparent;cursor:pointer;margin:8px 0}
+.range::-webkit-slider-runnable-track{height:10px;border-radius:999px;background:linear-gradient(90deg,var(--red) var(--fill,0%),var(--surface-2) var(--fill,0%))}
+.range::-moz-range-track{height:10px;border-radius:999px;background:var(--surface-2)}
+.range::-moz-range-progress{height:10px;border-radius:999px;background:var(--red)}
+.range::-webkit-slider-thumb{-webkit-appearance:none;width:30px;height:30px;margin-top:-10px;border-radius:50%;background:var(--red);border:4px solid var(--bg);box-shadow:0 0 0 2px var(--red)}
+.range::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:var(--red);border:4px solid var(--bg)}
 .range-scale{display:flex;justify-content:space-between;color:var(--muted);font-size:.8rem;font-weight:700}
 .tiers{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
-.tier{border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:.85rem;font-weight:700;color:var(--muted);transition:all .2s}
-.tier.on{border-color:var(--pink);color:var(--fg);box-shadow:inset 0 0 0 1px var(--pink)}
-.calc-out dl{margin:0 0 20px;display:grid;gap:0}
-.calc-out .line{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}
-.calc-out dt{color:var(--muted);font-weight:700}
-.calc-out dd{margin:0;font-family:var(--font-head);font-weight:700;text-align:right}
-.calc-out .total dd{font-size:clamp(1.6rem,3.5vw,2.3rem)}
-.calc-out .save{color:var(--fg)}
+.tier{border:1.5px solid var(--line);border-radius:999px;padding:6px 14px;font-size:.88rem;font-weight:700;color:var(--muted);transition:all .2s}
+.tier.on{border-color:var(--fg);color:var(--bg);background:var(--fg)}
+.calc-out dl{margin:0 0 20px}
+.calc-out .line{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:14px 0;border-bottom:1px solid var(--line)}
+.calc-out dt{color:var(--muted);font-weight:600}
+.calc-out dd{margin:0;font-family:var(--font-head);font-weight:800;text-align:right}
+.calc-out .total dd{font-size:clamp(2rem,4vw,3rem);font-weight:900;letter-spacing:-.05em}
+.calc-note{font-size:.85rem;margin-top:12px;color:var(--muted)}
+.sec-num{position:absolute;right:var(--gutter);top:clamp(40px,6vw,80px);z-index:1!important;opacity:1}
 
 /* ============ 4. ISTORIJA ============ */
-.logo-big{display:flex;flex-wrap:nowrap;white-space:nowrap;align-items:baseline;justify-content:center;container-type:inline-size;line-height:1;margin:0 0 clamp(36px,5vw,64px);padding:clamp(20px,4vw,40px) 10px;border-radius:24px;background:var(--white);overflow:hidden}
-[data-theme="light"] .logo-big{box-shadow:inset 0 0 0 2px var(--line)}
+.logo-big{display:flex;flex-wrap:nowrap;white-space:nowrap;align-items:baseline;justify-content:center;container-type:inline-size;line-height:1;margin:0 0 clamp(40px,6vw,72px);padding:clamp(24px,4vw,44px) 10px;border-radius:30px;background:linear-gradient(140deg,color-mix(in srgb,var(--blue) 96%,transparent),color-mix(in srgb,var(--blue) 80%,transparent));border:1px solid var(--glass-edge);box-shadow:0 46px 80px -40px var(--glass-shadow)}
 .logo-big .ltr{cursor:default;padding:0 .01em;font-size:11cqw}
-.story{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(20px,4vw,56px);margin-bottom:clamp(40px,6vw,72px)}
+.story{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:clamp(24px,5vw,72px);margin-bottom:clamp(48px,7vw,96px)}
 .story-text p{margin-bottom:14px;font-size:1.06rem}
-.story-text .big{font-family:var(--font-head);font-weight:700;font-size:clamp(1.25rem,2.2vw,1.6rem);line-height:1.3}
-.timeline{position:relative}
-.tl-btns{display:flex;gap:8px;flex-wrap:wrap;position:relative;margin-bottom:14px}
-.tl-btn{min-height:48px;padding:0 18px;border-radius:999px;border:2px solid var(--line);background:var(--bg);font-family:var(--font-head);font-weight:700;font-size:.85rem;transition:all .2s}
-.tl-btn:hover{border-color:var(--pink)}
-.tl-btn[aria-selected="true"]{background:var(--pink);border-color:var(--pink);color:var(--on-accent)}
-.tl-btn:focus-visible{outline-color:var(--fg)}
-.tl-panel{border:1px solid var(--line);border-radius:var(--radius);padding:20px;background:var(--surface);min-height:150px}
-.tl-panel h3{font-size:1.15rem;margin-bottom:6px}
+.story-text .big{font-family:var(--font-head);font-weight:800;font-size:clamp(1.5rem,2.8vw,2.3rem);line-height:1.05;letter-spacing:-.03em}
+.story-text .big em{font-family:var(--font-serif);font-weight:400}
+.work-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}
+.tl-btns{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:14px}
+.tl-btn{display:flex;flex-direction:column;align-items:flex-start;gap:8px;text-align:left;min-height:150px;padding:18px;border-radius:22px;border:1.5px solid var(--line);background:var(--surface);transition:transform .25s var(--ease),border-color .2s,background .2s}
+.tl-btn:hover{transform:translateY(-4px);border-color:var(--fg)}
+.tl-btn .tl-code{font-family:var(--font-head);font-weight:900;font-size:2.6rem;letter-spacing:-.06em;line-height:.9}
+.tl-btn .tl-title{font-weight:800;font-size:1.05rem}
+.tl-btn .tl-date{font-size:.8rem;color:var(--muted);font-weight:700;margin-top:auto}
+.tl-btn[aria-selected="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.tl-btn[aria-selected="true"] .tl-date{color:inherit;opacity:.8}
+.tl-panel{border:1px solid var(--line);border-radius:22px;padding:20px;background:var(--surface);min-height:130px}
+.tl-panel h3{font-size:1.4rem;margin-bottom:6px;letter-spacing:-.03em}
 .tl-panel .date{color:var(--muted);font-weight:700;font-size:.9rem;margin-bottom:10px}
-.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:clamp(40px,6vw,72px)}
-.stat{border-top:3px solid var(--fg);padding-top:14px}
-.stat .n{font-family:var(--font-head);font-weight:900;font-size:clamp(1.6rem,3.4vw,2.6rem);line-height:1.1;font-variant-numeric:tabular-nums;word-break:break-word}
-.stat p{color:var(--muted);font-weight:700;font-size:.92rem;margin-top:6px}
-.quote{display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(16px,3vw,40px);align-items:center;border:1px solid var(--line);border-radius:24px;padding:clamp(20px,4vw,40px);background:var(--surface)}
-.quote .fig{font-family:var(--font-head);font-weight:900;font-size:clamp(2.6rem,7vw,5rem);line-height:1}
-.quote .fig small{display:block;font-size:.85rem;font-family:var(--font-body);font-weight:700;color:var(--muted);margin-top:6px;max-width:16ch}
-.quote blockquote{margin:0;font-size:clamp(1.1rem,2vw,1.4rem);font-weight:500}
-.quote cite{display:block;margin-top:10px;font-style:normal;font-weight:800;color:var(--muted);font-size:.95rem}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;margin-bottom:clamp(48px,7vw,96px)}
+.stat{border-top:2px solid var(--fg);padding-top:16px}
+.stat .n{font-family:var(--font-head);font-weight:900;font-size:clamp(2rem,4.4vw,3.8rem);line-height:1;letter-spacing:-.05em;font-variant-numeric:tabular-nums;word-break:break-word}
+.stat p{color:var(--muted);font-weight:600;font-size:.92rem;margin-top:8px}
+.stat .n .ph{font-size:.42em;-webkit-text-stroke:0}
+.stat{background:linear-gradient(var(--bg),var(--bg)) padding-box}
+.quote{display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(16px,3vw,48px);align-items:center;border-radius:30px;padding:clamp(22px,4vw,44px);border:1px solid var(--line);background:var(--surface);margin:0}
+.quote .fig{font-family:var(--font-head);font-weight:900;font-size:clamp(3rem,8vw,6rem);line-height:.9;letter-spacing:-.06em}
+.quote .fig small{display:block;font-size:.85rem;font-family:var(--font-body);font-weight:700;letter-spacing:0;color:var(--muted);margin-top:8px;max-width:18ch}
+.quote blockquote{margin:0;font-family:var(--font-serif);font-style:italic;font-size:clamp(1.5rem,2.8vw,2.4rem);line-height:1.15}
+.quote cite{display:block;margin-top:12px;font-style:normal;font-family:var(--font-body);font-weight:700;color:var(--muted);font-size:.95rem}
 
 /* ============ 5. PABAIGA ============ */
-.final{text-align:center;padding:clamp(20px,4vw,40px) 0 clamp(56px,7vw,96px)}
-.final .cap{font-size:clamp(2rem,6vw,4.6rem);margin:0 auto}
-.final .cap + .cap{display:table;margin-top:.2em}
-.js .final .cap{opacity:0}
-.final.in .cap{animation:capIn .8s var(--ease-pop) both}
-.final.in .cap + .cap{animation-delay:.15s}
-.final .actions{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:clamp(28px,4vw,44px)}
-.faq-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:clamp(20px,4vw,56px);align-items:start}
-.faq h3,.contacts h3{font-size:1.3rem;margin-bottom:14px}
+.final{padding:clamp(110px,13vw,190px) 0 clamp(80px,10vw,140px);text-align:center}
+.final .display{font-size:clamp(3rem,10vw,10rem)}
+.final .display .accent{display:block}
+.final .actions{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:clamp(32px,5vw,56px)}
+.faq-zone{padding:clamp(80px,10vw,140px) 0}
+.faq-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:clamp(24px,5vw,72px);align-items:start}
+.faq h3,.contacts h3{font-size:clamp(1.8rem,3vw,2.6rem);margin-bottom:18px}
 details{border-bottom:1px solid var(--line)}
-summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:60px;padding:10px 4px;font-weight:800;font-size:1.04rem}
+summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:64px;padding:10px 2px;font-family:var(--font-head);font-weight:800;font-size:clamp(1.05rem,1.6vw,1.3rem);letter-spacing:-.02em}
 summary::-webkit-details-marker{display:none}
-summary::after{content:"+";flex:none;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--pink);color:var(--on-accent);font:700 1.2rem/1 var(--font-head);transition:transform .3s}
+summary::after{content:"+";flex:none;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--red);color:var(--black);font:800 22px/1 var(--font-head);transition:transform .3s}
 details[open] summary::after{transform:rotate(45deg)}
-details .ans{padding:0 4px 18px;color:var(--muted)}
+details .ans{padding:0 2px 20px;color:var(--muted)}
 details .ans p+p{margin-top:8px}
+details a{color:var(--fg);font-weight:700}
 .size-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:.9rem}
 .size-table th,.size-table td{border:1px solid var(--line);padding:8px;text-align:center}
-.contacts{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px}
+.contacts{border:1px solid var(--line);border-radius:28px;padding:24px;background:var(--surface)}
 .contacts dl{margin:0}
-.contacts dt{font-size:.75rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:14px}
+.contacts dt{font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:16px}
 .contacts dd{margin:4px 0 0;font-weight:700}
-.contacts a{color:var(--pink);font-weight:800;text-underline-offset:3px}
+.contacts a{color:var(--fg);font-weight:800;text-underline-offset:4px}
 .socials{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
-.socials a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border-radius:999px;border:2px solid var(--pink);text-decoration:none;color:var(--fg)}
-footer{border-top:1px solid var(--line);padding:28px 0 110px;color:var(--muted);font-size:.88rem}
-footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
+.socials a{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:999px;border:2px solid var(--fg);text-decoration:none}
+footer{padding:32px 0 110px;color:var(--muted);font-size:.88rem;border-top:1px solid var(--line)}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px}
 
-/* ============ 4. KREPŠELIS ============ */
-.scrim{position:fixed;inset:0;z-index:60;background:rgba(11,11,12,.6);opacity:0;pointer-events:none;transition:opacity .3s}
+/* ============ KREPŠELIS ============ */
+.scrim{position:fixed;inset:0;z-index:60;background:rgba(14,11,12,.6);opacity:0;pointer-events:none;transition:opacity .3s}
 .scrim.open{opacity:1;pointer-events:auto}
-.cart{position:fixed;top:0;right:0;bottom:0;z-index:61;width:min(440px,100vw);background:var(--bg);border-left:1px solid var(--line);display:flex;flex-direction:column;transform:translateX(105%);transition:transform .38s cubic-bezier(.2,.8,.2,1);visibility:hidden}
+.cart{position:fixed;top:0;right:0;bottom:0;z-index:61;width:min(460px,100vw);background:var(--bg);color:var(--fg);border-left:1px solid var(--line);display:flex;flex-direction:column;transform:translateX(105%);transition:transform .4s var(--ease);visibility:hidden}
 .cart.open{transform:none;visibility:visible}
 .cart-head{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--line)}
-.cart-head h2{font-size:1.2rem}
+.cart-head h2{font-size:1.8rem;letter-spacing:-.05em}
 .cart-items{flex:1;overflow-y:auto;padding:8px 20px;list-style:none;margin:0}
 .item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 12px;padding:16px 0;border-bottom:1px solid var(--line)}
-.item-word{display:flex;align-items:baseline;flex-wrap:wrap;font-size:1.45rem;line-height:1.2;background:var(--white);border-radius:10px;padding:6px 10px;grid-column:1/-1}
+.item-word{display:flex;align-items:baseline;flex-wrap:wrap;font-size:1.45rem;line-height:1.2;background:var(--blue);border-radius:14px;padding:6px 12px;grid-column:1/-1}
 .item-word .ltr{cursor:default;padding:0}
 .item-meta{font-size:.88rem;color:var(--muted);font-weight:700}
-.item-price{font-family:var(--font-head);font-weight:700;text-align:right}
-.qty{display:inline-flex;align-items:center;border:2px solid var(--line);border-radius:999px}
-.qty button{width:44px;height:44px;border:0;background:transparent;font-size:1.2rem;font-weight:800;border-radius:999px;color:var(--pink)}
+.item-price{font-family:var(--font-head);font-weight:800;text-align:right}
+.qty{display:inline-flex;align-items:center;border:2px solid var(--line);border-radius:999px;margin-top:6px}
+.qty button{width:44px;height:44px;border:0;background:transparent;font-size:1.3rem;font-weight:800;border-radius:999px;color:var(--fg)}
 .qty output{min-width:28px;text-align:center;font-weight:800}
-.remove{min-height:44px;color:var(--pink);background:none;border:0;font-weight:800;text-decoration:underline;text-underline-offset:3px;justify-self:end}
+.remove{min-height:44px;color:var(--fg);background:none;border:0;font-weight:700;text-decoration:underline;text-underline-offset:3px;justify-self:end}
 .cart-empty{padding:40px 20px;text-align:center;color:var(--muted)}
 .cart-empty p{margin-bottom:16px}
 .cart-foot{padding:16px 20px 20px;border-top:1px solid var(--line);display:grid;gap:6px}
 .cart-foot .line{display:flex;justify-content:space-between;font-weight:700;color:var(--muted)}
-.cart-foot .line.total{color:var(--fg);font-family:var(--font-head);font-size:1.25rem;margin:6px 0 10px}
+.cart-foot .line.total{color:var(--fg);font-family:var(--font-head);font-weight:900;font-size:1.5rem;letter-spacing:-.03em;margin:6px 0 10px}
 
-/* ============ Pranešimai ============ */
-.toasts{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:80;display:grid;gap:8px;width:min(480px,calc(100vw - 32px));pointer-events:none}
-.toast{pointer-events:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--fg);color:var(--bg);padding:12px 12px 12px 18px;border-radius:14px;font-weight:700;box-shadow:0 14px 40px rgba(0,0,0,.35);animation:toastIn .35s var(--ease-pop) both}
+/* ============ PRANEŠIMAI ============ */
+.toasts{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:80;display:grid;gap:8px;width:min(500px,calc(100vw - 32px));pointer-events:none}
+.toast{pointer-events:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--fg);color:var(--bg);padding:10px 10px 10px 18px;border-radius:18px;font-weight:700;box-shadow:0 18px 44px rgba(14,11,12,.4);animation:toastIn .35s var(--ease-pop) both}
 .toast.out{animation:toastOut .25s ease both}
-.toast button{min-height:44px;padding:0 14px;border-radius:10px;border:0;background:var(--pink);color:var(--on-accent);font-weight:800;flex:none}
+.toast button{min-height:44px;padding:0 16px;border-radius:999px;border:0;background:var(--red);color:var(--black);font-family:var(--font-head);font-weight:800;font-size:19px;flex:none}
 @keyframes toastIn{from{opacity:0;transform:translateY(20px) scale(.95)}}
 @keyframes toastOut{to{opacity:0;transform:translateY(12px)}}
 
-/* ============ Prisitaikymas ============ */
+/* ============ PRISITAIKYMAS ============ */
 @media (max-width:1020px){
-  .benefits{grid-template-columns:repeat(2,minmax(0,1fr))}
   .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .order-grid{grid-template-columns:minmax(0,1fr)}
 }
 @media (max-width:900px){
-  .hero .wrap,.order,.calc,.story,.faq-grid{grid-template-columns:minmax(0,1fr)}
-  .progress-card{position:static}
+  .hero-grid,.calc,.story,.faq-grid,.statement-grid,.panel-grid{grid-template-columns:minmax(0,1fr)}
   .menu-btn{display:inline-grid}
   .nav{position:absolute;left:0;right:0;top:100%;background:var(--bg);border-bottom:1px solid var(--line);display:none;padding:8px var(--gutter) 16px}
   .topbar.nav-open .nav{display:block}
   .nav ol{flex-direction:column}
   .nav a{min-height:52px;font-size:1rem}
+  .panel-visual{min-height:220px;order:-1}
+  .panel-visual .giant-num{right:0}
+  .statement-obj{width:min(240px,60vw)}
 }
 @media (max-width:600px){
   body{font-size:16px}
   .strip{grid-template-columns:repeat(5,minmax(0,1fr))}
-  .benefits,.stats{grid-template-columns:minmax(0,1fr)}
   .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .title-stack .cap:nth-child(2){margin-left:.5em}
-  .title-stack .cap:nth-child(3){margin-left:1em}
-  .cta-row .btn{flex:1 1 auto}
+  .cta-row .pill,.cta-row .btn{flex:1 1 auto;justify-content:space-between}
+  .cta-row .btn{justify-content:center}
   .config-foot .btn{width:100%}
-  .stage{padding:16% 4% 14%}
+  .hero .stage{padding:20% 3% 16%;margin-top:-1vw}
+  .panel-visual{min-height:170px}
+  .panel-visual .giant-num{font-size:150px}
   .quote{grid-template-columns:minmax(0,1fr)}
-  .brand{font-size:1rem}
+  .corner{top:16px}
+  .corner .label{font-size:.66rem}
+  .panel{padding:28px 0}
+  .panel h3{margin:8px 0 10px}
+  .glass-tile{width:150px}
+  .duo{width:220px}
+  .size-tag{width:140px}
+  .parcel{width:170px}
 }
+@media (max-height:640px){ .panel{position:relative;top:auto;min-height:0} }
 
-/* ============ Mažiau judesio ============ */
+/* ============ MAŽIAU JUDESIO ============ */
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{animation-duration:.001ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
   .marquee-track{animation:none!important;width:auto;flex-wrap:wrap}
-  .marquee-group{flex-wrap:wrap;justify-content:center;padding:0 var(--gutter);gap:16px}
+  .marquee-group{flex-wrap:wrap;justify-content:center;padding:0 var(--gutter)}
+  .marquee.big .marquee-group{font-size:clamp(40px,8vw,110px);white-space:normal}
   .marquee-group[aria-hidden="true"]{display:none}
-  .in-view .days i{animation:none!important;background:var(--pink)}
+  .in-view .days i{animation:none!important;background:var(--red)}
+  .js .reveal{opacity:1;transform:none}
+  .float,.glass::before,.shirt .shine,.tee .shine,.shirt .shadow{animation:none!important}
 }
 
-/* ============ Spausdinimas ============ */
+/* ============ SPAUSDINIMAS ============ */
 @media print{
-  :root,[data-theme]{--bg:#fff;--fg:#0B0B0C;--muted:#333;--line:#bbb;--surface:transparent;--surface-2:transparent}
-  .topbar,.cart,.scrim,.toasts,.marquee,.back,.btn,.anno,.anno-lines,.skip{display:none!important}
-  .js .sec-title,.js .final .cap{opacity:1}
+  :root,[data-theme],.alt,.tone,.on-red{--bg:#fff;--fg:#0E0B0C;--muted:#333;--line:#bbb;--surface:transparent;--surface-2:transparent;background:#fff!important;color:#0E0B0C!important}
+  .topbar,.cart,.scrim,.toasts,.marquee,.back,.btn,.pill,.anno,.anno-lines,.skip,svg.ribbon,.giant-num{display:none!important}
+  .js .reveal{opacity:1;transform:none}
+  .panel{position:static;min-height:0}
   details::details-content{content-visibility:visible;display:block;height:auto}
   details>:not(summary){display:block!important}
   summary::after{display:none}
-  section{padding:24px 0;break-inside:avoid-page}
 }
 </style>
 </head>
 <body>
 <a class="skip" href="#main">Pereiti prie turinio</a>
+
+<!-- Bendri SVG apibrėžimai: juostos kelias, marškinėlių forma, stiklo gradientai -->
+<svg class="defs" aria-hidden="true" focusable="false">
+  <defs>
+    <path id="ribbonPath" pathLength="1000" d="M0 0"/>
+    <path id="teeShape" d="M152 20 Q200 76 248 20 L318 40 Q350 50 366 76 L397 142 L338 170 L318 130 L318 420 Q200 434 82 420 L82 130 L62 170 L3 142 L34 76 Q50 50 82 40 Z"/>
+    <clipPath id="teeClip"><use href="#teeShape"/></clipPath>
+    <linearGradient id="glassFill" x1="0" y1="0" x2=".9" y2="1">
+      <stop offset="0" stop-color="#BDE0F5" stop-opacity=".97"/>
+      <stop offset=".6" stop-color="#BDE0F5" stop-opacity=".86"/>
+      <stop offset="1" stop-color="#BDE0F5" stop-opacity=".58"/>
+    </linearGradient>
+    <linearGradient id="glassFillOnLight" x1="0" y1="0" x2=".9" y2="1">
+      <stop offset="0" stop-color="#0E0B0C" stop-opacity=".05"/>
+      <stop offset=".6" stop-color="#0E0B0C" stop-opacity=".13"/>
+      <stop offset="1" stop-color="#0E0B0C" stop-opacity=".3"/>
+    </linearGradient>
+    <linearGradient id="shineGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#BDE0F5" stop-opacity="0"/>
+      <stop offset=".5" stop-color="#BDE0F5" stop-opacity=".95"/>
+      <stop offset="1" stop-color="#BDE0F5" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+</svg>
 
 <header class="topbar" id="top">
   <div class="wrap">
@@ -424,24 +541,43 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
 <main id="main">
 
 <!-- ============ 1. HERO ============ -->
-<section class="hero" id="pradzia" aria-labelledby="hero-title">
-  <div class="wrap">
+<section class="hero tone" id="pradzia" aria-labelledby="hero-title" data-ribbon>
+  <span class="abs corner tl label">01 / Parduotuvė</span>
+  <span class="abs corner tr label">Balti marškinėliai</span>
+
+  <div class="hero-visual">
+    <p class="mega reveal" aria-hidden="true"><span id="megaWord">unemployed</span></p>
+    <div class="stage" id="stage">
+      <div class="shirt-wrap" id="shirtWrap">
+        <svg class="shirt" viewBox="0 0 400 440" aria-hidden="true">
+          <ellipse class="shadow" cx="200" cy="460" rx="150" ry="16"/>
+          <use class="body" href="#teeShape"/>
+          <g clip-path="url(#teeClip)"><rect class="shine" x="0" y="-20" width="110" height="480"/></g>
+          <path class="seam" d="M162 25 Q200 64 238 25"/>
+          <path class="seam" d="M318 130 L310 88 M82 130 L90 88"/>
+        </svg>
+        <div class="print" id="print" role="group" aria-label="Užrašas ant marškinėlių – spausk raides"></div>
+      </div>
+      <svg class="anno-lines" id="annoLines" aria-hidden="true"></svg>
+      <button type="button" class="anno" data-anno="letter" data-target=".38,.34" data-pos="0,2">Spausk raidę!</button>
+      <button type="button" class="anno" data-anno="story" data-target=".6,.07" data-pos="68,1">Kas čia per daiktas?</button>
+      <button type="button" class="anno" data-anno="size" data-target=".86,.37" data-pos="68,82">Kokio dydžio?</button>
+    </div>
+  </div>
+
+  <div class="wrap hero-grid">
     <div class="hero-copy">
-      <h1 class="title-stack" id="hero-title">
-        <span class="cap" style="--tilt:-2.5deg">Darbo neturiu.</span>
-        <span class="cap" style="--tilt:1.5deg">Stiliaus –</span>
-        <span class="cap" style="--tilt:-1deg">per akis.</span>
-      </h1>
+      <h1 class="display" id="hero-title">Darbo neturiu. <em class="accent">Stiliaus – per akis.</em></h1>
       <p class="lead">Balti marškinėliai su užrašu „unemployed“ per krūtinę – kiekvienai raidei šriftą parenki pats.</p>
       <p class="offer"><span class="price" data-bind="price"></span><span aria-hidden="true">·</span><span>Pristatymas: <span data-bind="shipping"></span></span></p>
       <div class="cta-row">
-        <button class="btn" type="button" data-action="add">Į krepšelį</button>
+        <button class="pill" type="button" data-action="add"><span>Į krepšelį</span><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
         <a class="btn ghost" href="#kaip">Kaip tai veikia</a>
       </div>
       <p class="trust"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg><span>Grąžinimas per <span data-bind="returnDays"></span> d.</span></p>
     </div>
 
-    <!-- 3. KONFIGŪRATORIUS -->
+    <!-- KONFIGŪRATORIUS -->
     <div class="config" id="konfiguratorius" aria-label="Marškinėlių konfigūratorius">
       <div class="config-head">
         <div class="seg" role="group" aria-label="Variantas">
@@ -451,28 +587,12 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
         </div>
         <button class="btn ghost small" type="button" id="shuffleBtn">Sumaišyk</button>
       </div>
-
-      <div class="stage" id="stage">
-        <div class="shirt-wrap" id="shirtWrap">
-          <svg class="shirt" viewBox="0 0 400 440" aria-hidden="true">
-            <path class="body" d="M152 20 Q200 76 248 20 L318 40 Q350 50 366 76 L397 142 L338 170 L318 130 L318 420 Q200 434 82 420 L82 130 L62 170 L3 142 L34 76 Q50 50 82 40 Z"/>
-            <path class="seam" d="M162 25 Q200 64 238 25"/>
-            <path class="seam" d="M318 130 L310 88 M82 130 L90 88"/>
-            <path class="fold" d="M120 300 Q140 360 128 404 M282 290 Q264 350 276 404"/>
-          </svg>
-          <div class="print" id="print" role="group" aria-label="Užrašas ant marškinėlių – spausk raides"></div>
-        </div>
-        <svg class="anno-lines" id="annoLines" aria-hidden="true"></svg>
-        <button type="button" class="anno cap" data-anno="letter" data-target=".38,.34" data-pos="0,2" style="--tilt:-3deg">Spausk raidę!</button>
-        <button type="button" class="anno cap" data-anno="story" data-target=".6,.07" data-pos="70,1" style="--tilt:2.5deg">Kas čia per daiktas?</button>
-        <button type="button" class="anno cap" data-anno="size" data-target=".86,.37" data-pos="66,80" style="--tilt:-1.5deg">Kokio dydžio?</button>
-      </div>
-      <p class="hint">Kiekviena raidė – mygtukas. Užrašus aplink gali tempti.</p>
+      <p class="hint">Kiekviena raidė – mygtukas. Užrašus aplink marškinėlius gali tempti.</p>
 
       <div class="strip" id="strip" role="group" aria-label="Raidės ir jų šriftai"></div>
 
       <div class="sizes-row" id="sizes">
-        <div class="row-label"><span id="sizesLabel">Dydis</span><a class="linkish" href="#duk-dydziai" data-open-details>Dydžių lentelė</a></div>
+        <div class="row-label"><span class="label" id="sizesLabel">Dydis</span><a class="linkish" href="#duk-dydziai" data-open-details>Dydžių lentelė</a></div>
         <div class="sizes" role="group" aria-labelledby="sizesLabel" data-sizes></div>
       </div>
 
@@ -484,71 +604,126 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
   </div>
 </section>
 
-<div class="marquee" aria-label="Kur juos nešioti">
-  <div class="marquee-track" id="marquee"></div>
+<!-- ============ 2. JUDANTI JUOSTA (kontūrinis tekstas) ============ -->
+<div class="marquee big tone" aria-label="8 šriftai, 10 raidžių, 1 žodis, balti marškinėliai" data-ribbon>
+  <div class="marquee-track" id="marqueeBig"></div>
 </div>
 
-<!-- ============ 2. KAIP VEIKIA ============ -->
-<section id="kaip" aria-labelledby="kaip-title">
-  <div class="wrap">
-    <a class="back" href="#top">↖ Atgal</a>
-    <h2 class="sec-title" id="kaip-title" style="--tilt:-2deg"><span>Kaip tai veikia</span></h2>
-
-    <div class="benefits">
-      <article class="card">
-        <span class="tag">Raidės</span>
-        <h3>Kiekviena raidė – savo charakteris</h3>
-        <p>8 šriftai, 10 raidžių. Spausk raidę – ji persirengia.</p>
-        <div class="demo"><div><button class="demo-letter ltr" type="button" id="demoLetter" aria-label="Pakeisti demonstracinės raidės šriftą">u</button><small id="demoLetterName"></small></div></div>
-      </article>
-      <article class="card">
-        <span class="tag">Deriniai</span>
-        <h3>Daugiau nei milijardas derinių</h3>
-        <p>Toks pats kaip tavo – tik tavo. Variantas A, B arba savas.</p>
-        <div class="demo"><div><div class="demo-word" id="demoWord" aria-hidden="true"></div><div class="demo-num"><span data-combos></span></div><small>galimų derinių</small></div></div>
-      </article>
-      <article class="card">
-        <span class="tag">Dydis</span>
-        <h3>Dydis vienu paspaudimu</h3>
-        <p>Pasirink čia arba prie marškinėlių – pasirinkimas įsimenamas.</p>
-        <div class="demo"><div class="sizes" role="group" aria-label="Dydis (greitas pasirinkimas)" data-sizes></div></div>
-      </article>
-      <article class="card" id="returnsCard">
-        <span class="tag">Grąžinimas</span>
-        <h3>Netiko? Grąžink.</h3>
-        <p>Grąžinimas per <span data-bind="returnDays"></span> d.</p>
-        <div class="demo"><div><div class="days" id="days" aria-hidden="true"></div><small id="daysLabel"></small></div></div>
-      </article>
-    </div>
-
-    <div class="order">
-      <div>
-        <p class="kicker">Užsakymas</p>
-        <h3>4 žingsniai iki marškinėlių</h3>
-        <p class="muted">Žingsniai pasižymi patys, kai juos atlieki.</p>
-        <ol class="steps" id="steps">
-          <li data-step="variant"><span class="num"><b>1</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span><div><span class="st-title">Pasirink variantą</span><small>A, B arba spausk raides ir susikurk savą</small></div><span class="sr-only st-state">neatlikta</span></li>
-          <li data-step="size"><span class="num"><b>2</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span><div><span class="st-title">Pasirink dydį</span><small>Be dydžio į krepšelį nededame</small></div><span class="sr-only st-state">neatlikta</span></li>
-          <li data-step="cart"><span class="num"><b>3</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span><div><span class="st-title">Įdėk į krepšelį</span><small>Gali įdėti kelis skirtingus derinius</small></div><span class="sr-only st-state">neatlikta</span></li>
-          <li data-step="order"><span class="num"><b>4</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span><div><span class="st-title">Užsakyk</span><small>Krepšelyje spausk „Užsakyti“</small></div><span class="sr-only st-state">neatlikta</span></li>
-        </ol>
-      </div>
-      <aside class="progress-card" aria-label="Užsakymo progresas">
-        <p class="kicker">Progresas</p>
-        <div class="progress-num"><span id="progressNum">0</span> / 4</div>
-        <div class="progress" role="progressbar" aria-label="Atlikti žingsniai" aria-valuemin="0" aria-valuemax="4" aria-valuenow="0" id="progress"><div class="bar"></div></div>
-        <p id="progressText">Pradėk nuo varianto.</p>
-        <a class="btn block" href="#konfiguratorius" id="progressCta">Į konfigūratorių</a>
-      </aside>
+<!-- ============ 3. TEIGINYS ============ -->
+<section class="statement alt" aria-labelledby="statement-title" data-ribbon>
+  <span class="abs corner tl label">Manifestas</span>
+  <span class="abs corner tr label">unemployed</span>
+  <div class="wrap statement-grid">
+    <h2 class="display xl reveal" id="statement-title">Dauguma marškinėlių tiesiog dėvimi. <em class="accent">Šitie – kuriami.</em></h2>
+    <div class="statement-obj glass-drag float" aria-hidden="true">
+      <svg class="tee" viewBox="0 0 400 440"><use class="body" href="#teeShape"/><g clip-path="url(#teeClip)"><rect class="shine" x="0" y="-20" width="110" height="480"/></g></svg>
     </div>
   </div>
 </section>
 
-<!-- ============ 3. KAINA ============ -->
-<section id="kaina" aria-labelledby="kaina-title">
+<!-- ============ 4. KAIP VEIKIA ============ -->
+<section id="kaip" aria-labelledby="kaip-title">
+  <div class="sec-intro tone" data-ribbon>
+    <span class="abs corner tl label">02 / Kaip veikia</span>
+    <span class="abs corner tr"><a class="back" href="#top">↖ Atgal</a></span>
+    <div class="wrap">
+      <h2 class="display xl reveal" id="kaip-title">Kaip tai <em class="accent">veikia.</em></h2>
+    </div>
+  </div>
+
+  <div class="panels">
+    <article class="panel tone" data-ribbon aria-labelledby="p1-title">
+      <div class="wrap panel-grid">
+        <div>
+          <span class="label">01 / Raidės</span>
+          <h3 id="p1-title">Kiekviena raidė – <em class="accent">savo charakteris.</em></h3>
+          <p class="copy">8 šriftai, 10 raidžių. Spausk raidę ant marškinėlių – ji persirengia.</p>
+        </div>
+        <div class="panel-visual">
+          <span class="giant-num" aria-hidden="true">01</span>
+          <div class="glass glass-tile glass-drag float">
+            <button class="demo-letter ltr" type="button" id="demoLetter" aria-label="Pakeisti demonstracinės raidės šriftą">u</button>
+            <small id="demoLetterName"></small>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="panel alt" data-ribbon aria-labelledby="p2-title">
+      <div class="wrap panel-grid">
+        <div>
+          <span class="label">02 / Variantai</span>
+          <h3 id="p2-title">Daugiau nei <em class="accent">milijardas derinių.</em></h3>
+          <p class="copy">Toks pats kaip tavo – tik tavo. Variantas A – laukinis mišinys, B – ramesnis, arba savas.</p>
+          <p class="combos"><span data-combos></span><small>galimų derinių</small></p>
+        </div>
+        <div class="panel-visual">
+          <span class="giant-num" aria-hidden="true">02</span>
+          <div class="duo">
+            <div class="tee-a glass-drag float d2" aria-hidden="true"><svg class="tee" viewBox="0 0 400 440"><use class="body" href="#teeShape"/><g clip-path="url(#teeClip)"><rect class="shine" x="0" y="-20" width="110" height="480"/></g></svg></div>
+            <div class="tee-b glass-drag float" aria-hidden="true"><svg class="tee" viewBox="0 0 400 440"><use class="body" href="#teeShape"/><g clip-path="url(#teeClip)"><rect class="shine" x="0" y="-20" width="110" height="480"/></g></svg><div class="demo-word" id="demoWord"></div></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="panel tone" data-ribbon aria-labelledby="p3-title">
+      <div class="wrap panel-grid">
+        <div>
+          <span class="label">03 / Dydžiai</span>
+          <h3 id="p3-title">Dydis vienu <em class="accent">paspaudimu.</em></h3>
+          <p class="copy">Pasirink čia arba prie marškinėlių – pasirinkimas įsimenamas. Matmenys – DUK skiltyje.</p>
+          <div class="demo"><div class="sizes" role="group" aria-label="Dydis (greitas pasirinkimas)" data-sizes></div></div>
+        </div>
+        <div class="panel-visual">
+          <span class="giant-num" aria-hidden="true">03</span>
+          <div class="glass size-tag glass-drag float d3" aria-hidden="true"><b id="sizeTag">?</b></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="panel alt p4" data-ribbon aria-labelledby="p4-title">
+      <div class="wrap panel-grid">
+        <div>
+          <span class="label">04 / Užsakymas</span>
+          <h3 id="p4-title">4 žingsniai iki <em class="accent">marškinėlių.</em></h3>
+          <p class="copy">Žingsniai pasižymi patys, kai juos atlieki.</p>
+          <div class="order-grid">
+            <ol class="steps" id="steps">
+              <li data-step="variant"><span class="num"><b>1</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span><div><span class="st-title">Pasirink variantą</span><small>A, B arba spausk raides ir susikurk savą</small></div><span class="sr-only st-state">neatlikta</span></li>
+              <li data-step="size"><span class="num"><b>2</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span><div><span class="st-title">Pasirink dydį</span><small>Be dydžio į krepšelį nededame</small></div><span class="sr-only st-state">neatlikta</span></li>
+              <li data-step="cart"><span class="num"><b>3</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span><div><span class="st-title">Įdėk į krepšelį</span><small>Gali įdėti kelis skirtingus derinius</small></div><span class="sr-only st-state">neatlikta</span></li>
+              <li data-step="order"><span class="num"><b>4</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span><div><span class="st-title">Užsakyk</span><small>Krepšelyje spausk „Užsakyti“</small></div><span class="sr-only st-state">neatlikta</span></li>
+            </ol>
+            <aside class="progress-card" aria-label="Užsakymo progresas">
+              <span class="label">Progresas</span>
+              <div class="progress-num"><span id="progressNum">0</span> / 4</div>
+              <div class="progress" role="progressbar" aria-label="Atlikti žingsniai" aria-valuemin="0" aria-valuemax="4" aria-valuenow="0" id="progress"><div class="bar"></div></div>
+              <p id="progressText">Pradėk nuo varianto.</p>
+              <a class="btn block" href="#konfiguratorius" id="progressCta">Į konfigūratorių</a>
+            </aside>
+          </div>
+          <div class="returns" id="returnsCard">
+            <p><b>Netiko? Grąžink.</b> Grąžinimas per <span data-bind="returnDays"></span> d.</p>
+            <div class="days" id="days" aria-hidden="true"></div><span id="daysLabel"></span>
+          </div>
+        </div>
+        <div class="panel-visual">
+          <span class="giant-num" aria-hidden="true">04</span>
+          <div class="glass parcel glass-drag float" id="parcel" aria-hidden="true"><span class="seal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span></div>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ============ 5. KAINA ============ -->
+<section class="sec tone" id="kaina" aria-labelledby="kaina-title" data-ribbon>
+  <span class="abs corner tl label">03 / Kaina</span>
+  <span class="abs corner tr"><a class="back" href="#top">↖ Atgal</a></span>
+  <span class="abs giant-num sec-num" aria-hidden="true">03</span>
   <div class="wrap">
-    <a class="back" href="#top">↖ Atgal</a>
-    <h2 class="sec-title" id="kaina-title" style="--tilt:1.8deg"><span>Pirk draugams, mokėk mažiau</span></h2>
+    <div class="sec-head"><h2 class="display reveal" id="kaina-title">Pirk draugams, <em class="accent">mokėk mažiau.</em></h2></div>
     <div class="calc">
       <div class="calc-in">
         <h3>Kiek marškinėlių?</h3>
@@ -567,27 +742,33 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
           <div class="line total"><dt>Suma</dt><dd id="calcSum"></dd></div>
         </dl>
         <button class="btn block" type="button" data-action="add-qty" id="calcAdd">Į krepšelį: 1 vnt.</button>
-        <p class="muted" style="font-size:.85rem;margin-top:10px">Į krepšelį dedamas dabartinis derinys ir pasirinktas dydis. Nuolaida taikoma visam krepšeliui.</p>
+        <p class="calc-note">Į krepšelį dedamas dabartinis derinys ir pasirinktas dydis. Nuolaida taikoma visam krepšeliui.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============ 4. ISTORIJA ============ -->
-<section id="istorija" aria-labelledby="istorija-title">
+<div class="marquee wear tone" aria-label="Kur juos nešioti" data-ribbon>
+  <div class="marquee-track" id="marquee"></div>
+</div>
+
+<!-- ============ 6. ISTORIJA ============ -->
+<section class="sec alt" id="istorija" aria-labelledby="istorija-title" data-ribbon>
+  <span class="abs corner tl label">04 / Istorija</span>
+  <span class="abs corner tr"><a class="back" href="#top">↖ Atgal</a></span>
+  <span class="abs giant-num sec-num" aria-hidden="true">04</span>
   <div class="wrap">
-    <a class="back" href="#top">↖ Atgal</a>
-    <h2 class="sec-title" id="istorija-title" style="--tilt:-1.2deg"><span>Iš kur tas „unemployed“</span></h2>
+    <div class="sec-head"><h2 class="display reveal" id="istorija-title">Iš kur tas <em class="accent">„unemployed“.</em></h2></div>
 
     <div class="logo-big" id="logoBig" role="img" aria-label="unemployed logotipas tavo pasirinktais šriftais"></div>
 
     <div class="story">
       <div class="story-text">
-        <p class="big">Darbas – ne vienintelis būdas pasakyti, kas esi.</p>
+        <p class="big">Darbas – ne vienintelis būdas pasakyti, <em>kas esi.</em></p>
         <div id="storyBody"></div>
       </div>
       <div class="timeline">
-        <p class="kicker">Drop’ų laiko juosta</p>
+        <div class="work-head"><span class="label">Drop’ų laiko juosta</span><span class="label muted">Atrinkti darbai</span></div>
         <div class="tl-btns" role="tablist" aria-label="Drop’ai" id="tlBtns"></div>
         <div class="tl-panel" role="tabpanel" id="tlPanel" tabindex="0"></div>
       </div>
@@ -595,26 +776,26 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
 
     <div class="stats" id="stats"></div>
 
-    <figure class="quote" id="quote" style="margin:0"></figure>
+    <figure class="quote" id="quote"></figure>
   </div>
 </section>
 
-<!-- ============ 5. UŽSAKYK + DUK ============ -->
+<!-- ============ 7. UŽSAKYK + DUK ============ -->
 <section id="uzsakyk" aria-labelledby="final-title">
-  <div class="wrap">
-    <a class="back" href="#top">↖ Atgal</a>
-    <div class="final">
-      <h2 id="final-title" style="margin:0">
-        <span class="cap" style="--tilt:-2deg">Darbo nėra.</span>
-        <span class="cap" style="--tilt:2deg">Marškinėliai yra.</span>
-      </h2>
+  <div class="final on-red" data-ribbon data-red>
+    <span class="abs corner tl label">05 / Užsakyk</span>
+    <span class="abs corner tr"><a class="back" href="#top">↖ Atgal</a></span>
+    <div class="wrap">
+      <h2 class="display reveal" id="final-title">Darbo nėra. <em class="accent">Marškinėliai yra.</em></h2>
       <div class="actions">
         <button class="btn" type="button" data-action="add">Į krepšelį</button>
         <a class="btn ghost" href="#konfiguratorius">Kurti savo derinį</a>
       </div>
     </div>
+  </div>
 
-    <div class="faq-grid">
+  <div class="faq-zone tone" data-ribbon>
+    <div class="wrap faq-grid">
       <div class="faq">
         <h3>DUK</h3>
         <details id="duk-laikas"><summary>Ar suspėsiu gauti laiku?</summary><div class="ans"><p>Pristatymas: <span data-bind="shipping"></span>.</p><p>Jei skubi – parašyk: <span data-bind="emailLink"></span></p></div></details>
@@ -638,7 +819,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
 </section>
 </main>
 
-<footer>
+<footer class="tone" data-ribbon>
   <div class="wrap">
     <span>© <span id="year"></span> <span data-bind="company"></span></span>
     <a class="linkish" href="#top">↖ Į viršų</a>
@@ -913,6 +1094,7 @@ const CONFIG = {
   });
   function renderSizes() {
     $$('.size[data-size]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.size === state.size)));
+    $('#sizeTag').textContent = state.size || '?';
     renderSelSummary();
   }
   function setSize(sz) {
@@ -946,6 +1128,7 @@ const CONFIG = {
     $('#progress .bar').style.width = (n / 4 * 100) + '%';
     $('#progress').setAttribute('aria-valuenow', n);
     $('#progressNum').textContent = n;
+    $('#parcel').classList.toggle('sealed', !!state.steps.order);
     const firstOpen = STEP_KEYS.findIndex(k => !state.steps[k]);
     $('#progressText').textContent = STEP_TEXT[firstOpen === -1 ? 4 : firstOpen];
     const cta = $('#progressCta');
@@ -1175,7 +1358,6 @@ const CONFIG = {
   function demoStep() {
     demoIdx = (demoIdx + 1) % FONTS.length;
     demoLetter.style.fontFamily = FONTS[demoIdx].family;
-    demoLetter.style.color = 'var(--fg)';
     demoName.textContent = FONTS[demoIdx].name;
     pop(demoLetter);
   }
@@ -1250,7 +1432,8 @@ const CONFIG = {
   drops.forEach((d, i) => {
     const b = document.createElement('button');
     b.type = 'button'; b.className = 'tl-btn'; b.id = 'drop-' + i; b.setAttribute('role', 'tab'); b.setAttribute('aria-controls', 'tlPanel');
-    b.textContent = 'Drop ' + d.code;
+    b.innerHTML = `<span class="tl-code">${esc(d.code)}</span><span class="tl-title">${d.title ? esc(d.title) : ph('PAVADINIMAS')}</span><span class="tl-date">${d.date ? esc(d.date) : ph('DATA')}</span>`;
+    b.setAttribute('aria-label', 'Drop ' + d.code);
     b.addEventListener('click', () => showDrop(i));
     b.addEventListener('keydown', e => {
       if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); showDrop((i + (e.key === 'ArrowRight' ? 1 : -1) + drops.length) % drops.length, true); }
@@ -1286,11 +1469,10 @@ const CONFIG = {
 
   /* ---------- judanti juosta ---------- */
   function capGroup(hidden) {
-    const tilts = [-3, 2, -1.5, 3, -2.5, 1];
-    const items = CONFIG.wearPlaces.map((w, i) => `<span class="cap" style="--tilt:${tilts[i % tilts.length]}deg">${esc(w)}</span>`).join('');
+    const items = CONFIG.wearPlaces.map(w => `<span class="wear-item">${esc(w)}</span>`).join('');
     const partners = CONFIG.partners && CONFIG.partners.length
-      ? `<span class="label">Partneriai</span>` + CONFIG.partners.map((p, i) => `<span class="cap" style="--tilt:${tilts[(i + 3) % tilts.length]}deg">${esc(p)}</span>`).join('') : '';
-    return `<div class="marquee-group"${hidden ? ' aria-hidden="true"' : ''}><span class="label">Kur juos nešioti →</span>${items}${partners}</div>`;
+      ? `<span class="wear-label">Partneriai</span>` + CONFIG.partners.map(p => `<span class="wear-item">${esc(p)}</span>`).join('') : '';
+    return `<div class="marquee-group"${hidden ? ' aria-hidden="true"' : ''}><span class="wear-label">Kur juos nešioti →</span>${items}${partners}</div>`;
   }
   $('#marquee').innerHTML = capGroup(false) + capGroup(true);
 
@@ -1308,7 +1490,7 @@ const CONFIG = {
     document.documentElement.setAttribute('data-theme', t);
     themeBtn.setAttribute('aria-pressed', String(t === 'light'));
     themeBtn.setAttribute('aria-label', t === 'light' ? 'Tamsus režimas' : 'Šviesus režimas');
-    $('meta[name="theme-color"]').setAttribute('content', t === 'light' ? '#FFFFFF' : '#0B0B0C');
+    $('meta[name="theme-color"]').setAttribute('content', t === 'light' ? '#BDE0F5' : '#0E0B0C');
   }
   applyTheme(document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark');
   themeBtn.addEventListener('click', () => {
@@ -1325,8 +1507,8 @@ const CONFIG = {
   if ('IntersectionObserver' in window) {
     const titleIO = new IntersectionObserver(es => es.forEach(e => {
       if (e.isIntersecting) { e.target.classList.add('in'); titleIO.unobserve(e.target); }
-    }), { threshold: .5 });
-    $$('.sec-title, .final').forEach(el => titleIO.observe(el));
+    }), { threshold: .15 });
+    $$('.reveal').forEach(el => titleIO.observe(el));
 
     const countIO = new IntersectionObserver(es => es.forEach(e => {
       if (e.isIntersecting) { countUp(e.target); countIO.unobserve(e.target); }
@@ -1336,7 +1518,7 @@ const CONFIG = {
     const benIO = new IntersectionObserver(es => es.forEach(e => {
       benefitsVisible = e.isIntersecting; e.target.classList.toggle('in-view', e.isIntersecting);
     }), { threshold: .2 });
-    benIO.observe($('.benefits'));
+    benIO.observe($('.panels'));
 
     const links = $$('#nav a');
     const secIO = new IntersectionObserver(es => es.forEach(e => {
@@ -1345,14 +1527,158 @@ const CONFIG = {
     }), { rootMargin: '-45% 0px -50% 0px' });
     $$('main section[id]').forEach(s => secIO.observe(s));
   } else {
-    $$('.sec-title, .final').forEach(el => el.classList.add('in'));
+    $$('.reveal').forEach(el => el.classList.add('in'));
     $$('[data-count]').forEach(el => { el.dataset.dec = el.dataset.dec || 0; el.textContent = num(Number(el.dataset.count)); });
   }
 
   /* ---------- spausdinimas: DUK išskleidžiamas ---------- */
   let closedBefore = [];
-  window.addEventListener('beforeprint', () => { closedBefore = $$('details:not([open])'); closedBefore.forEach(d => d.open = true); $$('.sec-title, .final').forEach(el => el.classList.add('in')); });
+  window.addEventListener('beforeprint', () => { closedBefore = $$('details:not([open])'); closedBefore.forEach(d => d.open = true); $$('.reveal').forEach(el => el.classList.add('in')); });
   window.addEventListener('afterprint', () => { closedBefore.forEach(d => d.open = false); closedBefore = []; });
+
+
+  /* ---------- milžiniškas „unemployed“ per visą plotį ---------- */
+  const megaWord = $('#megaWord');
+  function fitMega() {
+    const box = megaWord.parentElement;
+    megaWord.style.fontSize = '';
+    const w = megaWord.getBoundingClientRect().width, avail = box.clientWidth;
+    if (w > 0 && avail > 0) megaWord.style.fontSize = (parseFloat(getComputedStyle(megaWord).fontSize) * avail * 0.985 / w).toFixed(2) + 'px';
+  }
+
+  /* ---------- PARAŠO ELEMENTAS: raudona juosta, piešiama slenkant ----------
+     Vienas kelias (#ribbonPath, pathLength=1000) per visą dokumentą. Kiekvienas
+     [data-ribbon] skyrius rodo savo atkarpą (<use>, pastumtą per skyriaus vietą),
+     todėl juosta yra virš skyriaus fono, bet po turiniu, ir teisingai uždengiama
+     sukrautų panelių. [data-red] skyriuose ji juoda. */
+  const SVGNS = 'http://www.w3.org/2000/svg';
+  const ribbonPath = $('#ribbonPath');
+  const ribbonHosts = $$('[data-ribbon]');
+  ribbonHosts.forEach(h => {
+    const s = document.createElementNS(SVGNS, 'svg');
+    s.setAttribute('class', 'ribbon'); s.setAttribute('aria-hidden', 'true'); s.setAttribute('focusable', 'false');
+    const u = document.createElementNS(SVGNS, 'use');
+    u.setAttribute('href', '#ribbonPath');
+    s.append(u); h.prepend(s);
+  });
+  // Dokumento padėtis be „sticky“ poslinkio (panelėms – pagal statinį išdėstymą)
+  function docTop(el) {
+    if (el.classList.contains('panel')) {
+      let t = docTop(el.parentElement);
+      for (let p = el.parentElement.firstElementChild; p && p !== el; p = p.nextElementSibling) t += p.offsetHeight;
+      return t;
+    }
+    return el.getBoundingClientRect().top + window.scrollY;
+  }
+  // Sukrautos panelės: aukštesnė už ekraną panelė sustoja tik parodžiusi savo apačią
+  function fitPanels() {
+    const head = $('.topbar').offsetHeight;
+    $$('.panel').forEach(p => p.style.setProperty('--stick-top', Math.min(head, window.innerHeight - p.offsetHeight) + 'px'));
+  }
+  function buildRibbon() {
+    fitPanels();
+    const W = document.documentElement.clientWidth, H = document.documentElement.scrollHeight;
+    const seg = Math.max(560, window.innerHeight * 0.95);
+    let x0 = W * 0.1, y0 = -60, d = `M ${x0.toFixed(1)} ${y0}`;
+    for (let i = 1; y0 < H + seg; i++) {
+      const x1 = W * (i % 2 ? 0.88 : 0.12) + W * 0.05 * Math.sin(i * 1.7);
+      const y1 = y0 + seg;
+      d += ` C ${x0.toFixed(1)} ${(y0 + seg * 0.62).toFixed(1)} ${x1.toFixed(1)} ${(y1 - seg * 0.62).toFixed(1)} ${x1.toFixed(1)} ${y1.toFixed(1)}`;
+      x0 = x1; y0 = y1;
+    }
+    ribbonPath.setAttribute('d', d);
+    ribbonHosts.forEach(h => {
+      const svg = h.querySelector(':scope > svg.ribbon');
+      svg.setAttribute('viewBox', `0 0 ${h.offsetWidth} ${h.offsetHeight}`);
+      const left = h.getBoundingClientRect().left + window.scrollX;
+      svg.firstChild.setAttribute('transform', `translate(${(-left).toFixed(1)} ${(-docTop(h)).toFixed(1)})`);
+    });
+    updateRibbon();
+  }
+  function updateRibbon() {
+    const H = document.documentElement.scrollHeight;
+    const p = motionOK() ? Math.min(1, Math.max(0, (window.scrollY + window.innerHeight * 0.78) / H)) : 1;
+    const off = (1000 * (1 - p)).toFixed(1);
+    ribbonHosts.forEach(h => h.style.setProperty('--rib-off', off));
+  }
+  let ribbonQueued = false, buildQueued = false;
+  window.addEventListener('scroll', () => {
+    if (ribbonQueued) return;
+    ribbonQueued = true;
+    requestAnimationFrame(() => { ribbonQueued = false; updateRibbon(); });
+  }, { passive: true });
+  function queueBuild() {
+    if (buildQueued) return;
+    buildQueued = true;
+    requestAnimationFrame(() => { buildQueued = false; fitMega(); buildRibbon(); });
+  }
+  if ('ResizeObserver' in window) new ResizeObserver(queueBuild).observe(document.body);
+  window.addEventListener('resize', queueBuild);
+  reduce.addEventListener && reduce.addEventListener('change', updateRibbon);
+
+  /* ---------- „stikliniai“ marškinėliai: 3D pakrypimas pagal pelę ---------- */
+  const hero = $('#pradzia');
+  let linesUntil = 0;
+  function followLines() {
+    drawLines();
+    if (performance.now() < linesUntil) requestAnimationFrame(followLines);
+  }
+  hero.addEventListener('pointermove', e => {
+    if (e.pointerType !== 'mouse' || !motionOK()) return;
+    const r = hero.getBoundingClientRect();
+    const nx = (e.clientX - r.left) / r.width - 0.5, ny = (e.clientY - r.top) / r.height - 0.5;
+    shirtWrap.style.setProperty('--rx', (-ny * 9).toFixed(2) + 'deg');
+    shirtWrap.style.setProperty('--ry', (nx * 13).toFixed(2) + 'deg');
+    const was = linesUntil > performance.now();
+    linesUntil = performance.now() + 600;
+    if (!was) requestAnimationFrame(followLines);
+  });
+  hero.addEventListener('pointerleave', () => {
+    shirtWrap.style.setProperty('--rx', '0deg'); shirtWrap.style.setProperty('--ry', '0deg');
+    linesUntil = performance.now() + 600; requestAnimationFrame(followLines);
+  });
+
+  /* ---------- stikliniai objektai: tempiami, paleisti grįžta su spyruokle ---------- */
+  $$('.glass-drag').forEach(el => {
+    let dx = 0, dy = 0, vx = 0, vy = 0, sx = 0, sy = 0, dragging = false, raf = 0;
+    const apply = () => { el.style.translate = `${dx.toFixed(1)}px ${dy.toFixed(1)}px`; };
+    el.addEventListener('pointerdown', e => {
+      if (e.button !== 0 || e.target.closest('button')) return;
+      dragging = true; cancelAnimationFrame(raf);
+      sx = e.clientX - dx; sy = e.clientY - dy;
+      el.setPointerCapture(e.pointerId); el.classList.add('grabbing');
+    });
+    el.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      dx = e.clientX - sx; dy = e.clientY - sy; apply();
+    });
+    const release = () => {
+      if (!dragging) return;
+      dragging = false; el.classList.remove('grabbing');
+      if (!motionOK()) { dx = dy = 0; apply(); return; }
+      vx = vy = 0;
+      let last = performance.now();
+      const step = now => {
+        const dt = Math.min(0.032, (now - last) / 1000); last = now;
+        const k = 170, c = 11; // standumas, slopinimas
+        vx += (-k * dx - c * vx) * dt; vy += (-k * dy - c * vy) * dt;
+        dx += vx * dt; dy += vy * dt; apply();
+        if (Math.hypot(dx, dy) < 0.4 && Math.hypot(vx, vy) < 4) { dx = dy = 0; apply(); return; }
+        raf = requestAnimationFrame(step);
+      };
+      raf = requestAnimationFrame(step);
+    };
+    el.addEventListener('pointerup', release);
+    el.addEventListener('pointercancel', release);
+  });
+
+  /* ---------- didžioji kontūrinė juosta ---------- */
+  function bigGroup(hidden) {
+    const parts = [`${FONTS.length} šriftai`, `${LETTERS.length} raidžių`, '1 žodis', 'Balti marškinėliai'];
+    return `<div class="marquee-group"${hidden ? ' aria-hidden="true"' : ''}>` +
+      parts.map(t => `<span class="outline">${esc(t)}</span><span class="x" aria-hidden="true">×</span>`).join('') + '</div>';
+  }
+  $('#marqueeBig').innerHTML = bigGroup(false) + bigGroup(true);
 
   /* ---------- pradinis piešimas ---------- */
   renderVariantButtons();
@@ -1361,8 +1687,10 @@ const CONFIG = {
   renderSteps();
   renderCart(false);
   renderCalc();
+  fitMega();
+  buildRibbon();
   requestAnimationFrame(() => { fitAnnos(); drawLines(); });
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { fitAnnos(); drawLines(); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { fitAnnos(); drawLines(); fitMega(); buildRibbon(); });
 })();
 </script>
 </body>

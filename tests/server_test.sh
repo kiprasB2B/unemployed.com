@@ -31,8 +31,8 @@ free_port() {
   echo 18080
 }
 
-start() { # root port  -> starts a server in the background
-  HOST=127.0.0.1 PORT="$2" "$BIN" "$1" 2>>"$TMP/server.log" &
+start() { # root port [canonical-host]  -> starts a server in the background
+  HOST=127.0.0.1 PORT="$2" CANONICAL_HOST="${3:-}" "$BIN" "$1" 2>>"$TMP/server.log" &
   PIDS+=($!)
   for _ in $(seq 1 100); do
     curl -fs -o /dev/null "http://127.0.0.1:$2/healthz" && return 0
@@ -137,7 +137,7 @@ check "invalid HOST → exit 2"           2 "$(HOST=nope PORT=1 "$BIN" "$R" 2>/d
 
 # ---------- default bind: dual-stack "::", or 0.0.0.0 without IPv6 ----------
 P3=$(free_port)
-env -u HOST PORT="$P3" "$BIN" "$R" 2>"$TMP/default.log" &
+env -u HOST CANONICAL_HOST= PORT="$P3" "$BIN" "$R" 2>"$TMP/default.log" &
 PIDS+=($!)
 for _ in $(seq 1 100); do curl -fs -o /dev/null "http://127.0.0.1:$P3/healthz" && break; sleep 0.05; done
 check "default HOST reachable over IPv4" 200 "$(code "http://127.0.0.1:$P3/healthz")"
@@ -147,6 +147,36 @@ if [[ -e /proc/net/if_inet6 ]] && grep -q ' lo$' /proc/net/if_inet6; then
 else
   check "no IPv6: falls back to 0.0.0.0" yes "$(grep -q 'http://0.0.0.0' "$TMP/default.log" && echo yes)"
 fi
+
+# ---------- CANONICAL_HOST ----------
+check "no CANONICAL_HOST: any Host → 200"  200 "$(code -H 'Host: whatever.onrender.com' "$B/")"
+check "empty CANONICAL_HOST: any Host → 200" 200 "$(code -H 'Host: other.example' "http://127.0.0.1:$P3/")"
+
+P4=$(free_port)
+C="http://127.0.0.1:$P4"
+start "$R" "$P4" shop.example.test
+check "canonical: other host → 301"     301 "$(code -H 'Host: unemployed-6c7e.onrender.com' "$C/")"
+check "canonical: Location"             "https://shop.example.test/" "$(hdr Location -H 'Host: unemployed-6c7e.onrender.com' "$C/")"
+check "canonical: keeps path + query"   "https://shop.example.test/sub/?a=1&b=2" "$(hdr Location -H 'Host: x.onrender.com' "$C/sub/?a=1&b=2")"
+check "canonical: missing file still redirects" "https://shop.example.test/nope.html" "$(hdr Location -H 'Host: x.onrender.com' "$C/nope.html")"
+check "canonical: HEAD → 301"           301 "$(code -I -H 'Host: x.onrender.com' "$C/")"
+check "canonical: 301 is not cached"    "no-store" "$(hdr Cache-Control -H 'Host: x.onrender.com' "$C/")"
+check "canonical: 301 has security headers" "nosniff" "$(hdr X-Content-Type-Options -H 'Host: x.onrender.com' "$C/")"
+check "canonical: own host → 200"       200 "$(code -H 'Host: shop.example.test' "$C/")"
+check "canonical: case + port ignored"  200 "$(code -H 'Host: SHOP.Example.TEST:443' "$C/")"
+check "canonical: trailing dot ignored" 200 "$(code -H 'Host: shop.example.test.' "$C/")"
+check "canonical: body served"          "$(cat "$R/index.html")" "$(curl -s -H 'Host: shop.example.test' "$C/")"
+check "canonical: subdomain is not ours" 301 "$(code -H 'Host: evil.shop.example.test' "$C/")"
+check "canonical: suffix trick is not ours" 301 "$(code -H 'Host: shop.example.test.evil.org' "$C/")"
+check "canonical: /healthz exempt"      200 "$(code -H 'Host: unemployed-6c7e.onrender.com' "$C/healthz")"
+check "canonical: /healthz?probe exempt" 200 "$(code -H 'Host: x.onrender.com' "$C/healthz?probe=1")"
+PORT_SAVE=$PORT; PORT=$P4
+check "canonical: no Host (HTTP/1.0) → 301" 301 "$(raw 'GET / HTTP/1.0\r\n\r\n')"
+check "canonical: two Host headers → 400" 400 "$(raw 'GET / HTTP/1.1\r\nHost: shop.example.test\r\nHost: evil.org\r\n\r\n')"
+check "canonical: lower-case host: header" 200 "$(raw 'GET / HTTP/1.1\r\nhost:   shop.example.test  \r\n\r\n')"
+PORT=$PORT_SAVE
+check "invalid CANONICAL_HOST → exit 2" 2 "$(CANONICAL_HOST='bad host' PORT=1 "$BIN" "$R" 2>/dev/null; echo $?)"
+check "CANONICAL_HOST with path → exit 2" 2 "$(CANONICAL_HOST='x.org/evil' PORT=1 "$BIN" "$R" 2>/dev/null; echo $?)"
 
 # ---------- real site ----------
 P2=$(free_port)

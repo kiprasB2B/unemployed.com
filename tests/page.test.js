@@ -116,6 +116,46 @@ async function startServer() {
     const fontsAfterClick = await page.$$eval('#print .ltr', es => es.map(e => e.style.fontFamily).join());
     ok('anno click changes a letter', fontsAfterClick !== fontsAfterDrag);
 
+    // ---- dizainas: raudona juosta, sukrautos panelės, stikliniai objektai ----
+    const ribOff = () => page.$eval('svg.ribbon use', u => parseFloat(getComputedStyle(u).strokeDashoffset));
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' })); await page.waitForTimeout(300);
+    const off0 = await ribOff();
+    await page.evaluate(() => window.scrollTo({ top: document.documentElement.scrollHeight / 2, behavior: 'instant' })); await page.waitForTimeout(300);
+    const off1 = await ribOff();
+    ok('ribbon draws on scroll', off0 > off1 && off1 > 0, `dashoffset ${off0} -> ${off1}`);
+    const ribbons = await page.$$eval('[data-ribbon] > svg.ribbon', e => e.length);
+    ok('ribbon runs through every band', ribbons >= 10, `${ribbons} bands`);
+    ok('ribbon is black on the red section', await page.$eval('[data-red] > svg.ribbon use', u => getComputedStyle(u).stroke) === 'rgb(14, 11, 12)');
+
+    const pinfo = await page.evaluate(async () => {
+      const ps = [...document.querySelectorAll('.panel')];
+      const top0 = ps[0].parentElement.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top: top0 + ps[0].offsetHeight + ps[1].offsetHeight + 40, behavior: 'instant' });
+      await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+      const el = document.elementFromPoint(innerWidth / 2, innerHeight / 2);
+      return {
+        pos: getComputedStyle(ps[0]).position,
+        tops: ps.slice(0, 3).map(p => Math.round(p.getBoundingClientRect().top)),
+        stick: ps.slice(0, 3).map(p => Math.round(parseFloat(getComputedStyle(p).top))),
+        thirdOnTop: ps[2].contains(el)
+      };
+    });
+    ok('sticky panels stack on each other', pinfo.pos === 'sticky' && pinfo.thirdOnTop && pinfo.tops.every((t, i) => Math.abs(t - pinfo.stick[i]) <= 2), JSON.stringify(pinfo));
+
+    await page.evaluate(() => document.querySelector('.statement-obj').scrollIntoView({ block: 'center', behavior: 'instant' }));
+    await page.waitForTimeout(300);
+    const gb = await page.locator('.statement-obj').boundingBox();
+    const cx = gb.x + gb.width / 2, cy = gb.y + gb.height / 2;
+    await page.mouse.move(cx, cy); await page.mouse.down();
+    await page.mouse.move(cx + 120, cy + 60, { steps: 6 });
+    const held = await page.$eval('.statement-obj', e => e.style.translate);
+    await page.mouse.up();
+    await page.waitForTimeout(1800);
+    const back = await page.$eval('.statement-obj', e => e.style.translate);
+    const xy = v => (v || '0px').split(' ').map(parseFloat);
+    ok('glass object follows the pointer', Math.abs(xy(held)[0] - 120) < 2 && Math.abs(xy(held)[1] - 60) < 2, held);
+    ok('glass object springs back', Math.hypot(...xy(back).concat(0).slice(0, 2)) < 1, back);
+
     await page.click('#themeBtn');
     ok('theme light', await page.$eval('html', e => e.dataset.theme) === 'light');
     await page.reload(); await page.waitForTimeout(800);
@@ -148,6 +188,13 @@ async function startServer() {
     ({ ctx, page } = await newPage({ ...devices['iPhone 13'] }));
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
     ok('mobile no horizontal overflow', overflow <= 0, 'overflow ' + overflow);
+    const overflowEnd = await page.evaluate(async () => {
+      window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' });
+      await new Promise(r => setTimeout(r, 300));
+      return document.documentElement.scrollWidth - window.innerWidth;
+    });
+    ok('mobile no horizontal overflow (whole page)', overflowEnd <= 0, 'overflow ' + overflowEnd);
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
     const small = await page.$$eval('button, a.btn, .nav a', es => es.filter(e => { const r = e.getBoundingClientRect(); return r.width > 0 && (r.height < 44 || r.width < 44) && !e.classList.contains('anno') && !e.closest('.print'); }).map(e => (e.className || e.tagName) + ':' + Math.round(e.getBoundingClientRect().width) + 'x' + Math.round(e.getBoundingClientRect().height)));
     ok('mobile tap targets >= 44 px', small.length === 0, small.slice(0, 8).join(', '));
     await page.click('#menuBtn');
@@ -161,6 +208,7 @@ async function startServer() {
     await page.locator('#stats').scrollIntoViewIfNeeded(); await page.waitForTimeout(300);
     ok('reduced motion: counters final', (await page.$eval('#stats [data-count]', e => e.textContent)) === '10');
     ok('reduced motion: marquee static', await page.$eval('.marquee-track', e => getComputedStyle(e).animationName) === 'none');
+    ok('reduced motion: ribbon shown in full', await page.$eval('svg.ribbon use', u => parseFloat(getComputedStyle(u).strokeDashoffset)) === 0);
     await ctx.close();
   } finally {
     await browser.close();
