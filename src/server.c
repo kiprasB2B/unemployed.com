@@ -13,7 +13,10 @@
  *   HOST  IPv4 address to bind         (default 0.0.0.0)
  *   ROOT  directory to serve           (default "public"; argv[1] wins)
  */
-#define _POSIX_C_SOURCE 200809L
+/* XSI (SUSv4) = POSIX.1-2008 + realpath, SA_RESTART. glibc exposes these with
+ * _POSIX_C_SOURCE alone, musl (Alpine) needs _XOPEN_SOURCE under -std=c17.
+ * _XOPEN_SOURCE 700 implies _POSIX_C_SOURCE 200809L, so only one is defined. */
+#define _XOPEN_SOURCE 700
 
 #include <arpa/inet.h>
 #include <errno.h>
