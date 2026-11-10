@@ -1,0 +1,1367 @@
+<!doctype html>
+<html lang="lt" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>unemployed – balti marškinėliai su savo šriftų deriniu</title>
+<meta name="description" content="Balti marškinėliai su užrašu „unemployed“ per krūtinę. Kiekvieną raidę renkiesi pats iš 8 šriftų.">
+<meta name="theme-color" content="#0B0B0C">
+<script>
+  /* Tema nustatoma prieš piešimą, kad nemirgėtų */
+  try { var t = JSON.parse(localStorage.getItem('unemployed.theme')); if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+  document.documentElement.classList.add('js');
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Puslapio šriftai (Unbounded, Manrope, Poppins 700) + 8 produkto šriftai. Keičiant CONFIG.product.fonts, atnaujink ir šią nuorodą. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Bungee&family=Lobster&family=Manrope:wght@400;500;700;800&family=Pacifico&family=Permanent+Marker&family=Poppins:wght@700&family=Press+Start+2P&family=Rubik+Mono+One&family=Special+Elite&family=Unbounded:wght@500;700;900&display=swap">
+<style>
+/* ============ 1. TAPATYBĖ: 3 spalvos, viskas per kintamuosius ============ */
+:root{
+  --black:#0B0B0C; --white:#FFFFFF; --pink:#FF2BA6;
+  --font-head:'Unbounded', system-ui, sans-serif;
+  --font-body:'Manrope', system-ui, sans-serif;
+  --font-cap:'Poppins', system-ui, sans-serif;
+  --radius:16px;
+  --wrap:1200px;
+  --gutter:clamp(16px, 4vw, 40px);
+  --ease-pop:cubic-bezier(.34,1.56,.64,1);
+}
+[data-theme="dark"]{
+  --bg:var(--black); --fg:var(--white);
+  --muted:rgba(255,255,255,.7); --line:rgba(255,255,255,.16);
+  --surface:rgba(255,255,255,.05); --surface-2:rgba(255,255,255,.1);
+  --cap-bg:var(--white); --cap-fg:var(--pink); --cap-edge:transparent;
+  --cap-shadow:6px 6px 0 rgba(255,255,255,.2);
+  --shirt:var(--white); --shirt-line:rgba(11,11,12,.14);
+  --on-accent:var(--black);
+  color-scheme:dark;
+}
+[data-theme="light"]{
+  --bg:var(--white); --fg:var(--black);
+  --muted:rgba(11,11,12,.7); --line:rgba(11,11,12,.16);
+  --surface:rgba(11,11,12,.04); --surface-2:rgba(11,11,12,.08);
+  --cap-bg:var(--white); --cap-fg:var(--pink); --cap-edge:var(--black);
+  --cap-shadow:6px 6px 0 var(--black);
+  --shirt:var(--white); --shirt-line:rgba(11,11,12,.35);
+  --on-accent:var(--black);
+  color-scheme:light;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:17px;line-height:1.55;overflow-x:hidden;transition:background-color .3s,color .3s}
+img,svg{display:block;max-width:100%}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:inherit}
+h1,h2,h3{font-family:var(--font-head);line-height:1.1;margin:0}
+p{margin:0}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+:focus-visible{outline:3px solid var(--pink);outline-offset:3px;border-radius:6px}
+.skip{position:absolute;left:12px;top:-60px;z-index:100;background:var(--pink);color:var(--on-accent);padding:12px 16px;border-radius:10px;font-weight:800;text-decoration:none}
+.skip:focus{top:12px}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--gutter)}
+
+/* Placeholder – aiškiai pažymėta neužpildyta reikšmė */
+.ph{display:inline-block;border:2px dashed currentColor;border-radius:8px;padding:0 .4em;font-family:var(--font-body);font-weight:800;font-size:.85em;letter-spacing:.02em;line-height:1.5;opacity:.85;white-space:nowrap}
+.ph-block{display:block;border:2px dashed var(--line);border-radius:var(--radius);padding:18px;color:var(--muted);font-weight:700}
+
+/* ============ Titrų stilius ============ */
+.cap{display:inline-block;background:var(--cap-bg);color:var(--cap-fg);font-family:var(--font-cap);font-weight:700;padding:.12em .42em .16em;line-height:1.08;box-shadow:var(--cap-shadow);outline:2px solid var(--cap-edge);transform:rotate(var(--tilt,0deg))}
+.sec-title{font-family:var(--font-cap);font-weight:700;font-size:clamp(1.9rem,4.6vw,3.4rem);line-height:1.32;max-width:16ch;margin:0 0 clamp(28px,4vw,48px);transform:rotate(var(--tilt,0deg));transform-origin:0 50%}
+.sec-title span{background:var(--cap-bg);color:var(--cap-fg);padding:.06em .36em .1em;-webkit-box-decoration-break:clone;box-decoration-break:clone;box-shadow:var(--cap-shadow);outline:2px solid var(--cap-edge)}
+.js .sec-title{opacity:0}
+.sec-title.in{animation:subject .7s var(--ease-pop) both}
+@keyframes subject{
+  0%{opacity:0;transform:scale(.35) rotate(calc(var(--tilt,0deg) * -5))}
+  60%{opacity:1;transform:scale(1.08) rotate(calc(var(--tilt,0deg) * 1.6))}
+  100%{opacity:1;transform:scale(1) rotate(var(--tilt,0deg))}
+}
+
+/* ============ Mygtukai ============ */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;min-height:52px;padding:0 26px;border:0;border-radius:999px;background:var(--pink);color:var(--on-accent);font-family:var(--font-head);font-weight:700;font-size:1rem;text-decoration:none;transition:transform .15s,box-shadow .15s;box-shadow:0 0 0 0 rgba(255,43,166,0)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 26px -8px rgba(255,43,166,.75)}
+.btn:active{transform:translateY(0) scale(.98)}
+.btn:focus-visible{outline:3px solid var(--fg);outline-offset:3px}
+.btn.ghost{background:transparent;color:var(--fg);box-shadow:inset 0 0 0 2px var(--pink)}
+.btn.ghost:hover{box-shadow:inset 0 0 0 2px var(--pink),0 10px 26px -12px rgba(255,43,166,.6)}
+.btn.small{min-height:44px;padding:0 18px;font-size:.88rem}
+.btn.block{width:100%}
+.icon-btn{position:relative;display:inline-grid;place-items:center;width:44px;height:44px;border-radius:12px;border:2px solid var(--line);background:transparent;color:var(--fg);transition:border-color .2s}
+.icon-btn:hover{border-color:var(--pink)}
+.icon-btn svg{width:22px;height:22px}
+.linkish{color:var(--pink);font-weight:700;text-decoration:underline;text-underline-offset:3px;background:none;border:0;padding:0;min-height:44px;display:inline-flex;align-items:center}
+
+/* ============ Viršutinė juosta ============ */
+.topbar{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex;align-items:center;gap:16px;min-height:68px}
+.brand{font-family:var(--font-head);font-weight:900;font-size:1.15rem;text-decoration:none;letter-spacing:-.02em;margin-right:auto;min-height:44px;display:flex;align-items:center}
+.nav ol{list-style:none;margin:0;padding:0;display:flex;gap:4px}
+.nav a{display:flex;align-items:center;gap:8px;min-height:44px;padding:0 12px;border-radius:10px;text-decoration:none;font-weight:700;font-size:.92rem;color:var(--muted);transition:color .2s,background .2s}
+.nav a span{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;border:2px solid var(--line);font-family:var(--font-head);font-size:.7rem;color:var(--fg)}
+.nav a:hover,.nav a[aria-current="true"]{color:var(--fg);background:var(--surface)}
+.nav a[aria-current="true"] span{background:var(--pink);border-color:var(--pink);color:var(--on-accent)}
+.tools{display:flex;gap:8px}
+.menu-btn{display:none}
+.badge{position:absolute;top:-8px;right:-8px;min-width:22px;height:22px;padding:0 6px;border-radius:999px;background:var(--pink);color:var(--on-accent);font:800 .75rem/22px var(--font-body);text-align:center}
+.badge[data-n="0"]{display:none}
+.badge.bump{animation:bump .5s var(--ease-pop)}
+@keyframes bump{0%{transform:scale(1)}35%{transform:scale(1.6) rotate(-8deg)}100%{transform:scale(1)}}
+.theme-btn .moon{display:none}
+[data-theme="light"] .theme-btn .sun{display:none}
+[data-theme="light"] .theme-btn .moon{display:block}
+
+/* ============ Sekcijos ============ */
+section{padding:clamp(64px,9vw,120px) 0;position:relative}
+.back{display:inline-flex;align-items:center;min-height:44px;margin-bottom:12px;color:var(--pink);font-weight:800;text-decoration:none;font-size:.9rem}
+.back:hover{text-decoration:underline}
+.kicker{font-family:var(--font-head);font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.muted{color:var(--muted)}
+
+/* ============ HERO ============ */
+.hero{padding-top:clamp(28px,5vw,64px)}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(24px,4vw,56px);align-items:center}
+.title-stack{display:flex;flex-direction:column;align-items:flex-start;gap:.28em;font-family:var(--font-cap);font-size:clamp(1.9rem,4vw,3.7rem);margin:8px 0 28px}
+.title-stack .cap{white-space:nowrap}
+.title-stack .cap:nth-child(2){margin-left:.9em}
+.title-stack .cap:nth-child(3){margin-left:1.8em}
+.js .title-stack .cap{animation:capIn .8s var(--ease-pop) both}
+.title-stack .cap:nth-child(2){animation-delay:.12s}
+.title-stack .cap:nth-child(3){animation-delay:.24s}
+@keyframes capIn{from{opacity:0;transform:translateY(24px) scale(.6) rotate(calc(var(--tilt) * -4))}to{opacity:1;transform:rotate(var(--tilt))}}
+.lead{font-size:clamp(1.05rem,1.6vw,1.25rem);max-width:34ch;margin-bottom:18px}
+.offer{font-family:var(--font-head);font-weight:700;font-size:1rem;margin-bottom:22px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}
+.offer .price{font-size:1.5rem}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px}
+.trust{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:.95rem}
+.trust svg{width:20px;height:20px;color:var(--pink);flex:none}
+
+/* ============ 3. KONFIGŪRATORIUS ============ */
+.config{background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:clamp(14px,2vw,22px)}
+.config-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.seg{display:inline-flex;padding:4px;border-radius:999px;border:2px solid var(--line);gap:2px}
+.seg button{min-height:44px;min-width:52px;padding:0 14px;border:0;border-radius:999px;background:transparent;font-weight:800;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--pink);color:var(--on-accent)}
+.seg button:focus-visible{outline-color:var(--fg)}
+.stage{position:relative;padding:8% 13% 6%;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.shirt-wrap{position:relative;width:100%;container-type:inline-size;margin:0 auto}
+.shirt{width:100%;height:auto;filter:drop-shadow(0 18px 30px rgba(0,0,0,.35))}
+.shirt .body{fill:var(--shirt);stroke:var(--shirt-line);stroke-width:2}
+.shirt .seam{fill:none;stroke:var(--shirt-line);stroke-width:2}
+.shirt .fold{fill:none;stroke:rgba(11,11,12,.06);stroke-width:6;stroke-linecap:round}
+.print{position:absolute;left:50%;top:27%;transform:translateX(-50%);display:flex;align-items:baseline;justify-content:center;white-space:nowrap;font-size:7.2cqw;line-height:1}
+.ltr{font-size:inherit;font-size-adjust:.53;line-height:1.15;border:0;background:transparent;padding:0 .015em;margin:0;cursor:pointer;border-radius:6px;transition:transform .15s;min-width:0}
+.print .ltr:hover{transform:translateY(-4%) scale(1.08)}
+.print .ltr:focus-visible{outline:2px solid var(--pink);outline-offset:1px}
+.ltr.pop{animation:pop .5s var(--ease-pop)}
+@keyframes pop{0%{transform:scale(1)}30%{transform:scale(1.55) rotate(-10deg)}60%{transform:scale(.9) rotate(4deg)}100%{transform:scale(1)}}
+.hint{font-size:.88rem;color:var(--muted);text-align:center;margin:2px 0 12px}
+
+/* Anotacijos */
+.anno-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.anno-lines line{stroke:var(--fg);stroke-width:1.5;opacity:.85}
+.anno-lines circle{fill:var(--fg);stroke:var(--bg);stroke-width:2}
+.anno{position:absolute;z-index:3;border:0;font-size:clamp(.72rem,1.25vw,.9rem);cursor:grab;touch-action:none;white-space:nowrap;min-height:34px;transition:box-shadow .15s}
+.anno::after{content:"";position:absolute;inset:-6px}
+.anno:hover{box-shadow:var(--cap-shadow),0 0 0 3px var(--pink)}
+.anno.dragging{cursor:grabbing;box-shadow:10px 10px 0 rgba(255,43,166,.5);z-index:5}
+.anno:focus-visible{outline:3px solid var(--pink);outline-offset:3px}
+
+/* Raidžių juosta */
+.strip{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:6px;margin-bottom:16px}
+.chip{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:64px;min-width:44px;padding:6px 2px;border-radius:12px;border:2px solid var(--line);background:var(--surface);transition:border-color .2s,transform .15s}
+.chip:hover{border-color:var(--pink);transform:translateY(-2px)}
+.chip .ltr{font-size:1.7rem;pointer-events:none;padding:0;line-height:1.1}
+.chip small{font-size:.56rem;line-height:1.1;color:var(--muted);text-align:center;font-weight:700;max-width:100%;overflow:hidden;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;min-height:2.2em;padding:0 2px}
+.sizes-row{margin-bottom:16px;border-radius:14px;transition:box-shadow .3s}
+.sizes-row.need{animation:need .9s ease}
+@keyframes need{0%,100%{box-shadow:0 0 0 0 rgba(255,43,166,0)}20%,60%{box-shadow:0 0 0 4px var(--pink)}}
+.row-label{display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:.9rem;margin-bottom:4px}
+.row-label .linkish{font-size:.85rem}
+.sizes{display:flex;flex-wrap:wrap;gap:8px}
+.size{min-width:52px;min-height:48px;padding:0 12px;border-radius:12px;border:2px solid var(--line);background:transparent;font-family:var(--font-head);font-weight:700;font-size:.9rem;transition:border-color .2s,background .2s}
+.size:hover{border-color:var(--pink)}
+.size[aria-pressed="true"]{background:var(--pink);border-color:var(--pink);color:var(--on-accent)}
+.size:focus-visible{outline-color:var(--fg)}
+.config-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-top:14px;border-top:1px solid var(--line)}
+.config-foot .price{font-family:var(--font-head);font-weight:700;font-size:1.35rem}
+.config-foot .sel{font-size:.85rem;color:var(--muted)}
+
+/* ============ Judanti juosta ============ */
+.marquee{overflow:hidden;padding:26px 0;border-block:1px solid var(--line)}
+.marquee-track{display:flex;width:max-content;animation:marq 38s linear infinite}
+.marquee:hover .marquee-track{animation-play-state:paused}
+.marquee-group{display:flex;align-items:center;gap:28px;padding-right:28px}
+.marquee .cap{font-size:clamp(1.05rem,2vw,1.5rem);white-space:nowrap}
+.marquee .label{font-family:var(--font-head);font-weight:900;font-size:clamp(1rem,1.8vw,1.3rem);white-space:nowrap}
+@keyframes marq{to{transform:translateX(-50%)}}
+
+/* ============ 2. KAIP VEIKIA ============ */
+.benefits{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:clamp(48px,6vw,80px)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px;display:flex;flex-direction:column;gap:10px}
+.card .tag{align-self:flex-start;font-size:.72rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--line);border-radius:999px;padding:4px 10px;color:var(--muted)}
+.card h3{font-size:1.12rem}
+.card p{color:var(--muted);font-size:.95rem}
+.demo{margin-top:auto;min-height:118px;border-radius:12px;background:var(--surface-2);display:grid;place-items:center;padding:12px;text-align:center}
+.demo-letter{font-size:3.6rem;border:0;background:transparent;line-height:1.1;color:var(--fg);min-width:88px;min-height:88px;border-radius:12px}
+.demo-letter + small,.demo small{display:block;font-size:.75rem;color:var(--muted);font-weight:700}
+.demo-word{display:flex;align-items:baseline;font-size:1.55rem;line-height:1.2}
+.demo-word .ltr{cursor:default;padding:0}
+.demo-num{font-family:var(--font-head);font-weight:700;font-size:1.15rem;margin-top:6px}
+.demo .sizes{justify-content:center}
+.demo .size{min-width:44px;min-height:44px;padding:0 8px;font-size:.78rem}
+.days{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;max-width:220px}
+.days i{width:12px;height:12px;border-radius:3px;background:var(--line)}
+.in-view .days i{animation:day 4.5s steps(1) infinite;animation-delay:calc(var(--d) * 120ms)}
+@keyframes day{0%{background:var(--line)}5%,80%{background:var(--pink)}100%{background:var(--line)}}
+
+.order{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:clamp(20px,4vw,48px);align-items:start}
+.order h3{font-size:1.5rem;margin-bottom:6px}
+.steps{list-style:none;margin:20px 0 0;padding:0;display:grid;gap:10px;counter-reset:st}
+.steps li{display:flex;gap:14px;align-items:center;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--surface);transition:border-color .3s,background .3s}
+.steps .num{flex:none;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;border:2px solid var(--line);font-family:var(--font-head);font-weight:700;font-size:.85rem;transition:background .3s,border-color .3s}
+.steps .num svg{width:20px;height:20px;display:none;color:var(--on-accent)}
+.steps li.done{border-color:var(--pink)}
+.steps li.done .num{background:var(--pink);border-color:var(--pink)}
+.steps li.done .num b{display:none}
+.steps li.done .num svg{display:block}
+.steps li.just .num{animation:pop .6s var(--ease-pop)}
+.steps li.done .st-title{text-decoration:line-through;text-decoration-color:var(--pink);text-decoration-thickness:2px}
+.st-title{font-weight:800}
+.steps small{display:block;color:var(--muted);font-size:.85rem}
+.progress-card{position:sticky;top:96px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px}
+.progress{height:14px;border-radius:999px;background:var(--surface-2);overflow:hidden;margin:14px 0 10px}
+.progress .bar{height:100%;width:0;background:var(--pink);border-radius:inherit;transition:width .6s var(--ease-pop)}
+.progress-num{font-family:var(--font-head);font-weight:900;font-size:2.4rem;line-height:1}
+.progress-card p{color:var(--muted);font-size:.92rem;margin-bottom:14px}
+
+/* ============ 3. KAINA ============ */
+.calc{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:clamp(20px,4vw,48px);align-items:stretch}
+.calc-in,.calc-out{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:clamp(18px,3vw,30px)}
+.calc-in h3{font-size:1.4rem;margin-bottom:6px}
+.qty-big{font-family:var(--font-head);font-weight:900;font-size:clamp(3rem,8vw,5.5rem);line-height:1;margin:18px 0 6px}
+.qty-big small{font-size:.3em;font-weight:700;color:var(--muted);margin-left:.3em}
+.range{width:100%;height:44px;accent-color:var(--pink);cursor:pointer;margin:8px 0}
+.range-scale{display:flex;justify-content:space-between;color:var(--muted);font-size:.8rem;font-weight:700}
+.tiers{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.tier{border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:.85rem;font-weight:700;color:var(--muted);transition:all .2s}
+.tier.on{border-color:var(--pink);color:var(--fg);box-shadow:inset 0 0 0 1px var(--pink)}
+.calc-out dl{margin:0 0 20px;display:grid;gap:0}
+.calc-out .line{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}
+.calc-out dt{color:var(--muted);font-weight:700}
+.calc-out dd{margin:0;font-family:var(--font-head);font-weight:700;text-align:right}
+.calc-out .total dd{font-size:clamp(1.6rem,3.5vw,2.3rem)}
+.calc-out .save{color:var(--fg)}
+
+/* ============ 4. ISTORIJA ============ */
+.logo-big{display:flex;flex-wrap:nowrap;white-space:nowrap;align-items:baseline;justify-content:center;container-type:inline-size;line-height:1;margin:0 0 clamp(36px,5vw,64px);padding:clamp(20px,4vw,40px) 10px;border-radius:24px;background:var(--white);overflow:hidden}
+[data-theme="light"] .logo-big{box-shadow:inset 0 0 0 2px var(--line)}
+.logo-big .ltr{cursor:default;padding:0 .01em;font-size:11cqw}
+.story{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(20px,4vw,56px);margin-bottom:clamp(40px,6vw,72px)}
+.story-text p{margin-bottom:14px;font-size:1.06rem}
+.story-text .big{font-family:var(--font-head);font-weight:700;font-size:clamp(1.25rem,2.2vw,1.6rem);line-height:1.3}
+.timeline{position:relative}
+.tl-btns{display:flex;gap:8px;flex-wrap:wrap;position:relative;margin-bottom:14px}
+.tl-btn{min-height:48px;padding:0 18px;border-radius:999px;border:2px solid var(--line);background:var(--bg);font-family:var(--font-head);font-weight:700;font-size:.85rem;transition:all .2s}
+.tl-btn:hover{border-color:var(--pink)}
+.tl-btn[aria-selected="true"]{background:var(--pink);border-color:var(--pink);color:var(--on-accent)}
+.tl-btn:focus-visible{outline-color:var(--fg)}
+.tl-panel{border:1px solid var(--line);border-radius:var(--radius);padding:20px;background:var(--surface);min-height:150px}
+.tl-panel h3{font-size:1.15rem;margin-bottom:6px}
+.tl-panel .date{color:var(--muted);font-weight:700;font-size:.9rem;margin-bottom:10px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:clamp(40px,6vw,72px)}
+.stat{border-top:3px solid var(--fg);padding-top:14px}
+.stat .n{font-family:var(--font-head);font-weight:900;font-size:clamp(1.6rem,3.4vw,2.6rem);line-height:1.1;font-variant-numeric:tabular-nums;word-break:break-word}
+.stat p{color:var(--muted);font-weight:700;font-size:.92rem;margin-top:6px}
+.quote{display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(16px,3vw,40px);align-items:center;border:1px solid var(--line);border-radius:24px;padding:clamp(20px,4vw,40px);background:var(--surface)}
+.quote .fig{font-family:var(--font-head);font-weight:900;font-size:clamp(2.6rem,7vw,5rem);line-height:1}
+.quote .fig small{display:block;font-size:.85rem;font-family:var(--font-body);font-weight:700;color:var(--muted);margin-top:6px;max-width:16ch}
+.quote blockquote{margin:0;font-size:clamp(1.1rem,2vw,1.4rem);font-weight:500}
+.quote cite{display:block;margin-top:10px;font-style:normal;font-weight:800;color:var(--muted);font-size:.95rem}
+
+/* ============ 5. PABAIGA ============ */
+.final{text-align:center;padding:clamp(20px,4vw,40px) 0 clamp(56px,7vw,96px)}
+.final .cap{font-size:clamp(2rem,6vw,4.6rem);margin:0 auto}
+.final .cap + .cap{display:table;margin-top:.2em}
+.js .final .cap{opacity:0}
+.final.in .cap{animation:capIn .8s var(--ease-pop) both}
+.final.in .cap + .cap{animation-delay:.15s}
+.final .actions{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:clamp(28px,4vw,44px)}
+.faq-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:clamp(20px,4vw,56px);align-items:start}
+.faq h3,.contacts h3{font-size:1.3rem;margin-bottom:14px}
+details{border-bottom:1px solid var(--line)}
+summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:60px;padding:10px 4px;font-weight:800;font-size:1.04rem}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";flex:none;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--pink);color:var(--on-accent);font:700 1.2rem/1 var(--font-head);transition:transform .3s}
+details[open] summary::after{transform:rotate(45deg)}
+details .ans{padding:0 4px 18px;color:var(--muted)}
+details .ans p+p{margin-top:8px}
+.size-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:.9rem}
+.size-table th,.size-table td{border:1px solid var(--line);padding:8px;text-align:center}
+.contacts{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px}
+.contacts dl{margin:0}
+.contacts dt{font-size:.75rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:14px}
+.contacts dd{margin:4px 0 0;font-weight:700}
+.contacts a{color:var(--pink);font-weight:800;text-underline-offset:3px}
+.socials{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.socials a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border-radius:999px;border:2px solid var(--pink);text-decoration:none;color:var(--fg)}
+footer{border-top:1px solid var(--line);padding:28px 0 110px;color:var(--muted);font-size:.88rem}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
+
+/* ============ 4. KREPŠELIS ============ */
+.scrim{position:fixed;inset:0;z-index:60;background:rgba(11,11,12,.6);opacity:0;pointer-events:none;transition:opacity .3s}
+.scrim.open{opacity:1;pointer-events:auto}
+.cart{position:fixed;top:0;right:0;bottom:0;z-index:61;width:min(440px,100vw);background:var(--bg);border-left:1px solid var(--line);display:flex;flex-direction:column;transform:translateX(105%);transition:transform .38s cubic-bezier(.2,.8,.2,1);visibility:hidden}
+.cart.open{transform:none;visibility:visible}
+.cart-head{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--line)}
+.cart-head h2{font-size:1.2rem}
+.cart-items{flex:1;overflow-y:auto;padding:8px 20px;list-style:none;margin:0}
+.item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 12px;padding:16px 0;border-bottom:1px solid var(--line)}
+.item-word{display:flex;align-items:baseline;flex-wrap:wrap;font-size:1.45rem;line-height:1.2;background:var(--white);border-radius:10px;padding:6px 10px;grid-column:1/-1}
+.item-word .ltr{cursor:default;padding:0}
+.item-meta{font-size:.88rem;color:var(--muted);font-weight:700}
+.item-price{font-family:var(--font-head);font-weight:700;text-align:right}
+.qty{display:inline-flex;align-items:center;border:2px solid var(--line);border-radius:999px}
+.qty button{width:44px;height:44px;border:0;background:transparent;font-size:1.2rem;font-weight:800;border-radius:999px;color:var(--pink)}
+.qty output{min-width:28px;text-align:center;font-weight:800}
+.remove{min-height:44px;color:var(--pink);background:none;border:0;font-weight:800;text-decoration:underline;text-underline-offset:3px;justify-self:end}
+.cart-empty{padding:40px 20px;text-align:center;color:var(--muted)}
+.cart-empty p{margin-bottom:16px}
+.cart-foot{padding:16px 20px 20px;border-top:1px solid var(--line);display:grid;gap:6px}
+.cart-foot .line{display:flex;justify-content:space-between;font-weight:700;color:var(--muted)}
+.cart-foot .line.total{color:var(--fg);font-family:var(--font-head);font-size:1.25rem;margin:6px 0 10px}
+
+/* ============ Pranešimai ============ */
+.toasts{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:80;display:grid;gap:8px;width:min(480px,calc(100vw - 32px));pointer-events:none}
+.toast{pointer-events:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--fg);color:var(--bg);padding:12px 12px 12px 18px;border-radius:14px;font-weight:700;box-shadow:0 14px 40px rgba(0,0,0,.35);animation:toastIn .35s var(--ease-pop) both}
+.toast.out{animation:toastOut .25s ease both}
+.toast button{min-height:44px;padding:0 14px;border-radius:10px;border:0;background:var(--pink);color:var(--on-accent);font-weight:800;flex:none}
+@keyframes toastIn{from{opacity:0;transform:translateY(20px) scale(.95)}}
+@keyframes toastOut{to{opacity:0;transform:translateY(12px)}}
+
+/* ============ Prisitaikymas ============ */
+@media (max-width:1020px){
+  .benefits{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:900px){
+  .hero .wrap,.order,.calc,.story,.faq-grid{grid-template-columns:minmax(0,1fr)}
+  .progress-card{position:static}
+  .menu-btn{display:inline-grid}
+  .nav{position:absolute;left:0;right:0;top:100%;background:var(--bg);border-bottom:1px solid var(--line);display:none;padding:8px var(--gutter) 16px}
+  .topbar.nav-open .nav{display:block}
+  .nav ol{flex-direction:column}
+  .nav a{min-height:52px;font-size:1rem}
+}
+@media (max-width:600px){
+  body{font-size:16px}
+  .strip{grid-template-columns:repeat(5,minmax(0,1fr))}
+  .benefits,.stats{grid-template-columns:minmax(0,1fr)}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .title-stack .cap:nth-child(2){margin-left:.5em}
+  .title-stack .cap:nth-child(3){margin-left:1em}
+  .cta-row .btn{flex:1 1 auto}
+  .config-foot .btn{width:100%}
+  .stage{padding:16% 4% 14%}
+  .quote{grid-template-columns:minmax(0,1fr)}
+  .brand{font-size:1rem}
+}
+
+/* ============ Mažiau judesio ============ */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  .marquee-track{animation:none!important;width:auto;flex-wrap:wrap}
+  .marquee-group{flex-wrap:wrap;justify-content:center;padding:0 var(--gutter);gap:16px}
+  .marquee-group[aria-hidden="true"]{display:none}
+  .in-view .days i{animation:none!important;background:var(--pink)}
+}
+
+/* ============ Spausdinimas ============ */
+@media print{
+  :root,[data-theme]{--bg:#fff;--fg:#0B0B0C;--muted:#333;--line:#bbb;--surface:transparent;--surface-2:transparent}
+  .topbar,.cart,.scrim,.toasts,.marquee,.back,.btn,.anno,.anno-lines,.skip{display:none!important}
+  .js .sec-title,.js .final .cap{opacity:1}
+  details::details-content{content-visibility:visible;display:block;height:auto}
+  details>:not(summary){display:block!important}
+  summary::after{display:none}
+  section{padding:24px 0;break-inside:avoid-page}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Pereiti prie turinio</a>
+
+<header class="topbar" id="top">
+  <div class="wrap">
+    <a class="brand" href="#pradzia" data-bind="brand">unemployed</a>
+    <nav class="nav" id="nav" aria-label="Skyriai">
+      <ol>
+        <li><a href="#pradzia"><span>1</span>Pradžia</a></li>
+        <li><a href="#kaip"><span>2</span>Kaip veikia</a></li>
+        <li><a href="#kaina"><span>3</span>Kaina</a></li>
+        <li><a href="#istorija"><span>4</span>Istorija</a></li>
+        <li><a href="#uzsakyk"><span>5</span>Užsakyk</a></li>
+      </ol>
+    </nav>
+    <div class="tools">
+      <button class="icon-btn theme-btn" id="themeBtn" type="button" aria-pressed="false" aria-label="Šviesus režimas">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
+      </button>
+      <button class="icon-btn" id="cartBtn" type="button" aria-controls="cart" aria-expanded="false" aria-label="Krepšelis, prekių: 0">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.2 12H6.2L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+        <span class="badge" id="cartCount" data-n="0" aria-hidden="true">0</span>
+      </button>
+      <button class="icon-btn menu-btn" id="menuBtn" type="button" aria-controls="nav" aria-expanded="false" aria-label="Meniu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ============ 1. HERO ============ -->
+<section class="hero" id="pradzia" aria-labelledby="hero-title">
+  <div class="wrap">
+    <div class="hero-copy">
+      <h1 class="title-stack" id="hero-title">
+        <span class="cap" style="--tilt:-2.5deg">Darbo neturiu.</span>
+        <span class="cap" style="--tilt:1.5deg">Stiliaus –</span>
+        <span class="cap" style="--tilt:-1deg">per akis.</span>
+      </h1>
+      <p class="lead">Balti marškinėliai su užrašu „unemployed“ per krūtinę – kiekvienai raidei šriftą parenki pats.</p>
+      <p class="offer"><span class="price" data-bind="price"></span><span aria-hidden="true">·</span><span>Pristatymas: <span data-bind="shipping"></span></span></p>
+      <div class="cta-row">
+        <button class="btn" type="button" data-action="add">Į krepšelį</button>
+        <a class="btn ghost" href="#kaip">Kaip tai veikia</a>
+      </div>
+      <p class="trust"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg><span>Grąžinimas per <span data-bind="returnDays"></span> d.</span></p>
+    </div>
+
+    <!-- 3. KONFIGŪRATORIUS -->
+    <div class="config" id="konfiguratorius" aria-label="Marškinėlių konfigūratorius">
+      <div class="config-head">
+        <div class="seg" role="group" aria-label="Variantas">
+          <button type="button" data-variant="A" aria-pressed="true" title="Laukinis šriftų mišinys">A</button>
+          <button type="button" data-variant="B" aria-pressed="false" title="Ramesnis">B</button>
+          <button type="button" data-variant="custom" aria-pressed="false" title="Tavo derinys">Savas</button>
+        </div>
+        <button class="btn ghost small" type="button" id="shuffleBtn">Sumaišyk</button>
+      </div>
+
+      <div class="stage" id="stage">
+        <div class="shirt-wrap" id="shirtWrap">
+          <svg class="shirt" viewBox="0 0 400 440" aria-hidden="true">
+            <path class="body" d="M152 20 Q200 76 248 20 L318 40 Q350 50 366 76 L397 142 L338 170 L318 130 L318 420 Q200 434 82 420 L82 130 L62 170 L3 142 L34 76 Q50 50 82 40 Z"/>
+            <path class="seam" d="M162 25 Q200 64 238 25"/>
+            <path class="seam" d="M318 130 L310 88 M82 130 L90 88"/>
+            <path class="fold" d="M120 300 Q140 360 128 404 M282 290 Q264 350 276 404"/>
+          </svg>
+          <div class="print" id="print" role="group" aria-label="Užrašas ant marškinėlių – spausk raides"></div>
+        </div>
+        <svg class="anno-lines" id="annoLines" aria-hidden="true"></svg>
+        <button type="button" class="anno cap" data-anno="letter" data-target=".38,.34" data-pos="0,2" style="--tilt:-3deg">Spausk raidę!</button>
+        <button type="button" class="anno cap" data-anno="story" data-target=".6,.07" data-pos="70,1" style="--tilt:2.5deg">Kas čia per daiktas?</button>
+        <button type="button" class="anno cap" data-anno="size" data-target=".86,.37" data-pos="66,80" style="--tilt:-1.5deg">Kokio dydžio?</button>
+      </div>
+      <p class="hint">Kiekviena raidė – mygtukas. Užrašus aplink gali tempti.</p>
+
+      <div class="strip" id="strip" role="group" aria-label="Raidės ir jų šriftai"></div>
+
+      <div class="sizes-row" id="sizes">
+        <div class="row-label"><span id="sizesLabel">Dydis</span><a class="linkish" href="#duk-dydziai" data-open-details>Dydžių lentelė</a></div>
+        <div class="sizes" role="group" aria-labelledby="sizesLabel" data-sizes></div>
+      </div>
+
+      <div class="config-foot">
+        <div><div class="price" data-bind="price"></div><div class="sel" id="selSummary"></div></div>
+        <button class="btn" type="button" data-action="add">Į krepšelį</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee" aria-label="Kur juos nešioti">
+  <div class="marquee-track" id="marquee"></div>
+</div>
+
+<!-- ============ 2. KAIP VEIKIA ============ -->
+<section id="kaip" aria-labelledby="kaip-title">
+  <div class="wrap">
+    <a class="back" href="#top">↖ Atgal</a>
+    <h2 class="sec-title" id="kaip-title" style="--tilt:-2deg"><span>Kaip tai veikia</span></h2>
+
+    <div class="benefits">
+      <article class="card">
+        <span class="tag">Raidės</span>
+        <h3>Kiekviena raidė – savo charakteris</h3>
+        <p>8 šriftai, 10 raidžių. Spausk raidę – ji persirengia.</p>
+        <div class="demo"><div><button class="demo-letter ltr" type="button" id="demoLetter" aria-label="Pakeisti demonstracinės raidės šriftą">u</button><small id="demoLetterName"></small></div></div>
+      </article>
+      <article class="card">
+        <span class="tag">Deriniai</span>
+        <h3>Daugiau nei milijardas derinių</h3>
+        <p>Toks pats kaip tavo – tik tavo. Variantas A, B arba savas.</p>
+        <div class="demo"><div><div class="demo-word" id="demoWord" aria-hidden="true"></div><div class="demo-num"><span data-combos></span></div><small>galimų derinių</small></div></div>
+      </article>
+      <article class="card">
+        <span class="tag">Dydis</span>
+        <h3>Dydis vienu paspaudimu</h3>
+        <p>Pasirink čia arba prie marškinėlių – pasirinkimas įsimenamas.</p>
+        <div class="demo"><div class="sizes" role="group" aria-label="Dydis (greitas pasirinkimas)" data-sizes></div></div>
+      </article>
+      <article class="card" id="returnsCard">
+        <span class="tag">Grąžinimas</span>
+        <h3>Netiko? Grąžink.</h3>
+        <p>Grąžinimas per <span data-bind="returnDays"></span> d.</p>
+        <div class="demo"><div><div class="days" id="days" aria-hidden="true"></div><small id="daysLabel"></small></div></div>
+      </article>
+    </div>
+
+    <div class="order">
+      <div>
+        <p class="kicker">Užsakymas</p>
+        <h3>4 žingsniai iki marškinėlių</h3>
+        <p class="muted">Žingsniai pasižymi patys, kai juos atlieki.</p>
+        <ol class="steps" id="steps">
+          <li data-step="variant"><span class="num"><b>1</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span><div><span class="st-title">Pasirink variantą</span><small>A, B arba spausk raides ir susikurk savą</small></div><span class="sr-only st-state">neatlikta</span></li>
+          <li data-step="size"><span class="num"><b>2</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span><div><span class="st-title">Pasirink dydį</span><small>Be dydžio į krepšelį nededame</small></div><span class="sr-only st-state">neatlikta</span></li>
+          <li data-step="cart"><span class="num"><b>3</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span><div><span class="st-title">Įdėk į krepšelį</span><small>Gali įdėti kelis skirtingus derinius</small></div><span class="sr-only st-state">neatlikta</span></li>
+          <li data-step="order"><span class="num"><b>4</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span><div><span class="st-title">Užsakyk</span><small>Krepšelyje spausk „Užsakyti“</small></div><span class="sr-only st-state">neatlikta</span></li>
+        </ol>
+      </div>
+      <aside class="progress-card" aria-label="Užsakymo progresas">
+        <p class="kicker">Progresas</p>
+        <div class="progress-num"><span id="progressNum">0</span> / 4</div>
+        <div class="progress" role="progressbar" aria-label="Atlikti žingsniai" aria-valuemin="0" aria-valuemax="4" aria-valuenow="0" id="progress"><div class="bar"></div></div>
+        <p id="progressText">Pradėk nuo varianto.</p>
+        <a class="btn block" href="#konfiguratorius" id="progressCta">Į konfigūratorių</a>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3. KAINA ============ -->
+<section id="kaina" aria-labelledby="kaina-title">
+  <div class="wrap">
+    <a class="back" href="#top">↖ Atgal</a>
+    <h2 class="sec-title" id="kaina-title" style="--tilt:1.8deg"><span>Pirk draugams, mokėk mažiau</span></h2>
+    <div class="calc">
+      <div class="calc-in">
+        <h3>Kiek marškinėlių?</h3>
+        <p class="muted">Tempk slankiklį – vieneto kaina krenta, kai perki daugiau.</p>
+        <div class="qty-big" aria-hidden="true"><span id="calcQtyBig">1</span><small>vnt.</small></div>
+        <label class="sr-only" for="calcRange">Kiekis</label>
+        <input class="range" type="range" id="calcRange" min="1" max="10" step="1" value="1">
+        <div class="range-scale" aria-hidden="true"><span>1</span><span id="calcMax">10</span></div>
+        <div class="tiers" id="tiers"></div>
+      </div>
+      <div class="calc-out" aria-live="polite">
+        <dl>
+          <div class="line"><dt>Vieneto kaina</dt><dd id="calcUnit"></dd></div>
+          <div class="line"><dt>Nuolaida</dt><dd id="calcDisc"></dd></div>
+          <div class="line"><dt>Sutaupai</dt><dd id="calcSave" class="save"></dd></div>
+          <div class="line total"><dt>Suma</dt><dd id="calcSum"></dd></div>
+        </dl>
+        <button class="btn block" type="button" data-action="add-qty" id="calcAdd">Į krepšelį: 1 vnt.</button>
+        <p class="muted" style="font-size:.85rem;margin-top:10px">Į krepšelį dedamas dabartinis derinys ir pasirinktas dydis. Nuolaida taikoma visam krepšeliui.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. ISTORIJA ============ -->
+<section id="istorija" aria-labelledby="istorija-title">
+  <div class="wrap">
+    <a class="back" href="#top">↖ Atgal</a>
+    <h2 class="sec-title" id="istorija-title" style="--tilt:-1.2deg"><span>Iš kur tas „unemployed“</span></h2>
+
+    <div class="logo-big" id="logoBig" role="img" aria-label="unemployed logotipas tavo pasirinktais šriftais"></div>
+
+    <div class="story">
+      <div class="story-text">
+        <p class="big">Darbas – ne vienintelis būdas pasakyti, kas esi.</p>
+        <div id="storyBody"></div>
+      </div>
+      <div class="timeline">
+        <p class="kicker">Drop’ų laiko juosta</p>
+        <div class="tl-btns" role="tablist" aria-label="Drop’ai" id="tlBtns"></div>
+        <div class="tl-panel" role="tabpanel" id="tlPanel" tabindex="0"></div>
+      </div>
+    </div>
+
+    <div class="stats" id="stats"></div>
+
+    <figure class="quote" id="quote" style="margin:0"></figure>
+  </div>
+</section>
+
+<!-- ============ 5. UŽSAKYK + DUK ============ -->
+<section id="uzsakyk" aria-labelledby="final-title">
+  <div class="wrap">
+    <a class="back" href="#top">↖ Atgal</a>
+    <div class="final">
+      <h2 id="final-title" style="margin:0">
+        <span class="cap" style="--tilt:-2deg">Darbo nėra.</span>
+        <span class="cap" style="--tilt:2deg">Marškinėliai yra.</span>
+      </h2>
+      <div class="actions">
+        <button class="btn" type="button" data-action="add">Į krepšelį</button>
+        <a class="btn ghost" href="#konfiguratorius">Kurti savo derinį</a>
+      </div>
+    </div>
+
+    <div class="faq-grid">
+      <div class="faq">
+        <h3>DUK</h3>
+        <details id="duk-laikas"><summary>Ar suspėsiu gauti laiku?</summary><div class="ans"><p>Pristatymas: <span data-bind="shipping"></span>.</p><p>Jei skubi – parašyk: <span data-bind="emailLink"></span></p></div></details>
+        <details id="duk-kas"><summary>Kas tai iš tikrųjų?</summary><div class="ans"><p>Balti marškinėliai su užrašu „unemployed“ per krūtinę. Kiekviena iš 10 raidžių gali būti vienu iš 8 šriftų, spalvos kartojasi tokia tvarka: mėlyna, raudona, geltona, mėlyna, žalia, raudona.</p><p>Medžiaga: <span data-bind="material"></span></p></div></details>
+        <details id="duk-kaina"><summary>Kiek kainuoja?</summary><div class="ans"><p>Vieneto kaina: <span data-bind="price"></span>. Perkant daugiau taikoma nuolaida: <span data-bind="tiersText"></span></p><p>Pristatymas: <span data-bind="shipping"></span>.</p></div></details>
+        <details id="duk-dydziai"><summary>Kokį dydį rinktis?</summary><div class="ans"><p>Dydžiai: <span data-bind="sizesText"></span>.</p><div data-bind="sizeChart"></div></div></details>
+        <details id="duk-savas"><summary>Ar galiu susikurti savo derinį?</summary><div class="ans"><p>Taip. Konfigūratoriuje spausk bet kurią raidę – ji pakeis šriftą. Tavo derinys įrašomas į užsakymą tiksliai toks, kokį matai krepšelyje.</p><p>Dėl kitokio užrašo ar spalvų – parašyk: <span data-bind="emailLink"></span></p></div></details>
+        <details id="duk-grazinimas"><summary>O jei netiks?</summary><div class="ans"><p>Grąžinimas per <span data-bind="returnDays"></span> d. nuo gavimo.</p><p>Kaip grąžinti – parašyk: <span data-bind="emailLink"></span></p></div></details>
+      </div>
+      <aside class="contacts" aria-labelledby="contacts-title">
+        <h3 id="contacts-title">Kontaktai</h3>
+        <dl>
+          <dt>El. paštas</dt><dd data-bind="emailLink"></dd>
+          <dt>Įmonė</dt><dd data-bind="company"></dd>
+          <dt>Adresas</dt><dd data-bind="address"></dd>
+          <dt>Socialiniai tinklai</dt><dd><div class="socials" data-bind="socials"></div></dd>
+        </dl>
+      </aside>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="year"></span> <span data-bind="company"></span></span>
+    <a class="linkish" href="#top">↖ Į viršų</a>
+  </div>
+</footer>
+
+<!-- ============ KREPŠELIS ============ -->
+<div class="scrim" id="scrim"></div>
+<aside class="cart" id="cart" role="dialog" aria-modal="true" aria-labelledby="cartTitle" inert>
+  <div class="cart-head">
+    <h2 id="cartTitle">Krepšelis</h2>
+    <button class="icon-btn" type="button" id="cartClose" aria-label="Uždaryti krepšelį">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <ul class="cart-items" id="cartItems"></ul>
+  <div class="cart-empty" id="cartEmpty" hidden>
+    <p>Krepšelis tuščias. Susikurk derinį ir pasirink dydį.</p>
+    <button class="btn" type="button" id="cartToConfig">Kurti derinį</button>
+  </div>
+  <div class="cart-foot" id="cartFoot">
+    <div class="line"><span>Tarpinė suma</span><span id="cartSub"></span></div>
+    <div class="line"><span>Nuolaida</span><span id="cartDisc"></span></div>
+    <div class="line total"><span>Iš viso</span><span id="cartTotal"></span></div>
+    <button class="btn block" type="button" id="checkoutBtn">Užsakyti</button>
+  </div>
+</aside>
+
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+
+<script>
+/* =====================================================================
+   CONFIG – VISI VERSLO DUOMENYS ČIA. null = neužpildyta → puslapyje
+   rodoma pažymėta vieta, pvz. [KAINA]. Nieko neišgalvok – užpildyk tikrais.
+   ===================================================================== */
+const CONFIG = {
+  brand: 'unemployed',
+  currency: 'EUR',
+  price: null,                 // vieneto kaina, pvz. 29
+  sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'], // patikrink, kokius dydžius tikrai turi
+  sizeChart: null,             // pvz. { columns: ['Dydis','Plotis, cm','Ilgis, cm'], rows: [['S', 49, 70], ['M', 52, 72]] }
+  material: null,              // pvz. '100 % medvilnė, 180 g/m²'
+  shipping: null,              // pvz. 'Lietuvoje per 2–4 d. d., nuo 3 €'
+  returnDays: null,            // pvz. 14
+  discountTiers: null,         // pvz. [{ min: 2, pct: 10 }, { min: 3, pct: 15 }, { min: 5, pct: 20 }]
+  calculatorMax: 10,
+  checkoutUrl: null,           // apmokėjimo nuoroda (Stripe Payment Link ar pan.)
+  email: null,                 // užsakymams ir klausimams
+  company: null,               // įmonės pavadinimas, kodas
+  address: null,               // adresas
+  socials: { instagram: null, tiktok: null, facebook: null }, // pilnos nuorodos
+  story: null,                 // kilmės istorija: ['pastraipa', 'pastraipa']
+  drops: [                     // drop’ų laiko juosta
+    { code: '01', title: 'unemployed', date: null, text: 'Balti marškinėliai su užrašu „unemployed“ per krūtinę. Kiekvienai raidei – savas šriftas.' },
+    { code: '02', title: null, date: null, text: null }
+  ],
+  soldCount: null,             // kiek parduota (tik tikras skaičius)
+  testimonial: null,           // { quote: '...', author: 'Vardas, miestas', figure: 4.9, figureLabel: 'vid. įvertinimas iš 5' }
+  wearPlaces: ['Į darbo pokalbį', 'Į kavą antradienį 11:00', 'Į pirmadienį be žadintuvo', 'Į parodos atidarymą', 'Į festivalį', 'Į šeimos šventę'],
+  partners: [],                // pvz. ['Kavinė X', 'Studija Y'] – rodomi judančioje juostoje
+  product: {
+    word: 'unemployed',
+    // 8 Google Fonts šriftai (atnaujink ir <link> viršuje)
+    fonts: [
+      { name: 'Bungee', family: "'Bungee', sans-serif" },
+      { name: 'Pacifico', family: "'Pacifico', cursive" },
+      { name: 'Abril Fatface', family: "'Abril Fatface', serif" },
+      { name: 'Press Start 2P', family: "'Press Start 2P', monospace" },
+      { name: 'Permanent Marker', family: "'Permanent Marker', cursive" },
+      { name: 'Rubik Mono One', family: "'Rubik Mono One', sans-serif" },
+      { name: 'Lobster', family: "'Lobster', cursive" },
+      { name: 'Special Elite', family: "'Special Elite', monospace" }
+    ],
+    // raidžių spalvos kartojasi: mėlyna, raudona, geltona, mėlyna, žalia, raudona
+    colors: ['#1F5BFF', '#E8222E', '#F5B700', '#1F5BFF', '#13A04A', '#E8222E'],
+    // šriftų indeksai kiekvienai raidei
+    variants: {
+      A: [0, 1, 2, 3, 4, 5, 6, 7, 1, 0], // laukinis mišinys
+      B: [2, 0, 2, 0, 2, 0, 2, 0, 2, 0]  // ramesnis
+    }
+  }
+};
+
+(() => {
+  'use strict';
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const P = CONFIG.product;
+  const LETTERS = [...P.word];
+  const FONTS = P.fonts;
+  const COLORS = P.colors;
+  const VARIANT_NAMES = { A: 'A', B: 'B', custom: 'Savas' };
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const motionOK = () => !reduce.matches;
+
+  /* ---------- localStorage ---------- */
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem('unemployed.' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem('unemployed.' + k, JSON.stringify(v)); } catch (e) {} }
+  };
+  const validFonts = a => Array.isArray(a) && a.length === LETTERS.length && a.every(n => Number.isInteger(n) && n >= 0 && n < FONTS.length);
+  const variantFonts = v => validFonts(P.variants[v]) ? P.variants[v].slice() : LETTERS.map((_, i) => i % FONTS.length);
+
+  const state = {
+    variant: ['A', 'B', 'custom'].includes(store.get('variant')) ? store.get('variant') : 'A',
+    fonts: null,
+    custom: validFonts(store.get('custom')) ? store.get('custom') : null,
+    size: CONFIG.sizes.includes(store.get('size')) ? store.get('size') : null,
+    cart: (store.get('cart', []) || []).filter(it => it && validFonts(it.fonts) && CONFIG.sizes.includes(it.size) && Number.isInteger(it.qty) && it.qty > 0),
+    steps: Object.assign({ variant: false, size: false, cart: false, order: false }, store.get('steps', {}))
+  };
+  state.fonts = validFonts(store.get('fonts')) ? store.get('fonts') : variantFonts(state.variant === 'custom' ? 'A' : state.variant);
+
+  const saveCombo = () => { store.set('variant', state.variant); store.set('fonts', state.fonts); store.set('custom', state.custom); };
+
+  /* ---------- pagalbinės ---------- */
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const ph = label => `<span class="ph" title="Užpildyk CONFIG">[${esc(label)}]</span>`;
+  const money = v => new Intl.NumberFormat('lt-LT', { style: 'currency', currency: CONFIG.currency }).format(v);
+  const num = v => new Intl.NumberFormat('lt-LT').format(v);
+  const hasPrice = typeof CONFIG.price === 'number' && CONFIG.price >= 0;
+  const tiers = Array.isArray(CONFIG.discountTiers) && CONFIG.discountTiers.length
+    ? CONFIG.discountTiers.filter(t => t && t.min > 0 && t.pct >= 0).sort((a, b) => a.min - b.min) : null;
+  const discountFor = q => { if (!tiers) return null; let p = 0; tiers.forEach(t => { if (q >= t.min) p = t.pct; }); return p; };
+  const combos = Math.pow(FONTS.length, LETTERS.length);
+  const scrollBeh = () => motionOK() ? 'smooth' : 'auto';
+
+  /* ---------- pranešimai ---------- */
+  const toastBox = $('#toasts');
+  function toast(msg, action) {
+    const t = document.createElement('div');
+    t.className = 'toast';
+    const span = document.createElement('span'); span.textContent = msg; t.append(span);
+    if (action) {
+      const b = document.createElement('button'); b.type = 'button'; b.textContent = action.label;
+      b.addEventListener('click', () => { action.fn(); close(); });
+      t.append(b);
+    }
+    toastBox.append(t);
+    while (toastBox.children.length > 3) toastBox.firstElementChild.remove();
+    let done = false;
+    function close() { if (done) return; done = true; t.classList.add('out'); setTimeout(() => t.remove(), motionOK() ? 260 : 0); }
+    setTimeout(close, action ? 4200 : 3000);
+  }
+
+  /* ---------- statiniai duomenys ---------- */
+  const binds = {
+    brand: () => esc(CONFIG.brand),
+    price: () => hasPrice ? esc(money(CONFIG.price)) : ph('KAINA'),
+    shipping: () => CONFIG.shipping ? esc(CONFIG.shipping) : ph('PRISTATYMAS'),
+    returnDays: () => CONFIG.returnDays != null ? esc(CONFIG.returnDays) : ph('GRĄŽINIMO DIENOS'),
+    material: () => CONFIG.material ? esc(CONFIG.material) : ph('MEDŽIAGA'),
+    company: () => CONFIG.company ? esc(CONFIG.company) : ph('ĮMONĖ'),
+    address: () => CONFIG.address ? esc(CONFIG.address) : ph('ADRESAS'),
+    emailLink: () => CONFIG.email ? `<a href="mailto:${esc(CONFIG.email)}">${esc(CONFIG.email)}</a>` : ph('EL. PAŠTAS'),
+    sizesText: () => esc(CONFIG.sizes.join(', ')),
+    tiersText: () => tiers ? esc(tiers.map(t => `nuo ${t.min} vnt. −${t.pct} %`).join(', ')) + '.' : ph('NUOLAIDŲ PAKOPOS'),
+    sizeChart: () => {
+      const c = CONFIG.sizeChart;
+      if (!c || !Array.isArray(c.columns) || !Array.isArray(c.rows)) return `<p>${ph('DYDŽIŲ LENTELĖ')}</p>`;
+      return `<table class="size-table"><thead><tr>${c.columns.map(h => `<th scope="col">${esc(h)}</th>`).join('')}</tr></thead><tbody>${c.rows.map(r => `<tr>${r.map(v => `<td>${esc(v)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+    },
+    socials: () => {
+      const names = { instagram: 'Instagram', tiktok: 'TikTok', facebook: 'Facebook' };
+      return Object.entries(CONFIG.socials || {}).map(([k, url]) => url
+        ? `<a href="${esc(url)}" target="_blank" rel="noopener">${esc(names[k] || k)}</a>`
+        : ph((names[k] || k).toUpperCase())).join('');
+    }
+  };
+  $$('[data-bind]').forEach(el => { const f = binds[el.dataset.bind]; if (f) el.innerHTML = f(); });
+  $$('[data-combos]').forEach(el => el.textContent = num(combos));
+  $('#year').textContent = new Date().getFullYear();
+
+  /* ---------- raidės ---------- */
+  function styleLetter(el, i, fontIdx) {
+    el.style.fontFamily = FONTS[fontIdx].family;
+    el.style.color = COLORS[i % COLORS.length];
+  }
+  function makeWord(container, fonts, cls = 'ltr') {
+    container.innerHTML = '';
+    LETTERS.forEach((ch, i) => {
+      const s = document.createElement('span');
+      s.className = cls; s.textContent = ch; styleLetter(s, i, fonts[i]);
+      container.append(s);
+    });
+  }
+  function pop(el) {
+    if (!motionOK()) return;
+    el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop');
+  }
+
+  const printEl = $('#print'), stripEl = $('#strip');
+  const printBtns = [], chipBtns = [];
+  LETTERS.forEach((ch, i) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'ltr'; b.textContent = ch;
+    b.addEventListener('click', () => cycleLetter(i));
+    printEl.append(b); printBtns.push(b);
+
+    const c = document.createElement('button');
+    c.type = 'button'; c.className = 'chip';
+    c.innerHTML = `<span class="ltr" aria-hidden="true">${esc(ch)}</span><small></small>`;
+    c.addEventListener('click', () => cycleLetter(i));
+    stripEl.append(c); chipBtns.push(c);
+  });
+
+  function updateLetter(i, animate) {
+    const f = FONTS[state.fonts[i]];
+    styleLetter(printBtns[i], i, state.fonts[i]);
+    printBtns[i].setAttribute('aria-label', `Raidė ${LETTERS[i]}, šriftas ${f.name}. Spausk – kitas šriftas.`);
+    const cl = chipBtns[i].querySelector('.ltr');
+    styleLetter(cl, i, state.fonts[i]);
+    chipBtns[i].querySelector('small').textContent = f.name;
+    chipBtns[i].setAttribute('aria-label', `Raidė ${LETTERS[i]}: ${f.name}. Keisti šriftą`);
+    if (animate) { pop(printBtns[i]); pop(cl); }
+  }
+  function renderLetters(animate) {
+    LETTERS.forEach((_, i) => {
+      if (animate && motionOK()) setTimeout(() => updateLetter(i, true), i * 40);
+      else updateLetter(i, false);
+    });
+    renderMirrors();
+    renderSelSummary();
+  }
+  function renderMirrors() {
+    makeWord($('#logoBig'), state.fonts);
+  }
+  function renderVariantButtons() {
+    $$('[data-variant]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.variant === state.variant)));
+  }
+
+  function cycleLetter(i) {
+    state.fonts[i] = (state.fonts[i] + 1) % FONTS.length;
+    state.variant = 'custom';
+    state.custom = state.fonts.slice();
+    saveCombo();
+    updateLetter(i, true);
+    renderVariantButtons();
+    renderMirrors();
+    renderSelSummary();
+    markStep('variant');
+  }
+  function setVariant(v) {
+    if (v === 'custom') state.fonts = state.custom ? state.custom.slice() : state.fonts.slice();
+    else state.fonts = variantFonts(v);
+    if (v === 'custom' && !state.custom) state.custom = state.fonts.slice();
+    state.variant = v;
+    saveCombo();
+    renderVariantButtons();
+    renderLetters(true);
+    markStep('variant');
+  }
+  function shuffle() {
+    let next;
+    do { next = LETTERS.map(() => Math.floor(Math.random() * FONTS.length)); }
+    while (next.join() === state.fonts.join());
+    state.fonts = next; state.custom = next.slice(); state.variant = 'custom';
+    saveCombo(); renderVariantButtons(); renderLetters(true); markStep('variant');
+  }
+  $$('[data-variant]').forEach(b => b.addEventListener('click', () => setVariant(b.dataset.variant)));
+  $('#shuffleBtn').addEventListener('click', shuffle);
+
+  /* ---------- dydžiai ---------- */
+  $$('[data-sizes]').forEach(box => {
+    CONFIG.sizes.forEach(sz => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'size'; b.textContent = sz; b.dataset.size = sz;
+      b.setAttribute('aria-pressed', 'false');
+      b.addEventListener('click', () => setSize(sz));
+      box.append(b);
+    });
+  });
+  function renderSizes() {
+    $$('.size[data-size]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.size === state.size)));
+    renderSelSummary();
+  }
+  function setSize(sz) {
+    state.size = sz; store.set('size', sz); renderSizes(); markStep('size');
+  }
+  function renderSelSummary() {
+    $('#selSummary').textContent = `Variantas ${VARIANT_NAMES[state.variant]} · ` + (state.size ? `Dydis ${state.size}` : 'Dydis nepasirinktas');
+  }
+  function needSize() {
+    toast('Pirma pasirink dydį');
+    const row = $('#sizes');
+    row.scrollIntoView({ behavior: scrollBeh(), block: 'center' });
+    row.classList.remove('need'); void row.offsetWidth; row.classList.add('need');
+    const first = row.querySelector('.size');
+    setTimeout(() => first && first.focus({ preventScroll: true }), motionOK() ? 450 : 0);
+  }
+
+  /* ---------- žingsniai ---------- */
+  const STEP_KEYS = ['variant', 'size', 'cart', 'order'];
+  const STEP_TEXT = ['Pradėk nuo varianto.', 'Dabar – dydis.', 'Liko įdėti į krepšelį.', 'Liko užsakyti.', 'Viskas! Ačiū.'];
+  function renderSteps(justKey) {
+    let n = 0;
+    STEP_KEYS.forEach(k => {
+      const li = $(`#steps [data-step="${k}"]`);
+      const done = !!state.steps[k];
+      if (done) n++;
+      li.classList.toggle('done', done);
+      li.querySelector('.st-state').textContent = done ? 'atlikta' : 'neatlikta';
+      if (k === justKey && motionOK()) { li.classList.remove('just'); void li.offsetWidth; li.classList.add('just'); }
+    });
+    $('#progress .bar').style.width = (n / 4 * 100) + '%';
+    $('#progress').setAttribute('aria-valuenow', n);
+    $('#progressNum').textContent = n;
+    const firstOpen = STEP_KEYS.findIndex(k => !state.steps[k]);
+    $('#progressText').textContent = STEP_TEXT[firstOpen === -1 ? 4 : firstOpen];
+    const cta = $('#progressCta');
+    if (firstOpen === 2 || firstOpen === 3) { cta.textContent = firstOpen === 3 ? 'Atidaryti krepšelį' : 'Į konfigūratorių'; }
+    cta.dataset.openCart = firstOpen === 3 ? '1' : '';
+    if (firstOpen !== 3) cta.textContent = 'Į konfigūratorių';
+  }
+  function markStep(k) {
+    if (state.steps[k]) return;
+    state.steps[k] = true; store.set('steps', state.steps); renderSteps(k);
+  }
+  $('#progressCta').addEventListener('click', e => {
+    if (e.currentTarget.dataset.openCart) { e.preventDefault(); openCart(); }
+  });
+
+  /* ---------- krepšelis ---------- */
+  const cartEl = $('#cart'), scrim = $('#scrim'), cartBtn = $('#cartBtn');
+  let lastFocus = null;
+  const totalQty = () => state.cart.reduce((s, it) => s + it.qty, 0);
+  function totals() {
+    const q = totalQty();
+    const pct = discountFor(q);
+    if (!hasPrice) return { q, pct, sub: null, disc: null, total: null };
+    const sub = CONFIG.price * q;
+    const disc = pct ? Math.round(sub * pct) / 100 : 0;
+    return { q, pct, sub, disc, total: sub - disc };
+  }
+  function addToCart(qty = 1) {
+    if (!state.size) { needSize(); return false; }
+    const key = state.fonts.join(',') + '|' + state.size;
+    const found = state.cart.find(it => it.fonts.join(',') + '|' + it.size === key);
+    if (found) found.qty += qty;
+    else state.cart.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), fonts: state.fonts.slice(), variant: state.variant, size: state.size, qty });
+    saveCart(); renderCart(true); markStep('cart');
+    toast(`Įdėta į krepšelį: ${qty} vnt., dydis ${state.size}`, { label: 'Peržiūrėti', fn: openCart });
+    return true;
+  }
+  function saveCart() { store.set('cart', state.cart); }
+  function renderCart(bump) {
+    const list = $('#cartItems');
+    list.innerHTML = '';
+    state.cart.forEach(it => {
+      const li = document.createElement('li'); li.className = 'item';
+      const word = document.createElement('div'); word.className = 'item-word'; word.setAttribute('aria-hidden', 'true');
+      makeWord(word, it.fonts);
+      const meta = document.createElement('div');
+      meta.innerHTML = `<div class="item-meta">Variantas ${esc(VARIANT_NAMES[it.variant] || it.variant)} · Dydis ${esc(it.size)}</div>
+        <div class="sr-only">Šriftai: ${esc(it.fonts.map((f, i) => LETTERS[i] + ' – ' + FONTS[f].name).join(', '))}</div>
+        <div class="qty" role="group" aria-label="Kiekis"><button type="button" data-q="-1" aria-label="Mažinti kiekį">−</button><output aria-live="polite">${it.qty}</output><button type="button" data-q="1" aria-label="Didinti kiekį">+</button></div>`;
+      const right = document.createElement('div');
+      right.style.display = 'grid'; right.style.justifyItems = 'end';
+      right.innerHTML = `<div class="item-price">${hasPrice ? esc(money(CONFIG.price * it.qty)) : ph('SUMA')}</div><button type="button" class="remove">Pašalinti</button>`;
+      meta.querySelectorAll('[data-q]').forEach(b => b.addEventListener('click', () => {
+        it.qty += Number(b.dataset.q);
+        if (it.qty < 1) { removeItem(it.id); return; }
+        saveCart(); renderCart(true);
+        const again = $(`#cartItems [data-id="${it.id}"] [data-q="${b.dataset.q}"]`); again && again.focus();
+      }));
+      right.querySelector('.remove').addEventListener('click', () => removeItem(it.id));
+      li.dataset.id = it.id;
+      li.append(word, meta, right);
+      list.append(li);
+    });
+    const empty = state.cart.length === 0;
+    $('#cartEmpty').hidden = !empty;
+    $('#cartFoot').hidden = empty;
+    list.hidden = empty;
+    const t = totals();
+    $('#cartSub').innerHTML = t.sub == null ? ph('SUMA') : esc(money(t.sub));
+    $('#cartDisc').innerHTML = !tiers ? ph('NUOLAIDA') : (t.sub == null ? (t.pct ? `−${t.pct} %` : '—') : (t.disc ? `−${esc(money(t.disc))} (${t.pct} %)` : '—'));
+    $('#cartTotal').innerHTML = t.total == null ? ph('SUMA') : esc(money(t.total));
+    const badge = $('#cartCount');
+    badge.textContent = t.q; badge.dataset.n = t.q;
+    cartBtn.setAttribute('aria-label', `Krepšelis, prekių: ${t.q}`);
+    if (bump && motionOK()) { badge.classList.remove('bump'); void badge.offsetWidth; badge.classList.add('bump'); }
+  }
+  function removeItem(id) {
+    state.cart = state.cart.filter(x => x.id !== id);
+    saveCart(); renderCart(true); toast('Prekė pašalinta');
+    const firstRemove = $('#cartItems .remove'); (firstRemove || $('#cartClose')).focus();
+  }
+  function openCart() {
+    lastFocus = document.activeElement;
+    cartEl.removeAttribute('inert');
+    cartEl.classList.add('open'); scrim.classList.add('open');
+    cartBtn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => $('#cartClose').focus(), 30);
+  }
+  function closeCart() {
+    if (!cartEl.classList.contains('open')) return;
+    cartEl.classList.remove('open'); scrim.classList.remove('open');
+    cartEl.setAttribute('inert', '');
+    cartBtn.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    (lastFocus && document.contains(lastFocus) ? lastFocus : cartBtn).focus({ preventScroll: true });
+  }
+  cartBtn.addEventListener('click', openCart);
+  $('#cartClose').addEventListener('click', closeCart);
+  scrim.addEventListener('click', closeCart);
+  $('#cartToConfig').addEventListener('click', () => { closeCart(); $('#konfiguratorius').scrollIntoView({ behavior: scrollBeh() }); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeCart(); closeMenu(); }
+    if (e.key === 'Tab' && cartEl.classList.contains('open')) {
+      const f = $$('button:not([disabled]),a[href],input', cartEl).filter(x => x.offsetParent !== null);
+      if (!f.length) return;
+      if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+      else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+    }
+  });
+
+  function orderSummary() {
+    const t = totals();
+    const lines = [`Užsakymas – ${CONFIG.brand}`, ''];
+    state.cart.forEach((it, n) => {
+      lines.push(`${n + 1}) Variantas: ${VARIANT_NAMES[it.variant] || it.variant} · Dydis: ${it.size} · Kiekis: ${it.qty}`);
+      lines.push('   Šriftai: ' + it.fonts.map((f, i) => `${LETTERS[i]} – ${FONTS[f].name}`).join(', '));
+    });
+    lines.push('', `Iš viso vienetų: ${t.q}`);
+    if (t.sub != null) {
+      lines.push(`Tarpinė suma: ${money(t.sub)}`);
+      if (t.disc) lines.push(`Nuolaida (${t.pct} %): −${money(t.disc)}`);
+      lines.push(`Iš viso: ${money(t.total)}`);
+    }
+    lines.push('', 'Vardas, pavardė:', 'Pristatymo adresas:', 'Telefonas:');
+    return lines.join('\n');
+  }
+  $('#checkoutBtn').addEventListener('click', () => {
+    if (!state.cart.length) { toast('Krepšelis tuščias'); return; }
+    if (CONFIG.checkoutUrl) {
+      markStep('order');
+      window.open(CONFIG.checkoutUrl, '_blank', 'noopener');
+    } else if (CONFIG.email) {
+      markStep('order');
+      const subject = encodeURIComponent(`Užsakymas – ${CONFIG.brand}`);
+      window.location.href = `mailto:${CONFIG.email}?subject=${subject}&body=${encodeURIComponent(orderSummary())}`;
+      toast('Atidarome el. laišką su užsakymo santrauka');
+    } else {
+      toast('Užsakymai atsidarys netrukus');
+    }
+  });
+
+  document.addEventListener('click', e => {
+    const a = e.target.closest('[data-action]');
+    if (!a) return;
+    if (a.dataset.action === 'add') addToCart(1);
+    if (a.dataset.action === 'add-qty') addToCart(Number($('#calcRange').value) || 1);
+  });
+
+  /* ---------- anotacijos (tempiamos, su linijomis) ---------- */
+  const stage = $('#stage'), shirtWrap = $('#shirtWrap'), linesSvg = $('#annoLines');
+  const annos = $$('.anno', stage);
+  annos.forEach(a => {
+    const [x, y] = a.dataset.pos.split(',').map(Number);
+    a.style.left = x + '%'; a.style.top = y + '%';
+  });
+  function clampPos(a, xPct, yPct) {
+    const sw = stage.clientWidth, sh = stage.clientHeight;
+    const maxX = Math.max(0, 100 - a.offsetWidth / sw * 100), maxY = Math.max(0, 100 - a.offsetHeight / sh * 100);
+    return [Math.min(Math.max(0, xPct), maxX), Math.min(Math.max(0, yPct), maxY)];
+  }
+  function fitAnnos() {
+    annos.forEach(a => {
+      const [x, y] = clampPos(a, parseFloat(a.style.left), parseFloat(a.style.top));
+      a.style.left = x + '%'; a.style.top = y + '%';
+    });
+  }
+  function drawLines() {
+    const sr = stage.getBoundingClientRect(), wr = shirtWrap.getBoundingClientRect();
+    linesSvg.setAttribute('viewBox', `0 0 ${sr.width} ${sr.height}`);
+    let out = '';
+    annos.forEach(a => {
+      const [tx, ty] = a.dataset.target.split(',').map(Number);
+      const px = wr.left - sr.left + tx * wr.width, py = wr.top - sr.top + ty * wr.height;
+      const r = a.getBoundingClientRect();
+      const l = r.left - sr.left, t = r.top - sr.top;
+      const ax = Math.min(Math.max(px, l + 6), l + r.width - 6), ay = Math.min(Math.max(py, t), t + r.height);
+      out += `<line x1="${ax.toFixed(1)}" y1="${ay.toFixed(1)}" x2="${px.toFixed(1)}" y2="${py.toFixed(1)}"/><circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="4.5"/>`;
+    });
+    linesSvg.innerHTML = out;
+  }
+  const annoActions = {
+    letter: () => cycleLetter(Math.floor(Math.random() * LETTERS.length)),
+    story: () => $('#istorija').scrollIntoView({ behavior: scrollBeh() }),
+    size: () => { const row = $('#sizes'); row.scrollIntoView({ behavior: scrollBeh(), block: 'center' }); row.classList.remove('need'); void row.offsetWidth; row.classList.add('need'); }
+  };
+  annos.forEach(a => {
+    let start = null, moved = false, suppress = false;
+    a.addEventListener('pointerdown', e => {
+      if (e.button !== 0) return;
+      const sr = stage.getBoundingClientRect();
+      start = { x: e.clientX, y: e.clientY, l: parseFloat(a.style.left) / 100 * sr.width, t: parseFloat(a.style.top) / 100 * sr.height, w: sr.width, h: sr.height };
+      moved = false;
+      a.setPointerCapture(e.pointerId);
+    });
+    a.addEventListener('pointermove', e => {
+      if (!start) return;
+      const dx = e.clientX - start.x, dy = e.clientY - start.y;
+      if (!moved && Math.hypot(dx, dy) < 5) return;
+      moved = true; a.classList.add('dragging');
+      const [x, y] = clampPos(a, (start.l + dx) / start.w * 100, (start.t + dy) / start.h * 100);
+      a.style.left = x + '%'; a.style.top = y + '%';
+      drawLines();
+    });
+    const end = () => { if (!start) return; if (moved) suppress = true; start = null; a.classList.remove('dragging'); };
+    a.addEventListener('pointerup', end);
+    a.addEventListener('pointercancel', () => { start = null; moved = false; a.classList.remove('dragging'); });
+    a.addEventListener('click', e => {
+      if (suppress) { suppress = false; e.preventDefault(); return; }
+      annoActions[a.dataset.anno]();
+    });
+    a.addEventListener('keydown', e => {
+      const step = e.shiftKey ? 5 : 1.5;
+      const d = { ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] }[e.key];
+      if (!d) return;
+      e.preventDefault();
+      const [x, y] = clampPos(a, parseFloat(a.style.left) + d[0], parseFloat(a.style.top) + d[1]);
+      a.style.left = x + '%'; a.style.top = y + '%'; drawLines();
+    });
+  });
+  if ('ResizeObserver' in window) new ResizeObserver(() => { fitAnnos(); drawLines(); }).observe(stage);
+  window.addEventListener('resize', () => { fitAnnos(); drawLines(); });
+
+  /* ---------- naudų demonstracijos ---------- */
+  const demoLetter = $('#demoLetter'), demoName = $('#demoLetterName');
+  let demoIdx = 0;
+  function demoStep() {
+    demoIdx = (demoIdx + 1) % FONTS.length;
+    demoLetter.style.fontFamily = FONTS[demoIdx].family;
+    demoLetter.style.color = 'var(--fg)';
+    demoName.textContent = FONTS[demoIdx].name;
+    pop(demoLetter);
+  }
+  demoLetter.style.fontFamily = FONTS[0].family; demoName.textContent = FONTS[0].name;
+  demoLetter.addEventListener('click', demoStep);
+  const demoWord = $('#demoWord');
+  const randomFonts = () => LETTERS.map(() => Math.floor(Math.random() * FONTS.length));
+  makeWord(demoWord, variantFonts('A'));
+  const daysEl = $('#days');
+  if (CONFIG.returnDays != null && Number(CONFIG.returnDays) > 0) {
+    const n = Math.min(Number(CONFIG.returnDays), 30);
+    daysEl.innerHTML = Array.from({ length: n }, (_, i) => `<i style="--d:${i}"></i>`).join('');
+    $('#daysLabel').textContent = `${CONFIG.returnDays} d. apsigalvoti`;
+  } else {
+    daysEl.innerHTML = ph('GRĄŽINIMO DIENOS');
+  }
+  let benefitsVisible = false;
+  setInterval(() => {
+    if (!benefitsVisible || !motionOK() || document.hidden) return;
+    demoStep();
+    makeWord(demoWord, randomFonts());
+  }, 1400);
+
+  /* ---------- skaičiuoklė ---------- */
+  const range = $('#calcRange');
+  range.max = CONFIG.calculatorMax; $('#calcMax').textContent = CONFIG.calculatorMax;
+  const tiersEl = $('#tiers');
+  tiersEl.innerHTML = tiers ? tiers.map(t => `<span class="tier" data-min="${t.min}">nuo ${t.min} vnt. −${t.pct} %</span>`).join('') : ph('NUOLAIDŲ PAKOPOS');
+  function renderCalc() {
+    const q = Number(range.value);
+    const pct = discountFor(q);
+    $('#calcQtyBig').textContent = q;
+    range.setAttribute('aria-valuetext', `${q} vnt.`);
+    $('#calcAdd').textContent = `Į krepšelį: ${q} vnt.`;
+    $('#calcDisc').innerHTML = pct == null ? ph('NUOLAIDA') : (pct ? `−${pct} %` : '—');
+    if (hasPrice && pct != null) {
+      const unit = CONFIG.price * (1 - pct / 100);
+      $('#calcUnit').innerHTML = esc(money(unit));
+      $('#calcSum').innerHTML = esc(money(unit * q));
+      $('#calcSave').innerHTML = pct ? esc(money(CONFIG.price * q - unit * q)) : '—';
+    } else if (hasPrice) {
+      $('#calcUnit').innerHTML = esc(money(CONFIG.price));
+      $('#calcSum').innerHTML = ph('SUMA');
+      $('#calcSave').innerHTML = ph('SUMA');
+    } else {
+      $('#calcUnit').innerHTML = ph('KAINA');
+      $('#calcSum').innerHTML = ph('SUMA');
+      $('#calcSave').innerHTML = ph('SUMA');
+    }
+    const pctFill = (q - 1) / (CONFIG.calculatorMax - 1) * 100;
+    range.style.setProperty('--fill', pctFill + '%');
+    $$('.tier', tiersEl).forEach(t => t.classList.toggle('on', tiers && discountFor(q) === tiers.find(x => x.min === Number(t.dataset.min)).pct && q >= Number(t.dataset.min)));
+  }
+  range.addEventListener('input', renderCalc);
+
+  /* ---------- istorija ---------- */
+  $('#storyBody').innerHTML = Array.isArray(CONFIG.story) && CONFIG.story.length
+    ? CONFIG.story.map(p => `<p>${esc(p)}</p>`).join('')
+    : `<p class="ph-block">[KILMĖS ISTORIJA – kas, kada ir kodėl sukūrė ${esc(CONFIG.brand)}]</p>`;
+
+  const drops = Array.isArray(CONFIG.drops) ? CONFIG.drops : [];
+  const tlBtns = $('#tlBtns'), tlPanel = $('#tlPanel');
+  function showDrop(i, focus) {
+    $$('.tl-btn', tlBtns).forEach((b, n) => { b.setAttribute('aria-selected', String(n === i)); b.tabIndex = n === i ? 0 : -1; });
+    const d = drops[i];
+    tlPanel.setAttribute('aria-labelledby', 'drop-' + i);
+    tlPanel.innerHTML = `<h3>${d.title ? esc(d.title) : ph('PAVADINIMAS')}</h3><p class="date">${d.date ? esc(d.date) : ph('DATA')}</p><p>${d.text ? esc(d.text) : ph('APRAŠYMAS')}</p>`;
+    if (focus) $$('.tl-btn', tlBtns)[i].focus();
+  }
+  drops.forEach((d, i) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'tl-btn'; b.id = 'drop-' + i; b.setAttribute('role', 'tab'); b.setAttribute('aria-controls', 'tlPanel');
+    b.textContent = 'Drop ' + d.code;
+    b.addEventListener('click', () => showDrop(i));
+    b.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); showDrop((i + (e.key === 'ArrowRight' ? 1 : -1) + drops.length) % drops.length, true); }
+    });
+    tlBtns.append(b);
+  });
+  if (drops.length) showDrop(0); else tlPanel.innerHTML = ph('DROP’AI');
+
+  const stats = [
+    { n: LETTERS.length, label: 'raidžių ant krūtinės' },
+    { n: FONTS.length, label: 'šriftų kiekvienai raidei' },
+    { n: combos, label: 'galimų derinių' },
+    { n: CONFIG.soldCount, label: 'marškinėlių jau nešiojama', ph: 'PARDUOTA' }
+  ];
+  $('#stats').innerHTML = stats.map(s => `<div class="stat"><div class="n">${s.n == null ? ph(s.ph) : `<span data-count="${s.n}">0</span>`}</div><p>${esc(s.label)}</p></div>`).join('');
+
+  const tm = CONFIG.testimonial;
+  $('#quote').innerHTML = tm && tm.quote
+    ? `<div class="fig">${tm.figure != null ? `<span data-count="${esc(tm.figure)}" data-dec="${String(tm.figure).includes('.') ? 1 : 0}">0</span>` : ph('SKAIČIUS')}<small>${tm.figureLabel ? esc(tm.figureLabel) : ''}</small></div><blockquote><p>„${esc(tm.quote)}“</p><cite>${tm.author ? esc(tm.author) : ph('AUTORIUS')}</cite></blockquote>`
+    : `<div class="fig">${ph('SKAIČIUS')}<small>pvz. įvertinimas ar pirkėjų skaičius</small></div><blockquote><p>${ph('ATSILIEPIMAS')}</p><cite>${ph('AUTORIUS')}</cite></blockquote>`;
+
+  function countUp(el) {
+    const target = Number(el.dataset.count), dec = Number(el.dataset.dec || 0);
+    const fmt = v => new Intl.NumberFormat('lt-LT', { minimumFractionDigits: dec, maximumFractionDigits: dec }).format(v);
+    if (!motionOK()) { el.textContent = fmt(target); return; }
+    const t0 = performance.now(), dur = 1500;
+    (function tick(now) {
+      const p = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+      el.textContent = fmt(dec ? target * e : Math.round(target * e));
+      if (p < 1) requestAnimationFrame(tick);
+    })(t0);
+  }
+
+  /* ---------- judanti juosta ---------- */
+  function capGroup(hidden) {
+    const tilts = [-3, 2, -1.5, 3, -2.5, 1];
+    const items = CONFIG.wearPlaces.map((w, i) => `<span class="cap" style="--tilt:${tilts[i % tilts.length]}deg">${esc(w)}</span>`).join('');
+    const partners = CONFIG.partners && CONFIG.partners.length
+      ? `<span class="label">Partneriai</span>` + CONFIG.partners.map((p, i) => `<span class="cap" style="--tilt:${tilts[(i + 3) % tilts.length]}deg">${esc(p)}</span>`).join('') : '';
+    return `<div class="marquee-group"${hidden ? ' aria-hidden="true"' : ''}><span class="label">Kur juos nešioti →</span>${items}${partners}</div>`;
+  }
+  $('#marquee').innerHTML = capGroup(false) + capGroup(true);
+
+  /* ---------- navigacija, tema ---------- */
+  const topbar = $('.topbar'), menuBtn = $('#menuBtn');
+  function closeMenu() { topbar.classList.remove('nav-open'); menuBtn.setAttribute('aria-expanded', 'false'); }
+  menuBtn.addEventListener('click', () => {
+    const open = !topbar.classList.contains('nav-open');
+    topbar.classList.toggle('nav-open', open); menuBtn.setAttribute('aria-expanded', String(open));
+  });
+  $$('#nav a').forEach(a => a.addEventListener('click', closeMenu));
+
+  const themeBtn = $('#themeBtn');
+  function applyTheme(t) {
+    document.documentElement.setAttribute('data-theme', t);
+    themeBtn.setAttribute('aria-pressed', String(t === 'light'));
+    themeBtn.setAttribute('aria-label', t === 'light' ? 'Tamsus režimas' : 'Šviesus režimas');
+    $('meta[name="theme-color"]').setAttribute('content', t === 'light' ? '#FFFFFF' : '#0B0B0C');
+  }
+  applyTheme(document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark');
+  themeBtn.addEventListener('click', () => {
+    const t = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    applyTheme(t); store.set('theme', t);
+  });
+
+  // Nuorodos į DUK punktą jį atskleidžia
+  $$('[data-open-details]').forEach(a => a.addEventListener('click', () => {
+    const d = document.querySelector(a.getAttribute('href')); if (d && d.tagName === 'DETAILS') d.open = true;
+  }));
+
+  /* ---------- stebėtojai: „change of subject“, skaičiai, aktyvus skyrius ---------- */
+  if ('IntersectionObserver' in window) {
+    const titleIO = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); titleIO.unobserve(e.target); }
+    }), { threshold: .5 });
+    $$('.sec-title, .final').forEach(el => titleIO.observe(el));
+
+    const countIO = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) { countUp(e.target); countIO.unobserve(e.target); }
+    }), { threshold: .6 });
+    $$('[data-count]').forEach(el => countIO.observe(el));
+
+    const benIO = new IntersectionObserver(es => es.forEach(e => {
+      benefitsVisible = e.isIntersecting; e.target.classList.toggle('in-view', e.isIntersecting);
+    }), { threshold: .2 });
+    benIO.observe($('.benefits'));
+
+    const links = $$('#nav a');
+    const secIO = new IntersectionObserver(es => es.forEach(e => {
+      if (!e.isIntersecting) return;
+      links.forEach(l => l.setAttribute('aria-current', String(l.getAttribute('href') === '#' + e.target.id)));
+    }), { rootMargin: '-45% 0px -50% 0px' });
+    $$('main section[id]').forEach(s => secIO.observe(s));
+  } else {
+    $$('.sec-title, .final').forEach(el => el.classList.add('in'));
+    $$('[data-count]').forEach(el => { el.dataset.dec = el.dataset.dec || 0; el.textContent = num(Number(el.dataset.count)); });
+  }
+
+  /* ---------- spausdinimas: DUK išskleidžiamas ---------- */
+  let closedBefore = [];
+  window.addEventListener('beforeprint', () => { closedBefore = $$('details:not([open])'); closedBefore.forEach(d => d.open = true); $$('.sec-title, .final').forEach(el => el.classList.add('in')); });
+  window.addEventListener('afterprint', () => { closedBefore.forEach(d => d.open = false); closedBefore = []; });
+
+  /* ---------- pradinis piešimas ---------- */
+  renderVariantButtons();
+  renderLetters(false);
+  renderSizes();
+  renderSteps();
+  renderCart(false);
+  renderCalc();
+  requestAnimationFrame(() => { fitAnnos(); drawLines(); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { fitAnnos(); drawLines(); });
+})();
+</script>
+</body>
+</html>
