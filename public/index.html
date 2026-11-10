@@ -677,13 +677,13 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
 const CONFIG = {
   brand: 'unemployed',
   currency: 'EUR',
-  price: null,                 // vieneto kaina, pvz. 29
+  price: 22.99,                // vieneto kaina
   sizes: ['XS', 'S', 'M', 'L', 'XL', 'XXL'], // patikrink, kokius dydžius tikrai turi
   sizeChart: null,             // pvz. { columns: ['Dydis','Plotis, cm','Ilgis, cm'], rows: [['S', 49, 70], ['M', 52, 72]] }
   material: null,              // pvz. '100 % medvilnė, 180 g/m²'
   shipping: null,              // pvz. 'Lietuvoje per 2–4 d. d., nuo 3 €'
-  returnDays: null,            // pvz. 14
-  discountTiers: null,         // pvz. [{ min: 2, pct: 10 }, { min: 3, pct: 15 }, { min: 5, pct: 20 }]
+  returnDays: 14,              // grąžinimo dienos
+  discountTiers: [{ min: 2, pct: 10 }, { min: 3, pct: 20 }], // min – nuo kiek vnt., pct – nuolaida %
   calculatorMax: 10,
   checkoutUrl: null,           // apmokėjimo nuoroda (Stripe Payment Link ar pan.)
   email: null,                 // užsakymams ir klausimams
@@ -1212,10 +1212,12 @@ const CONFIG = {
     $('#calcAdd').textContent = `Į krepšelį: ${q} vnt.`;
     $('#calcDisc').innerHTML = pct == null ? ph('NUOLAIDA') : (pct ? `−${pct} %` : '—');
     if (hasPrice && pct != null) {
-      const unit = CONFIG.price * (1 - pct / 100);
-      $('#calcUnit').innerHTML = esc(money(unit));
-      $('#calcSum').innerHTML = esc(money(unit * q));
-      $('#calcSave').innerHTML = pct ? esc(money(CONFIG.price * q - unit * q)) : '—';
+      // skaičiuojama taip pat kaip krepšelyje, kad sumos sutaptų iki cento
+      const sub = CONFIG.price * q;
+      const disc = pct ? Math.round(sub * pct) / 100 : 0;
+      $('#calcUnit').innerHTML = esc(money((sub - disc) / q));
+      $('#calcSum').innerHTML = esc(money(sub - disc));
+      $('#calcSave').innerHTML = pct ? esc(money(disc)) : '—';
     } else if (hasPrice) {
       $('#calcUnit').innerHTML = esc(money(CONFIG.price));
       $('#calcSum').innerHTML = ph('SUMA');
