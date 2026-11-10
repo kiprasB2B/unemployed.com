@@ -13,6 +13,10 @@
  *   HOST  IPv4 or IPv6 address to bind (default: dual-stack "::", which
  *         also accepts IPv4; falls back to 0.0.0.0 without IPv6)
  *   ROOT  directory to serve           (default "public"; argv[1] wins)
+ *   CANONICAL_HOST  optional, e.g. "unemployed.lt.eu.org": every request
+ *         whose Host differs (such as *.onrender.com) gets a 301 to
+ *         https://CANONICAL_HOST with the same path and query. /healthz is
+ *         exempt and always answers 200. Unset or empty: Host is ignored.
  */
 /* XSI (SUSv4) = POSIX.1-2008 + realpath, SA_RESTART. glibc exposes these with
  * _POSIX_C_SOURCE alone, musl (Alpine) needs _XOPEN_SOURCE under -std=c17.
@@ -60,6 +64,7 @@ static const char SECURITY_HEADERS[] =
 
 static char root_dir[PATH_MAX];
 static size_t root_len;
+static char canonical[256]; /* lower-case, no trailing dot; "" = off */
 static volatile sig_atomic_t children;
 
 /* ------------------------------------------------------------------ */
@@ -218,6 +223,69 @@ static bool inside_root(const char *resolved)
            (resolved[root_len] == '/' || resolved[root_len] == '\0');
 }
 
+/* Validates and normalises CANONICAL_HOST: a DNS name ([A-Za-z0-9.-]) with an
+ * optional ":port". Returns false if it is not one. */
+static bool set_canonical(const char *v)
+{
+    size_t n = strlen(v);
+    if (n == 0) { canonical[0] = '\0'; return true; }
+    if (n >= sizeof canonical || v[0] == '.' || v[0] == '-' || v[0] == ':') return false;
+    bool in_port = false;
+    for (size_t i = 0; i < n; i++) {
+        unsigned char c = (unsigned char)v[i];
+        if (c == ':' && !in_port && i + 1 < n) { in_port = true; }
+        else if (in_port ? (c >= '0' && c <= '9')
+                         : ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
+                            (c >= '0' && c <= '9') || c == '.' || c == '-')) {}
+        else return false;
+        canonical[i] = (char)((c >= 'A' && c <= 'Z') ? c + 32 : c);
+    }
+    canonical[n] = '\0';
+    if (!in_port && canonical[n - 1] == '.') canonical[n - 1] = '\0';
+    return canonical[0] != '\0';
+}
+
+/* Copies the Host header value into out. Returns how many Host headers the
+ * request had: more than one is a bad request (RFC 9112, 3.2). */
+static int find_host(const char *p, char *out, size_t cap)
+{
+    int found = 0;
+    out[0] = '\0';
+    while (*p && !(p[0] == '\r' && p[1] == '\n')) {
+        const char *end = strstr(p, "\r\n");
+        if (!end) break;
+        if (end - p >= 5 && strncasecmp(p, "Host:", 5) == 0) {
+            const char *v = p + 5, *e = end;
+            while (v < e && (*v == ' ' || *v == '\t')) v++;
+            while (e > v && (e[-1] == ' ' || e[-1] == '\t')) e--;
+            size_t n = (size_t)(e - v);
+            if (n >= cap) n = cap - 1; /* too long to be ours; still compared */
+            memcpy(out, v, n);
+            out[n] = '\0';
+            found++;
+        }
+        p = end + 2;
+    }
+    return found;
+}
+
+/* Case-insensitive match against CANONICAL_HOST. If the canonical name has no
+ * port, the Host port and one trailing dot are ignored. */
+static bool host_is_canonical(char *host)
+{
+    if (!strchr(canonical, ':')) {
+        char *colon = strrchr(host, ':');
+        if (colon && host[0] != '[') {
+            bool digits = colon[1] != '\0';
+            for (const char *d = colon + 1; *d; d++) if (*d < '0' || *d > '9') digits = false;
+            if (digits) *colon = '\0';
+        }
+        size_t n = strlen(host);
+        if (n > 0 && host[n - 1] == '.') host[n - 1] = '\0';
+    }
+    return strcasecmp(host, canonical) == 0;
+}
+
 /* Reads until the end of the headers. 0 = ok, 431 = too large, -1 = gone. */
 static int read_request(int fd, char *buf, size_t cap, size_t *out_len)
 {
@@ -285,6 +353,7 @@ static int handle(int fd, char *method_out, size_t mcap, char *target_out, size_
     /* Request line: METHOD SP TARGET SP VERSION CRLF */
     char *eol = strstr(req, "\r\n");
     *eol = '\0';
+    const char *headers = eol + 2;
     char *method = req;
     char *sp1 = strchr(method, ' ');
     char *target = sp1 ? sp1 + 1 : NULL;
@@ -308,6 +377,8 @@ static int handle(int fd, char *method_out, size_t mcap, char *target_out, size_
     if (target[0] != '/' || strlen(target) > TARGET_MAX)
         return send_error(fd, 400, head_only, NULL);
 
+    char raw_target[TARGET_MAX + 1]; /* with query, for the canonical redirect */
+    snprintf(raw_target, sizeof raw_target, "%s", target);
     target[strcspn(target, "?#")] = '\0';
     char path[TARGET_MAX + 1];
     if (!url_decode(target, path, sizeof path)) return send_error(fd, 400, head_only, NULL);
@@ -317,6 +388,19 @@ static int handle(int fd, char *method_out, size_t mcap, char *target_out, size_
             write_all(fd, "ok\n", 3))
             *sent = 3;
         return 200;
+    }
+
+    /* Own domain: anything not addressed to CANONICAL_HOST (e.g. *.onrender.com)
+     * is sent there, same path and query. /healthz above stays reachable. */
+    if (canonical[0]) {
+        char host[300];
+        int hosts = find_host(headers, host, sizeof host);
+        if (hosts > 1) return send_error(fd, 400, head_only, NULL);
+        if (hosts == 0 || !host_is_canonical(host)) {
+            char loc[sizeof canonical + TARGET_MAX + 32];
+            snprintf(loc, sizeof loc, "Location: https://%s%s\r\n", canonical, raw_target);
+            return send_error(fd, 301, head_only, loc);
+        }
     }
 
     int seg = check_segments(path);
@@ -436,6 +520,11 @@ int main(int argc, char **argv)
     if (host && !*host) host = NULL;
     const char *port_s = getenv("PORT");
     if (!port_s || !*port_s) port_s = "8080";
+    const char *canon = getenv("CANONICAL_HOST");
+    if (canon && !set_canonical(canon)) {
+        fprintf(stderr, "server: invalid CANONICAL_HOST '%s' (expected a host name like example.org)\n", canon);
+        return 2;
+    }
 
     char *end = NULL;
     errno = 0;
@@ -468,7 +557,8 @@ int main(int argc, char **argv)
         perror("server: listen");
         return 1;
     }
-    fprintf(stderr, "server: http://%s:%ld root=%s\n", shown, port, root_dir);
+    fprintf(stderr, "server: http://%s:%ld root=%s%s%s\n", shown, port, root_dir,
+            canonical[0] ? " canonical=" : "", canonical);
 
     sigset_t chld;
     sigemptyset(&chld);

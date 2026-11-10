@@ -7,7 +7,15 @@ services:
     dockerContext: .
     healthCheckPath: /healthz
     autoDeploy: true
+    # Savas domenas (žr. DOMAIN.md). Atkomentuok tik tada, kai DNS jau rodo į Render:
+    # domains:
+    #   - unemployed.lt.eu.org
     # Render sets PORT itself; the server reads it.
     envVars:
       - key: ROOT
         value: /public
+      # Tuščia = peradresavimas išjungtas. Įrašyk domeną (pvz. unemployed.lt.eu.org)
+      # TIK kai Render rodo jį kaip „Verified“ ir sertifikatas išduotas – kitaip
+      # visi lankytojai bus nukreipti į dar neveikiantį adresą.
+      - key: CANONICAL_HOST
+        value: ""
