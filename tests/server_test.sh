@@ -133,6 +133,21 @@ check "server still alive"              200 "$(code "$B/healthz")"
 check "invalid PORT → exit 2"           2 "$(PORT=abc "$BIN" "$R" 2>/dev/null; echo $?)"
 check "missing root → exit 2"           2 "$(PORT=1 "$BIN" "$TMP/nope" 2>/dev/null; echo $?)"
 
+check "invalid HOST → exit 2"           2 "$(HOST=nope PORT=1 "$BIN" "$R" 2>/dev/null; echo $?)"
+
+# ---------- default bind: dual-stack "::", or 0.0.0.0 without IPv6 ----------
+P3=$(free_port)
+env -u HOST PORT="$P3" "$BIN" "$R" 2>"$TMP/default.log" &
+PIDS+=($!)
+for _ in $(seq 1 100); do curl -fs -o /dev/null "http://127.0.0.1:$P3/healthz" && break; sleep 0.05; done
+check "default HOST reachable over IPv4" 200 "$(code "http://127.0.0.1:$P3/healthz")"
+if [[ -e /proc/net/if_inet6 ]] && grep -q ' lo$' /proc/net/if_inet6; then
+  check "default HOST is dual-stack"    yes "$(grep -q 'http://\[::\]' "$TMP/default.log" && echo yes)"
+  check "default HOST reachable over IPv6" 200 "$(code -g "http://[::1]:$P3/healthz")"
+else
+  check "no IPv6: falls back to 0.0.0.0" yes "$(grep -q 'http://0.0.0.0' "$TMP/default.log" && echo yes)"
+fi
+
 # ---------- real site ----------
 P2=$(free_port)
 start "$REPO/public" "$P2"
