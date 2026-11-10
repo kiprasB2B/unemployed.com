@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: unemployed
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /healthz
+    autoDeploy: true
+    # Render sets PORT itself; the server reads it.
+    envVars:
+      - key: ROOT
+        value: /public
