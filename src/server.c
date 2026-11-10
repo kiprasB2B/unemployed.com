@@ -10,7 +10,8 @@
  *
  * Configuration (environment):
  *   PORT  port to listen on            (default 8080; Render sets it)
- *   HOST  IPv4 address to bind         (default 0.0.0.0)
+ *   HOST  IPv4 or IPv6 address to bind (default: dual-stack "::", which
+ *         also accepts IPv4; falls back to 0.0.0.0 without IPv6)
  *   ROOT  directory to serve           (default "public"; argv[1] wins)
  */
 /* XSI (SUSv4) = POSIX.1-2008 + realpath, SA_RESTART. glibc exposes these with
@@ -346,6 +347,57 @@ static int handle(int fd, char *method_out, size_t mcap, char *target_out, size_
     return serve_file(fd, resolved, head_only, sent);
 }
 
+/* Opens the listening socket. host == NULL means "any address": a dual-stack
+ * IPv6 socket (IPV6_V6ONLY off, so IPv4 clients arrive as ::ffff:a.b.c.d),
+ * or plain 0.0.0.0 where the system has no IPv6. Returns fd, -1 on socket
+ * errors, -2 if host is not a valid address. `shown` receives host for logs. */
+static int open_listener(const char *host, long port, char *shown, size_t cap)
+{
+    struct sockaddr_in6 a6 = {.sin6_family = AF_INET6, .sin6_port = htons((uint16_t)port)};
+    struct sockaddr_in a4 = {.sin_family = AF_INET, .sin_port = htons((uint16_t)port)};
+    int one = 1, zero = 0, fd;
+
+    bool v6 = false;
+    if (!host) {
+        v6 = true;
+        a6.sin6_addr = in6addr_any;
+        a4.sin_addr.s_addr = htonl(INADDR_ANY);
+    } else if (inet_pton(AF_INET6, host, &a6.sin6_addr) == 1) {
+        v6 = true;
+    } else if (inet_pton(AF_INET, host, &a4.sin_addr) != 1) {
+        return -2;
+    }
+
+    if (v6) {
+        fd = socket(AF_INET6, SOCK_STREAM | SOCK_CLOEXEC, 0);
+        if (fd >= 0) {
+            if (setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &one, sizeof one) == 0 &&
+                (host || setsockopt(fd, IPPROTO_IPV6, IPV6_V6ONLY, &zero, sizeof zero) == 0) &&
+                bind(fd, (struct sockaddr *)&a6, sizeof a6) == 0 && listen(fd, 128) == 0) {
+                snprintf(shown, cap, "[%s]", host ? host : "::");
+                return fd;
+            }
+            int saved = errno;
+            close(fd);
+            errno = saved;
+        }
+        if (host) return -1;
+        fprintf(stderr, "server: no IPv6 (%s), falling back to 0.0.0.0\n", strerror(errno));
+    }
+
+    fd = socket(AF_INET, SOCK_STREAM | SOCK_CLOEXEC, 0);
+    if (fd < 0) return -1;
+    if (setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &one, sizeof one) != 0 ||
+        bind(fd, (struct sockaddr *)&a4, sizeof a4) != 0 || listen(fd, 128) != 0) {
+        int saved = errno;
+        close(fd);
+        errno = saved;
+        return -1;
+    }
+    snprintf(shown, cap, "%s", host ? host : "0.0.0.0");
+    return fd;
+}
+
 static void set_timeouts(int fd, int seconds)
 {
     struct timeval tv = {.tv_sec = seconds, .tv_usec = 0};
@@ -381,7 +433,7 @@ int main(int argc, char **argv)
     const char *root = argc > 1 ? argv[1] : getenv("ROOT");
     if (!root || !*root) root = "public";
     const char *host = getenv("HOST");
-    if (!host || !*host) host = "0.0.0.0";
+    if (host && !*host) host = NULL;
     const char *port_s = getenv("PORT");
     if (!port_s || !*port_s) port_s = "8080";
 
@@ -399,12 +451,6 @@ int main(int argc, char **argv)
     }
     root_len = strlen(root_dir);
 
-    struct sockaddr_in addr = {.sin_family = AF_INET, .sin_port = htons((uint16_t)port)};
-    if (inet_pton(AF_INET, host, &addr.sin_addr) != 1) {
-        fprintf(stderr, "server: invalid HOST '%s'\n", host);
-        return 2;
-    }
-
     signal(SIGPIPE, SIG_IGN);
     struct sigaction sa = {0};
     sa.sa_handler = on_sigchld;
@@ -412,14 +458,17 @@ int main(int argc, char **argv)
     sa.sa_flags = SA_RESTART | SA_NOCLDSTOP;
     sigaction(SIGCHLD, &sa, NULL);
 
-    int lfd = socket(AF_INET, SOCK_STREAM | SOCK_CLOEXEC, 0);
-    int one = 1;
-    if (lfd < 0 || setsockopt(lfd, SOL_SOCKET, SO_REUSEADDR, &one, sizeof one) != 0 ||
-        bind(lfd, (struct sockaddr *)&addr, sizeof addr) != 0 || listen(lfd, 128) != 0) {
+    char shown[64];
+    int lfd = open_listener(host, port, shown, sizeof shown);
+    if (lfd == -2) {
+        fprintf(stderr, "server: invalid HOST '%s'\n", host);
+        return 2;
+    }
+    if (lfd < 0) {
         perror("server: listen");
         return 1;
     }
-    fprintf(stderr, "server: http://%s:%ld root=%s\n", host, port, root_dir);
+    fprintf(stderr, "server: http://%s:%ld root=%s\n", shown, port, root_dir);
 
     sigset_t chld;
     sigemptyset(&chld);
